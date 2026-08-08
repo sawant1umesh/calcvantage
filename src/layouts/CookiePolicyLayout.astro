@@ -1,0 +1,109 @@
+---
+import LegalLayout from './LegalLayout.astro';
+---
+
+<LegalLayout
+  eyebrow="Legal"
+  title="Cookie Policy"
+  lead="This policy explains what cookies are, which cookies CalcVantage uses, and how you can control or delete them. It should be read alongside our Privacy Policy, which covers how we handle your personal data. We keep cookie use minimal — the calculators work perfectly well without non-essential cookies."
+  lastUpdated="August 8, 2026"
+  toc={[
+    { id: 'what-are-cookies', label: 'What are cookies?' },
+    { id: 'essential-cookies', label: 'Essential cookies' },
+    { id: 'analytics-cookies', label: 'Analytics cookies' },
+    { id: 'other-technologies', label: 'Other technologies' },
+    { id: 'managing-cookies', label: 'Managing cookies' },
+    { id: 'consent', label: 'Your consent' },
+    { id: 'updates', label: 'Updates to this policy' },
+    { id: 'contact', label: 'Contact' },
+  ]}
+>
+  <section class="doc-section" id="what-are-cookies">
+    <h2 class="doc-section-title">What are cookies?</h2>
+    <p class="doc-section-copy">
+      Cookies are small text files that a website stores on your device when you visit. They let
+      the website remember information about your visit — for example, your preferences or that
+      you&rsquo;ve seen a given notice. Similar technologies include local storage and
+      &ldquo;pixel&rdquo; trackers. We use only a small set of these, never for anything invasive.
+    </p>
+  </section>
+
+  <section class="doc-section" id="essential-cookies">
+    <h2 class="doc-section-title">Essential cookies</h2>
+    <p class="doc-section-copy">
+      A few cookies are strictly necessary for the website to function — for example, to remember
+      your cookie-consent choice, keep the site secure, or manage basic technical features. These
+      are stored without asking for separate consent because the website cannot provide that
+      function otherwise. They do not collect information about you for marketing or profiling
+      purposes.
+    </p>
+  </section>
+
+  <section class="doc-section" id="analytics-cookies">
+    <h2 class="doc-section-title">Analytics cookies</h2>
+    <p class="doc-section-copy">
+      With your consent, we may use analytics cookies to understand — in aggregate — how visitors
+      use the site: which pages are viewed, how long pages are read, and which tools are used most.
+      These cookies collect anonymized data; we cannot identify you from it. They help us improve
+      the platform and publish more useful educational content. You can opt out at any time by
+      clearing these cookies in your browser (see below), and the calculators will continue to work
+      exactly the same.
+    </p>
+  </section>
+
+  <section class="doc-section" id="other-technologies">
+    <h2 class="doc-section-title">Other technologies</h2>
+    <p class="doc-section-copy">
+      We rely primarily on cookies and browser local storage. We do not use
+      tracking pixels, scripts, or other technologies that follow you across the web, and we do
+      not use cross-site trackers for retargeted or behavioral advertising.
+    </p>
+  </section>
+
+  <section class="doc-section" id="managing-cookies">
+    <h2 class="doc-section-title">Managing cookies</h2>
+    <p class="doc-section-copy">
+      Most browsers let you view, block, or delete cookies, and to control how your browser
+      handles new ones. Common options include clearing the browser&rsquo;s history and site data,
+      blocking all third-party cookies, or using a private / incognito window that discards cookies
+      when you close it.
+    </p>
+    <ul class="doc-list">
+      <li><strong>Chrome:</strong> Settings &rarr; Privacy and security &rarr; Cookies and site data.</li>
+      <li><strong>Firefox:</strong> Settings &rarr; Privacy &amp; Security &rarr; Cookies and Site Data.</li>
+      <li><strong>Safari:</strong> Preferences &rarr; Privacy &rarr; Manage Website Data.</li>
+      <li><strong>Edge:</strong> Settings &rarr; Cookies and site permissions &rarr; Manage and delete cookies.</li>
+    </ul>
+    <p class="doc-section-copy">
+      Deleting essential cookies may affect how the site functions (for example, by asking you to
+      set preferences again), but it will not break the calculators. You can also opt out of some
+      third-party analytics directly through the providers&rsquo; own opt-out controls.
+    </p>
+  </section>
+
+  <section class="doc-section" id="consent">
+    <h2 class="doc-section-title">Your consent</h2>
+    <p class="doc-section-copy">
+      We ask for your consent before any analytics or non-essential cookies are set, and we honor
+      your choice. You can withdraw consent at any time by clearing cookies in your browser or by
+      using the controls described above. Consent you give once stays in place until you change it.
+    </p>
+  </section>
+
+  <section class="doc-section" id="updates">
+    <h2 class="doc-section-title">Updates to this policy</h2>
+    <p class="doc-section-copy">
+      We may update this Cookie Policy if the technology or our practices change. The
+      &ldquo;last updated&rdquo; date at the top shows which version you&rsquo;re reading. If
+      material changes affect the cookies we use, we will let you know when you visit the site.
+    </p>
+  </section>
+
+  <section class="doc-section" id="contact">
+    <h2 class="doc-section-title">Contact</h2>
+    <p class="doc-section-copy">
+      Questions about cookies or this policy? Contact us through the
+      <a href="/contact">Contact Us</a> page and we&rsquo;ll be happy to help.
+    </p>
+  </section>
+</LegalLayout>

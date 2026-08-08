@@ -1,0 +1,306 @@
+---
+import PageContainer from '../components/layout/PageContainer.astro';
+
+interface Props {
+  eyebrow?: string;
+  title: string;
+  lead: string;
+  lastUpdated?: string;
+  toc?: { id: string; label: string }[];
+}
+
+const { eyebrow = 'Legal', title, lead, lastUpdated, toc = [] } = Astro.props;
+---
+
+<PageContainer maxWidth="xl">
+  <!-- 1. Hero -->
+  <section class="doc-hero">
+    <span class="doc-badge font-mono">{eyebrow}</span>
+    <h1 class="doc-title">{title}</h1>
+    <p class="doc-lead">{lead}</p>
+    {lastUpdated && (
+      <div class="doc-meta">
+        <span class="doc-updated font-mono">Last updated: {lastUpdated}</span>
+      </div>
+    )}
+  </section>
+
+  <!-- 2. Table of contents -->
+  {toc.length > 0 && (
+    <nav class="doc-toc" aria-label="On this page">
+      <span class="doc-toc-label font-mono">On this page</span>
+      <ul class="doc-toc-list">
+        {toc.map((item) => (
+          <li>
+            <a class="doc-toc-link" href={`#${item.id}`}>{item.label}</a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+  )}
+
+  <!-- 3. Document body -->
+  <div class="doc-content">
+    <slot />
+  </div>
+
+  <!-- 4. Contact CTA -->
+  <section class="doc-cta">
+    <div class="doc-cta-card">
+      <h2 class="doc-cta-title">Still have questions?</h2>
+      <p class="doc-cta-copy">
+        If you need help finding something in this document, the CalcVantage team will point you in
+        the right direction.
+      </p>
+      <a class="btn-pill btn-white" href="/contact">Contact us</a>
+    </div>
+  </section>
+</PageContainer>
+
+<style is:global>
+  /* ─── Legal document page (shared across legal pages) ─── */
+  .doc-hero {
+    padding: 3.5rem 0 2rem;
+    max-width: 48rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .doc-badge {
+    display: inline-flex;
+    align-items: center;
+    width: fit-content;
+    padding: 0.25rem 0.625rem;
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: var(--color-body);
+    background-color: var(--color-canvas);
+    border: 1px solid var(--color-hairline);
+    border-radius: var(--radius-full);
+    box-shadow: var(--shadow-sm);
+  }
+
+  .doc-title {
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 700;
+    line-height: 1.1;
+    letter-spacing: -0.035em;
+    color: var(--color-ink);
+  }
+
+  .doc-lead {
+    font-size: 1.125rem;
+    line-height: 1.65;
+    color: var(--color-body);
+    margin: 0;
+  }
+
+  .doc-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    padding-top: 0.25rem;
+  }
+
+  .doc-updated {
+    display: inline-flex;
+    align-items: center;
+    font-size: 0.75rem;
+    color: var(--color-mute);
+    padding: 0.25rem 0.625rem;
+    background-color: var(--color-canvas);
+    border: 1px solid var(--color-hairline);
+    border-radius: var(--radius-full);
+  }
+
+  /* ─── Table of contents ─── */
+  .doc-toc {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    margin: 2rem 0 0;
+    padding: 1.25rem 1.5rem;
+    background-color: var(--color-canvas);
+    border: 1px solid var(--color-hairline);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+  }
+
+  .doc-toc-label {
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--color-mute);
+  }
+
+  .doc-toc-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .doc-toc-link {
+    font-size: 0.875rem;
+    color: var(--color-accent);
+    text-decoration: none;
+    transition: color var(--transition-fast);
+  }
+
+  .doc-toc-link:hover {
+    color: var(--color-accent-deep);
+    text-decoration: underline;
+  }
+
+  /* ─── Document body ─── */
+  .doc-content {
+    max-width: 48rem;
+    padding: 2.5rem 0 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2.5rem;
+  }
+
+  .doc-section {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    scroll-margin-top: 5rem;
+  }
+
+  .doc-section-title {
+    font-size: clamp(1.25rem, 2.5vw, 1.5rem);
+    font-weight: 600;
+    line-height: 1.3;
+    letter-spacing: -0.015em;
+    color: var(--color-ink);
+  }
+
+  .doc-section-copy {
+    font-size: 1rem;
+    line-height: 1.75;
+    color: var(--color-body);
+    margin: 0;
+  }
+
+  .doc-list {
+    margin: 0;
+    padding-left: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .doc-list li {
+    font-size: 0.9375rem;
+    line-height: 1.7;
+    color: var(--color-body);
+  }
+
+  .doc-content a {
+    color: var(--color-accent);
+    text-decoration: none;
+  }
+
+  .doc-content a:hover {
+    color: var(--color-accent-deep);
+    text-decoration: underline;
+  }
+
+  /* ─── Callout notes ─── */
+  .doc-note {
+    padding: 1.25rem 1.5rem;
+    background-color: var(--color-canvas);
+    border: 1px solid var(--color-hairline-strong);
+    border-left: 3px solid var(--color-accent);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-sm);
+  }
+
+  .doc-note-warning {
+    border-left-color: var(--color-warning);
+  }
+
+  .doc-note p {
+    font-size: 0.9375rem;
+    line-height: 1.7;
+    color: var(--color-body);
+    margin: 0;
+  }
+
+  .doc-note strong {
+    color: var(--color-ink);
+    font-weight: 600;
+  }
+
+  /* ─── Contact CTA band ─── */
+  .doc-cta {
+    padding: 2.5rem 0 1rem;
+  }
+
+  .doc-cta-card {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+    padding: 2.5rem 2rem;
+    background-color: var(--color-primary);
+    border-radius: var(--radius-xl);
+    color: var(--color-on-primary);
+  }
+
+  .doc-cta-title {
+    font-size: clamp(1.25rem, 2.5vw, 1.5rem);
+    font-weight: 600;
+    letter-spacing: -0.015em;
+    color: var(--color-on-primary);
+  }
+
+  .doc-cta-copy {
+    font-size: 0.9375rem;
+    line-height: 1.65;
+    color: rgba(255, 255, 255, 0.8);
+    margin: 0;
+  }
+
+  .btn-pill {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 3rem;
+    padding: 0 1.75rem;
+    font-size: 1rem;
+    font-weight: 500;
+    line-height: 1;
+    border-radius: var(--radius-pill);
+    text-decoration: none;
+    border: 1px solid transparent;
+    transition: background-color var(--transition-fast), color var(--transition-fast);
+  }
+
+  .btn-white {
+    background-color: var(--color-on-primary);
+    color: var(--color-ink);
+  }
+  .btn-white:hover {
+    background-color: #ececec;
+  }
+
+  @media (max-width: 640px) {
+    .doc-hero {
+      padding: 2.5rem 0 1.5rem;
+    }
+
+    .doc-content {
+      gap: 2rem;
+    }
+
+    .doc-cta-card {
+      padding: 2rem 1.25rem;
+    }
+  }
+</style>

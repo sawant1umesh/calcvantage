@@ -1,0 +1,104 @@
+---
+import LegalLayout from './LegalLayout.astro';
+---
+
+<LegalLayout
+  eyebrow="Legal"
+  title="Disclaimer"
+  lead="Please read this disclaimer carefully before using CalcVantage.com. It explains, in plain language, what our calculators do, what they don't do, and the limits of our responsibility. Using the website means you accept these terms."
+  lastUpdated="August 8, 2026"
+  toc={[
+    { id: 'educational-purposes', label: 'Educational purposes only' },
+    { id: 'not-financial-advice', label: 'Not financial advice' },
+    { id: 'no-guarantee-of-accuracy', label: 'No guarantee of accuracy' },
+    { id: 'consult-professionals', label: 'Consult qualified professionals' },
+    { id: 'no-liability', label: 'No liability for financial decisions' },
+    { id: 'scope-and-timing', label: 'Scope and timing' },
+    { id: 'contact', label: 'Contact' },
+  ]}
+>
+  <div class="doc-note doc-note-warning">
+    <p>
+      <strong>This website does not provide financial advice.</strong> Everything on CalcVantage is
+      an educational estimate, not guidance for a specific personal decision. If you are making a
+      significant financial commitment, work with a qualified professional.
+    </p>
+  </div>
+
+  <section class="doc-section" id="educational-purposes">
+    <h2 class="doc-section-title">Educational purposes only</h2>
+    <p class="doc-section-copy">
+      CalcVantage publishes calculators and educational articles to help people understand common
+      financial concepts — mortgages, retirement savings, net worth, and related topics. The
+      content is written to be informative and illustrative, not to tell you what to do with your
+      money. Use it to learn, to explore &ldquo;what if&rdquo; scenarios, and to feel more informed
+      before you talk to a real institution or advisor.
+    </p>
+  </section>
+
+  <section class="doc-section" id="not-financial-advice">
+    <h2 class="doc-section-title">Not financial advice</h2>
+    <p class="doc-section-copy">
+      Nothing on this website constitutes financial, investment, tax, legal, insurance, or
+      mortgage advice. The calculators perform math based on the assumptions and inputs you choose;
+      they do not evaluate your personal circumstances, goals, risk tolerance, or creditworthiness.
+      No result on this site should be treated as a recommendation to buy, sell, borrow, lend,
+      invest, or take any other particular action.
+    </p>
+  </section>
+
+  <section class="doc-section" id="no-guarantee-of-accuracy">
+    <h2 class="doc-section-title">No guarantee of accuracy</h2>
+    <p class="doc-section-copy">
+      We work hard to keep formulas, assumptions, and country-specific rules correct and up to
+      date. However, rules change, regional variations exist, and real-world quotes depend on
+      details a calculator cannot see. We therefore make no guarantee, either express or implied,
+      that any result is accurate, complete, or current for your specific situation. Errors or
+      omissions may occur, and results should always be verified.
+    </p>
+  </section>
+
+  <section class="doc-section" id="consult-professionals">
+    <h2 class="doc-section-title">Consult qualified professionals</h2>
+    <p class="doc-section-copy">
+      For any significant financial decision — buying a home, choosing a loan, planning taxes,
+      insurance, retirement, or an investment — talk to a qualified professional. A mortgage
+      broker or lender can give you a real quote, a planner or advisor can weigh your personal
+      goals, and a tax expert can confirm how rules apply to you. Their guidance is grounded in
+      your actual situation; a calculator is not.
+    </p>
+  </section>
+
+  <section class="doc-section" id="no-liability">
+    <h2 class="doc-section-title">No liability for financial decisions</h2>
+    <p class="doc-section-copy">
+      To the fullest extent permitted by law, CalcVantage Inc. and its owners, contributors, and
+      operators accept no liability for any loss, claim, or damages — direct or indirect — arising
+      from decisions you make or actions you take based on this website&rsquo;s calculators,
+      articles, or any other content. You are solely responsible for how you use the information
+      found here. In short: use the tools to get informed, but don&rsquo;t blame the calculator for
+      a decision you make — and confirm the important numbers with real institutions before
+      committing.
+    </p>
+  </section>
+
+  <section class="doc-section" id="scope-and-timing">
+    <h2 class="doc-section-title">Scope and timing</h2>
+    <p class="doc-section-copy">
+      This disclaimer applies to every page, calculator, and tool on CalcVantage.com, together
+      with our <a href="/privacy-policy">Privacy Policy</a>, <a href="/terms">Terms &amp;
+      Conditions</a>, and <a href="/cookie-policy">Cookie Policy</a>. We may update this disclaimer
+      as our content evolves; the &ldquo;last updated&rdquo; date at the top indicates the most
+      recent revision.
+    </p>
+  </section>
+
+  <section class="doc-section" id="contact">
+    <h2 class="doc-section-title">Contact</h2>
+    <p class="doc-section-copy">
+      If you believe a calculator result or some of our content is wrong or out of date, please
+      tell us through the <a href="/contact">Contact Us</a> page — we would much rather fix it than
+      leave it in place.
+    </p>
+  </section>
+</LegalLayout>

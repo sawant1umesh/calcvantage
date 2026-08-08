@@ -1,0 +1,36 @@
+---
+import { getBlogCategory } from '../../data/blog-categories';
+
+interface Props {
+  category: string;
+}
+
+const { category } = Astro.props;
+const meta = getBlogCategory(category);
+const color = meta?.color ?? 'var(--color-body)';
+---
+
+<span
+  class="category-badge"
+  style={`--badge-color: ${color}`}
+  title={meta?.description ?? category}
+>
+  {meta?.label ?? category}
+</span>
+
+<style>
+  .category-badge {
+    display: inline-flex;
+    align-items: center;
+    width: fit-content;
+    padding: 0.2rem 0.625rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+    line-height: 1.4;
+    color: var(--badge-color);
+    background-color: color-mix(in srgb, var(--badge-color) 10%, #ffffff);
+    border: 1px solid color-mix(in srgb, var(--badge-color) 28%, #ffffff);
+    border-radius: var(--radius-full);
+  }
+</style>
