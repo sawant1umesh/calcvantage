@@ -1,0 +1,364 @@
+---
+import Card from '../base/Card.astro';
+import ResultCard from '../base/ResultCard.astro';
+import { getCountryByCode } from '../../config/countries/index';
+import { RETIREMENT_DEFAULTS } from '../../config/retirement/index';
+import { retirementService } from '../../services/retirement/retirement.service';
+import { formatCurrency } from '../../utils/formatters';
+
+const defaultCountry = 'US';
+const country = getCountryByCode(defaultCountry);
+const defaults = RETIREMENT_DEFAULTS[defaultCountry];
+
+const initialResults = retirementService.calculate({
+  country: defaultCountry,
+  currentAge: defaults.currentAge,
+  retirementAge: defaults.retirementAge,
+  currentSavings: defaults.currentSavings,
+  monthlyContribution: defaults.monthlyContribution,
+  expectedReturnRate: defaults.expectedReturnRate,
+  inflationRate: defaults.inflationRate,
+  retirementIncomeGoal: defaults.retirementIncomeGoal,
+});
+
+const symbol = '$';
+const locale = country.locale;
+const months = initialResults.monthsUntilRetirement;
+---
+
+<div class="results-panel-container sticky-results-panel">
+  <Card variant="default" padding="xl" rounded="xl" class="retirement-results-card">
+    <div class="results-header">
+      <div class="header-title-group">
+        <h3 class="text-display-sm">Retirement Projection</h3>
+        <p class="text-caption" id="ret-country-note">Projection based on {country.name} (USD) assumptions</p>
+      </div>
+      <span class="status-indicator" id="ret-calc-status">Live</span>
+    </div>
+
+    <!-- Summary Line -->
+    <p class="summary-line text-caption" id="ret-summary-text">
+      Saving for {initialResults.yearsUntilRetirement} years until age {defaults.retirementAge}.
+    </p>
+
+    <!-- Readiness Status -->
+    <div class="readiness-banner is-needs-improvement" id="ret-readiness-banner">
+      <span class="readiness-label" id="ret-readiness-label">Needs Improvement</span>
+      <span class="text-caption readiness-note" id="ret-readiness-note">
+        {initialResults.readinessNote}
+      </span>
+    </div>
+
+    <!-- Highlighted Primary Result: Future Portfolio Value -->
+    <div class="primary-result-container">
+      <ResultCard
+        label="Future Portfolio Value"
+        value={formatCurrency(initialResults.futureRetirementValue, country.currencyCode, locale).replace('$', '').trim()}
+        currencySymbol={symbol}
+        subtext="Projected nest egg at retirement (nominal)"
+        highlight={true}
+        badge="Nominal"
+        class="ret-future-card"
+      />
+    </div>
+
+    <!-- Secondary Summary Metrics -->
+    <div class="secondary-results-grid">
+      <ResultCard
+        label="Inflation-Adjusted Value"
+        value={formatCurrency(initialResults.inflationAdjustedRetirementValue, country.currencyCode, locale).replace('$', '').trim()}
+        currencySymbol={symbol}
+        subtext="Nest egg value in today's dollars"
+        class="ret-inflated-card"
+      />
+      <ResultCard
+        label="Estimated Monthly Income"
+        value={formatCurrency(initialResults.estimatedMonthlyIncome, country.currencyCode, locale).replace('$', '').trim()}
+        currencySymbol={symbol}
+        subtext="Based on a {defaults.safeWithdrawalRate}% safe withdrawal rate"
+        class="ret-income-card"
+      />
+      <ResultCard
+        label="Total Contributions"
+        value={formatCurrency(initialResults.totalContributions, country.currencyCode, locale).replace('$', '').trim()}
+        currencySymbol={symbol}
+        subtext="Savings + all monthly contributions"
+        class="ret-contrib-card"
+      />
+      <ResultCard
+        label="Investment Growth"
+        value={formatCurrency(initialResults.investmentGrowth, country.currencyCode, locale).replace('$', '').trim()}
+        currencySymbol={symbol}
+        subtext="Earnings above contributions"
+        class="ret-growth-card"
+      />
+    </div>
+
+    <!-- Goal Achievement & Progress -->
+    <div class="goal-achievement-box" id="ret-achievement-box">
+      <div class="goal-header">
+        <div class="goal-title-group">
+          <span class="text-body-sm-strong">Goal Achievement</span>
+          <span class="text-caption" id="ret-goal-target">Monthly goal $5,000</span>
+        </div>
+        <span class="goal-percent font-mono" id="ret-goal-percent">--%</span>
+      </div>
+      <div class="progress-track">
+        <div class="progress-fill" id="ret-goal-progress"></div>
+      </div>
+      <span class="text-caption" id="ret-goal-caption">Inflation-adjusted monthly income / monthly goal</span>
+    </div>
+
+    <!-- Years Remaining -->
+    <div class="ret-remaining-row">
+      <ResultCard
+        label="Years Remaining"
+        value={String(initialResults.yearsUntilRetirement)}
+        currencySymbol=""
+        subtext="Until your target retirement age"
+        class="ret-years-card"
+      />
+      <ResultCard
+        label="Monthly Goal in Future $"
+        value={formatCurrency(initialResults.inflationAdjustedMonthlyGoal, country.currencyCode, locale).replace('$', '').trim()}
+        currencySymbol={symbol}
+        subtext="Goal inflated to retirement year"
+        class="ret-goaltarget-card"
+      />
+    </div>
+
+    <div class="projection-note" id="ret-projection-note">
+      <span class="note-icon">🗓️</span>
+      <span class="text-caption">
+        Projections assume monthly contributions grow at the expected annual return with end-of-month compounding (~{defaults.safeWithdrawalRate}% withdrawal assumption). Estimates for illustration, not financial advice.
+      </span>
+    </div>
+
+    <!-- Advisory Warnings -->
+    <div class="warnings-box" id="ret-warnings-box" style="display: none;">
+      <div class="warnings-header">
+        <span class="warnings-icon">⚠️</span>
+        <span class="text-body-sm-strong">Advisory Notices</span>
+      </div>
+      <ul class="warnings-list" id="ret-warnings-list"></ul>
+    </div>
+  </Card>
+</div>
+
+<style>
+  .results-panel-container {
+    width: 100%;
+  }
+
+  .retirement-results-card {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+
+  .results-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-bottom: 0.875rem;
+    border-bottom: 1px solid var(--color-hairline);
+  }
+
+  .header-title-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .status-indicator {
+    font-size: 0.75rem;
+    font-weight: 500;
+    padding: 0.25rem 0.625rem;
+    background-color: var(--color-accent-soft);
+    color: var(--color-accent-deep);
+    border-radius: var(--radius-full);
+  }
+
+  .summary-line {
+    margin: 0;
+    padding-bottom: 0.25rem;
+  }
+
+  /* Readiness banner */
+  .readiness-banner {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.875rem 1rem;
+    border-radius: var(--radius-lg);
+    border: 1px solid;
+  }
+
+  .readiness-excellent {
+    background-color: #ecfdf5;
+    border-color: #a7f3d0;
+  }
+  .readiness-good {
+    background-color: var(--color-accent-soft);
+    border-color: #b3d7ff;
+  }
+  .readiness-fair {
+    background-color: var(--color-warning-soft, #ffefcf);
+    border-color: #f5d78e;
+  }
+  .readiness-needs-improvement {
+    background-color: var(--color-error-soft, #fbe9e9);
+    border-color: #f5c2c2;
+  }
+
+  .readiness-label {
+    font-size: 0.8125rem;
+    font-weight: 700;
+    padding: 0.25rem 0.75rem;
+    border-radius: var(--radius-full);
+    color: var(--color-on-primary);
+    white-space: nowrap;
+  }
+  .readiness-excellent .readiness-label { background-color: #10b981; }
+  .readiness-good .readiness-label { background-color: var(--color-accent); }
+  .readiness-fair .readiness-label { background-color: var(--color-warning); }
+  .readiness-needs-improvement .readiness-label { background-color: var(--color-error); }
+
+  .readiness-note {
+    margin: 0;
+  }
+
+  .primary-result-container {
+    width: 100%;
+  }
+
+  .secondary-results-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.875rem;
+  }
+
+  @media (min-width: 480px) {
+    .secondary-results-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  /* Goal achievement box */
+  .goal-achievement-box {
+    padding: 1.125rem;
+    background-color: var(--color-canvas-soft);
+    border: 1px solid var(--color-hairline);
+    border-radius: var(--radius-lg);
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .goal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .goal-title-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.125rem;
+  }
+
+  .goal-percent {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--color-ink);
+  }
+
+  .progress-track {
+    width: 100%;
+    height: 0.5rem;
+    background-color: var(--color-canvas-soft-2);
+    border-radius: var(--radius-full);
+    overflow: hidden;
+  }
+
+  .progress-fill {
+    height: 100%;
+    width: 0%;
+    background-color: var(--color-accent);
+    border-radius: var(--radius-full);
+    transition: width var(--transition-normal), background-color var(--transition-fast);
+  }
+
+  .progress-fill.is-complete {
+    background-color: var(--color-success);
+  }
+  .progress-fill.is-fair {
+    background-color: var(--color-warning);
+  }
+  .progress-fill.is-low {
+    background-color: var(--color-error);
+  }
+
+  .ret-remaining-row,
+  .ret-years-card {
+    width: 100%;
+  }
+
+  .projection-note {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+    padding: 0.875rem 1rem;
+    background-color: var(--color-canvas-soft);
+    border: 1px solid var(--color-hairline);
+    border-radius: var(--radius-md);
+  }
+
+  .projection-note .text-caption {
+    color: var(--color-body);
+  }
+
+  .warnings-box {
+    padding: 0.875rem 1rem;
+    background-color: var(--color-warning-soft, #ffefcf);
+    border: 1px solid #f5d78e;
+    border-radius: var(--radius-md);
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .warnings-header {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .warnings-list {
+    margin: 0;
+    padding-left: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.375rem;
+  }
+
+  .warnings-list .text-caption {
+    color: var(--color-body);
+  }
+
+  .ret-goaltarget-card .result-value {
+    font-size: 1.5rem;
+  }
+
+  .ret-remaining-row {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.875rem;
+  }
+
+  @media (min-width: 480px) {
+    .ret-remaining-row {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+</style>

@@ -1,0 +1,384 @@
+---
+import Card from '../base/Card.astro';
+import ResultCard from '../base/ResultCard.astro';
+import { getCountryByCode } from '../../config/countries/index';
+import { NET_WORTH_DEFAULTS } from '../../config/networth/index';
+import { netWorthService } from '../../services/networth/networth.service';
+import { formatCurrency } from '../../utils/formatters';
+
+const defaultCountry = 'US';
+const country = getCountryByCode(defaultCountry);
+const defaults = NET_WORTH_DEFAULTS[defaultCountry];
+
+const initialResults = netWorthService.calculate({ ...defaults, country: defaultCountry });
+
+const symbol = '$';
+const locale = country.locale;
+
+const healthClassMap: Record<string, string> = {
+  Excellent: 'health-excellent',
+  Good: 'health-good',
+  Fair: 'health-fair',
+  'Needs Improvement': 'health-needs-improvement',
+};
+const initialHealthClass = healthClassMap[initialResults.healthRating] || 'health-needs-improvement';
+---
+
+<div class="results-panel-container sticky-results-panel">
+  <Card variant="default" padding="xl" rounded="xl" class="networth-results-card">
+    <div class="results-header">
+      <div class="header-title-group">
+        <h3 class="text-display-sm">Net Worth Summary</h3>
+        <p class="text-caption" id="nw-country-note">
+          Balance sheet based on {country.name} ({country.currencyCode}).
+        </p>
+      </div>
+      <span class="status-indicator" id="nw-calc-status">Live</span>
+    </div>
+
+    <!-- Summary Line -->
+    <p class="summary-line text-caption" id="nw-summary-text">
+      Your net worth is Total Assets minus Total Liabilities.
+    </p>
+
+    <!-- Highlighted Primary Result: Net Worth -->
+    <div class="primary-result-container">
+      <ResultCard
+        label="Net Worth"
+        value={formatCurrency(initialResults.netWorth, country.currencyCode, locale).replace('$', '').trim()}
+        currencySymbol={symbol}
+        subtext="Total Assets − Total Liabilities"
+        highlight={true}
+        badge="Balance Sheet"
+        class="nw-networth-card"
+      />
+    </div>
+
+    <!-- Secondary Summary Metrics -->
+    <div class="secondary-results-grid">
+      <ResultCard
+        label="Total Assets"
+        value={formatCurrency(initialResults.totalAssets, country.currencyCode, locale).replace('$', '').trim()}
+        currencySymbol={symbol}
+        subtext="Sum of all asset values"
+        class="nw-assets-card"
+      />
+      <ResultCard
+        label="Total Liabilities"
+        value={formatCurrency(initialResults.totalLiabilities, country.currencyCode, locale).replace('$', '').trim()}
+        currencySymbol={symbol}
+        subtext="Sum of all outstanding debts"
+        class="nw-liabilities-card"
+      />
+    </div>
+
+    <!-- Financial Health Score Banner -->
+    <div class={`health-banner ${initialHealthClass}`} id="nw-health-banner">
+      <div class="health-score-group">
+        <span class="health-score font-mono" id="nw-health-score">{initialResults.healthScore}</span>
+        <span class="health-score-max font-mono">/ 100</span>
+      </div>
+      <div class="health-info">
+        <span class="health-rating" id="nw-health-rating">{initialResults.healthRating}</span>
+        <span class="text-caption health-note" id="nw-health-note">{initialResults.healthNote}</span>
+      </div>
+    </div>
+
+    <!-- Asset Allocation Breakdown -->
+    <div class="breakdown-card-box">
+      <div class="card-box-header">
+        <span class="text-body-sm-strong">Asset Allocation</span>
+        <span class="text-caption font-mono">% of total assets</span>
+      </div>
+      <div class="breakdown-list">
+        {initialResults.assetAllocation.map((item) => (
+          <div class="breakdown-row">
+            <div class="row-label">
+              <span class="dot-indicator"></span>
+              <span class="text-body-sm">{item.label}</span>
+            </div>
+            <span class="text-body-sm-strong font-mono">
+              <span id={`nw-alloc-${item.key}-value`}>{symbol}{formatCurrency(item.value, country.currencyCode, locale).replace('$', '').trim()}</span>
+              <span class="alloc-sep"> · </span>
+              <span id={`nw-alloc-${item.key}-pct`}>{item.percent}%</span>
+            </span>
+          </div>
+        ))}
+      </div>
+    </div>
+
+    <!-- Debt Breakdown -->
+    <div class="breakdown-card-box debt-box">
+      <div class="card-box-header">
+        <span class="text-body-sm-strong">Debt Breakdown</span>
+        <span class="text-caption font-mono">% of total liabilities</span>
+      </div>
+      <div class="breakdown-list">
+        {initialResults.debtBreakdown.map((item) => (
+          <div class="breakdown-row">
+            <div class="row-label">
+              <span class="dot-indicator"></span>
+              <span class="text-body-sm">{item.label}</span>
+            </div>
+            <span class="text-body-sm-strong font-mono">
+              <span id={`nw-debt-${item.key}-value`}>{symbol}{formatCurrency(item.value, country.currencyCode, locale).replace('$', '').trim()}</span>
+              <span class="alloc-sep"> · </span>
+              <span id={`nw-debt-${item.key}-pct`}>{item.percent}%</span>
+            </span>
+          </div>
+        ))}
+      </div>
+    </div>
+
+    <!-- Financial Insights -->
+    <div class="insights-box" id="nw-insights-box">
+      <div class="insights-header">
+        <span class="insights-icon">💡</span>
+        <span class="text-body-sm-strong">Financial Insights</span>
+      </div>
+      <ul class="insights-list" id="nw-insights-list">
+        {initialResults.insights.map((insight) => (
+          <li class="text-caption">{insight}</li>
+        ))}
+      </ul>
+    </div>
+
+    <!-- Balance Sheet Note -->
+    <div class="projection-note" id="nw-projection-note">
+      <span class="note-icon">🧮</span>
+      <span class="text-caption">
+        Net Worth = Total Assets − Total Liabilities. Health score weighs net worth, debt burden, and asset diversification. Results update live as you type. Estimates for illustration, not financial advice.
+      </span>
+    </div>
+  </Card>
+</div>
+
+<style>
+  .results-panel-container {
+    width: 100%;
+  }
+
+  .networth-results-card {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+
+  .results-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-bottom: 0.875rem;
+    border-bottom: 1px solid var(--color-hairline);
+  }
+
+  .header-title-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .status-indicator {
+    font-size: 0.75rem;
+    font-weight: 500;
+    padding: 0.25rem 0.625rem;
+    background-color: var(--color-accent-soft);
+    color: var(--color-accent-deep);
+    border-radius: var(--radius-full);
+  }
+
+  .summary-line {
+    margin: 0;
+    padding-bottom: 0.25rem;
+  }
+
+  .primary-result-container {
+    width: 100%;
+  }
+
+  /* Negative net worth state for the highlighted card */
+  .nw-networth-card.is-negative {
+    background-color: var(--color-error);
+    border-color: var(--color-error);
+  }
+
+  .nw-networth-card.is-negative .result-label,
+  .nw-networth-card.is-negative .result-subtext,
+  .nw-networth-card.is-negative .result-currency {
+    color: rgba(255, 255, 255, 0.8);
+  }
+
+  .secondary-results-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.875rem;
+  }
+
+  @media (min-width: 480px) {
+    .secondary-results-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  /* Financial Health Score banner */
+  .health-banner {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem 1.125rem;
+    border-radius: var(--radius-lg);
+    border: 1px solid;
+  }
+
+  .health-score-group {
+    display: flex;
+    align-items: baseline;
+    white-space: nowrap;
+  }
+
+  .health-score {
+    font-size: 2.25rem;
+    font-weight: 700;
+    line-height: 1;
+    color: var(--color-ink);
+  }
+
+  .health-score-max {
+    font-size: 0.875rem;
+    color: var(--color-mute);
+  }
+
+  .health-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .health-rating {
+    font-size: 0.8125rem;
+    font-weight: 700;
+    color: var(--color-on-primary);
+    padding: 0.25rem 0.75rem;
+    border-radius: var(--radius-full);
+    width: fit-content;
+    white-space: nowrap;
+  }
+
+  .health-banner.health-excellent {
+    background-color: #ecfdf5;
+    border-color: #a7f3d0;
+  }
+  .health-banner.health-good {
+    background-color: var(--color-accent-soft);
+    border-color: #b3d7ff;
+  }
+  .health-banner.health-fair {
+    background-color: var(--color-warning-soft, #ffefcf);
+    border-color: #f5d78e;
+  }
+  .health-banner.health-needs-improvement {
+    background-color: var(--color-error-soft, #fbe9e9);
+    border-color: #f5c2c2;
+  }
+
+  .health-excellent .health-rating { background-color: #10b981; }
+  .health-good .health-rating { background-color: var(--color-accent); }
+  .health-fair .health-rating { background-color: var(--color-warning); }
+  .health-needs-improvement .health-rating { background-color: var(--color-error); }
+
+  .health-note {
+    margin: 0;
+  }
+
+  /* Breakdown boxes */
+  .breakdown-card-box {
+    padding: 1.125rem;
+    background-color: var(--color-canvas-soft);
+    border: 1px solid var(--color-hairline);
+    border-radius: var(--radius-lg);
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .card-box-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .breakdown-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .breakdown-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .row-label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    min-width: 0;
+  }
+
+  .dot-indicator {
+    flex-shrink: 0;
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: var(--radius-full);
+    background-color: var(--color-accent);
+  }
+
+  .alloc-sep {
+    color: var(--color-mute);
+  }
+
+  /* Financial Insights */
+  .insights-box {
+    padding: 0.875rem 1rem;
+    background-color: var(--color-accent-soft);
+    border: 1px solid var(--color-hairline);
+    border-radius: var(--radius-md);
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .insights-header {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .insights-list {
+    margin: 0;
+    padding-left: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.375rem;
+  }
+
+  .insights-list .text-caption {
+    color: var(--color-body);
+  }
+
+  .projection-note {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+    padding: 0.875rem 1rem;
+    background-color: var(--color-canvas-soft);
+    border: 1px solid var(--color-hairline);
+    border-radius: var(--radius-md);
+  }
+
+  .projection-note .text-caption {
+    color: var(--color-body);
+  }
+</style>

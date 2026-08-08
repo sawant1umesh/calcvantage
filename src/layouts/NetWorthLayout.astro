@@ -1,0 +1,63 @@
+---
+import PageContainer from '../components/layout/PageContainer.astro';
+import Section from '../components/base/Section.astro';
+import NetWorthCalculatorPanel from '../components/networth/NetWorthCalculatorPanel.astro';
+import NetWorthResultsPanel from '../components/networth/NetWorthResultsPanel.astro';
+
+interface Props {
+  title?: string;
+  subtitle?: string;
+}
+
+const {
+  title = 'Net Worth Calculator',
+  subtitle = 'Track your total assets, liabilities, and net worth instantly for the US, Canada, and Australia.',
+} = Astro.props;
+---
+
+<PageContainer maxWidth="xl">
+  <Section title={title} subtitle={subtitle} badge="CalcVantage Financial Tools">
+    <div class="grid-networth-layout">
+      <!-- Left Panel: Calculator Controls -->
+      <div class="panel-left">
+        <slot name="calculator-panel">
+          <NetWorthCalculatorPanel />
+        </slot>
+      </div>
+
+      <!-- Right Panel: Results & Summary -->
+      <div class="panel-right">
+        <slot name="results-panel">
+          <NetWorthResultsPanel />
+        </slot>
+      </div>
+    </div>
+  </Section>
+</PageContainer>
+
+<style>
+  .panel-left,
+  .panel-right {
+    width: 100%;
+  }
+
+  .grid-networth-layout {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+    width: 100%;
+    align-items: start;
+  }
+
+  @media (min-width: 1024px) {
+    .grid-networth-layout {
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 2.5rem;
+    }
+
+    .panel-right {
+      position: sticky;
+      top: 2rem;
+    }
+  }
+</style>

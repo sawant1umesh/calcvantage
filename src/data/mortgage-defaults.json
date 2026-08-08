@@ -1,0 +1,38 @@
+{
+  "US": {
+    "homeValue": 420000,
+    "downPaymentPercent": 20,
+    "downPaymentAmount": 84000,
+    "loanTermYears": 30,
+    "interestRate": 6.75,
+    "paymentFrequency": "monthly",
+    "propertyTaxRate": 1.1,
+    "homeInsuranceAnnual": 1500,
+    "hoaFeeMonthly": 150,
+    "pmiRate": 0.5
+  },
+  "CA": {
+    "homeValue": 680000,
+    "downPaymentPercent": 20,
+    "downPaymentAmount": 136000,
+    "loanTermYears": 25,
+    "interestRate": 5.25,
+    "paymentFrequency": "monthly",
+    "propertyTaxRate": 0.95,
+    "homeInsuranceAnnual": 1200,
+    "cmhcRate": 0.0
+  },
+  "AU": {
+    "homeValue": 750000,
+    "downPaymentPercent": 20,
+    "downPaymentAmount": 150000,
+    "loanTermYears": 30,
+    "interestRate": 6.15,
+    "paymentFrequency": "monthly",
+    "propertyTaxRate": 0.5,
+    "homeInsuranceAnnual": 1400,
+    "stateAU": "NSW",
+    "lmiRate": 0.0
+  }
+}
+

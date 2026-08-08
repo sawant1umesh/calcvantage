@@ -1,0 +1,919 @@
+---
+import Card from '../base/Card.astro';
+import Input from '../base/Input.astro';
+import Select from '../base/Select.astro';
+import Toggle from '../base/Toggle.astro';
+import Button from '../base/Button.astro';
+import { COUNTRIES } from '../../config/countries/index';
+import { MORTGAGE_DEFAULTS } from '../../config/mortgage/index';
+import { AU_STATES } from '../../config/mortgage/stamp-duty';
+import { COMMON_LOAN_TERMS, PAYMENT_FREQUENCIES } from '../../lib/constants';
+
+const defaultCountry = 'US';
+const defaults = MORTGAGE_DEFAULTS[defaultCountry];
+
+const countryOptions = COUNTRIES.map((c) => ({
+  value: c.code,
+  label: `${c.flag} ${c.name} (${c.currencyCode})`,
+}));
+
+const termOptions = COMMON_LOAN_TERMS.map((term) => ({
+  value: term,
+  label: `${term} Years`,
+}));
+
+const auStateOptions = AU_STATES.map((s) => ({
+  value: s.code,
+  label: s.name,
+}));
+---
+
+<Card variant="default" padding="xl" rounded="xl" class="calculator-panel">
+  <div class="panel-header">
+    <div class="header-title-group">
+      <h2 class="text-display-md">Mortgage Parameters</h2>
+      <p class="text-body-sm">Configure loan, country tax, and extra payment details.</p>
+    </div>
+    <span class="arch-badge" id="country-rule-badge">🇺🇸 US Rules</span>
+  </div>
+
+  <form class="calculator-form" id="mortgage-form" onsubmit="return false;">
+    <!-- Country Selector -->
+    <div class="form-section">
+      <Select
+        id="country-select"
+        label="Target Country / Region"
+        value={defaultCountry}
+        options={countryOptions}
+        helperText="Select country rules for currency, compounding, and local taxes."
+      />
+    </div>
+
+    <!-- Home Price & Down Payment Group -->
+    <div class="form-row two-col">
+      <Input
+        id="home-value"
+        label="Home Price"
+        type="number"
+        prefix="$"
+        value={defaults.homeValue}
+        min={1000}
+        step={5000}
+        helperText="Property purchase price"
+        required={true}
+      />
+      <div class="down-payment-group">
+        <div class="down-payment-row">
+          <Input
+            id="down-payment-amount"
+            label="Down Payment ($)"
+            type="number"
+            prefix="$"
+            value={defaults.downPaymentAmount}
+            min={0}
+            step={1000}
+            helperText="Amount paid upfront"
+          />
+          <Input
+            id="down-payment-percent"
+            label="Down Payment (%)"
+            type="number"
+            suffix="%"
+            value={defaults.downPaymentPercent}
+            min={0}
+            max={100}
+            step={1}
+            helperText="Percentage of price"
+          />
+        </div>
+      </div>
+    </div>
+
+    <!-- Calculated Loan Amount Display -->
+    <div class="loan-amount-banner">
+      <div class="loan-amount-info">
+        <span class="text-caption">Calculated Loan Principal</span>
+        <span class="loan-amount-value font-mono" id="calculated-loan-amount">$336,000</span>
+      </div>
+      <span class="loan-amount-badge">Principal</span>
+    </div>
+
+    <!-- Interest Rate & Loan Term Group -->
+    <div class="form-row two-col">
+      <Input
+        id="interest-rate"
+        label="Interest Rate"
+        type="number"
+        suffix="%"
+        value={defaults.interestRate}
+        min={0}
+        max={30}
+        step={0.05}
+        helperText="Annual interest rate"
+        required={true}
+      />
+      <Select
+        id="loan-term"
+        label="Loan Term"
+        value={defaults.loanTermYears}
+        options={termOptions}
+        helperText="Duration of the mortgage"
+      />
+    </div>
+
+    <!-- Payment Frequency & Start Date -->
+    <div class="form-row two-col">
+      <Select
+        id="payment-frequency"
+        label="Payment Frequency"
+        value={defaults.paymentFrequency}
+        options={PAYMENT_FREQUENCIES}
+        helperText="Scheduled repayment interval"
+      />
+      <Input
+        id="start-date"
+        label="Start Date"
+        type="text"
+        value="Sep 2026"
+        placeholder="e.g. Sep 2026"
+        helperText="First payment date"
+      />
+    </div>
+
+    <!-- Country-Specific Taxes & Costs Section Header -->
+    <div class="form-section-title">
+      <h3 class="text-body-sm-strong">Country-Specific Taxes & Costs</h3>
+    </div>
+
+    <!-- Common Taxes Group (Property Tax & Home Insurance) -->
+    <div class="form-row two-col">
+      <Input
+        id="property-tax-rate"
+        label="Property Tax (Annual %)"
+        type="number"
+        suffix="%"
+        value={defaults.propertyTaxRate}
+        min={0}
+        max={15}
+        step={0.05}
+        helperText="Estimated property tax rate"
+      />
+      <Input
+        id="home-insurance-annual"
+        label="Home Insurance (Annual $)"
+        type="number"
+        prefix="$"
+        value={defaults.homeInsuranceAnnual}
+        min={0}
+        step={100}
+        helperText="Annual homeowners insurance"
+      />
+    </div>
+
+    <!-- US Specific Field: HOA Fees -->
+    <div class="form-section country-field-group" id="us-costs-group">
+      <Input
+        id="hoa-fee-monthly"
+        label="HOA / Condo Fees (Monthly $)"
+        type="number"
+        prefix="$"
+        value={defaults.hoaFeeMonthly || 150}
+        min={0}
+        step={25}
+        helperText="Monthly homeowners association dues (US)"
+      />
+    </div>
+
+    <!-- Australia Specific Field: State Selector for Stamp Duty -->
+    <div class="form-section country-field-group" id="au-costs-group" style="display: none;">
+      <Select
+        id="au-state-select"
+        label="State / Territory (Stamp Duty)"
+        value={defaults.stateAU || 'NSW'}
+        options={auStateOptions}
+        helperText="Select Australian state for transfer stamp duty calculation."
+      />
+    </div>
+
+    <!-- Canada Specific Info Banner: CMHC Insurance -->
+    <div class="form-section country-field-group info-banner-box" id="ca-costs-group" style="display: none;">
+      <div class="info-banner-header">
+        <span class="info-icon">🇨🇦</span>
+        <span class="text-body-sm-strong">Canadian High-Ratio Mortgage (CMHC)</span>
+      </div>
+      <p class="text-caption">
+        Down payments under 20% in Canada automatically calculate CMHC Insurance as a separate one-time upfront cost. Minimum down payment is statutory 5%.
+      </p>
+    </div>
+
+    <!-- Extra Payment Simulator Section Header -->
+    <div class="form-section-title">
+      <h3 class="text-body-sm-strong">Extra Payment Simulator</h3>
+    </div>
+
+    <div class="form-row three-col">
+      <Input
+        id="extra-monthly"
+        label="Extra Monthly ($)"
+        type="number"
+        prefix="$"
+        value={0}
+        min={0}
+        step={50}
+        helperText="Added to every payment"
+      />
+      <Input
+        id="extra-onetime"
+        label="One-Time Extra ($)"
+        type="number"
+        prefix="$"
+        value={0}
+        min={0}
+        step={500}
+        helperText="Lump sum payment"
+      />
+      <Input
+        id="extra-yearly"
+        label="Yearly Extra ($)"
+        type="number"
+        prefix="$"
+        value={0}
+        min={0}
+        step={500}
+        helperText="Paid once per year"
+      />
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="form-actions">
+      <Button variant="outline" size="md" type="reset" id="reset-btn">
+        Reset to Country Defaults
+      </Button>
+    </div>
+  </form>
+</Card>
+
+<style>
+  .calculator-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .panel-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--color-hairline);
+  }
+
+  .header-title-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .arch-badge {
+    font-size: 0.75rem;
+    font-weight: 500;
+    padding: 0.25rem 0.625rem;
+    background-color: var(--color-canvas-soft-2);
+    border: 1px solid var(--color-hairline);
+    border-radius: var(--radius-full);
+    color: var(--color-body);
+    white-space: nowrap;
+  }
+
+  .calculator-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+
+  .form-section {
+    width: 100%;
+  }
+
+  .form-section-title {
+    padding-top: 0.75rem;
+    border-top: 1px dashed var(--color-hairline-strong);
+  }
+
+  .form-row.two-col {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .form-row.three-col {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+  }
+
+  @media (min-width: 640px) {
+    .form-row.two-col {
+      grid-template-columns: 1fr 1fr;
+    }
+    .form-row.three-col {
+      grid-template-columns: 1fr 1fr 1fr;
+    }
+  }
+
+  .down-payment-group {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .down-payment-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+  }
+
+  .loan-amount-banner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.875rem 1.25rem;
+    background-color: var(--color-canvas-soft-2);
+    border: 1px dashed var(--color-hairline-strong);
+    border-radius: var(--radius-md);
+  }
+
+  .loan-amount-info {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .loan-amount-value {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--color-ink);
+  }
+
+  .loan-amount-badge {
+    font-size: 0.75rem;
+    font-weight: 500;
+    padding: 0.2rem 0.5rem;
+    background-color: var(--color-canvas);
+    border: 1px solid var(--color-hairline);
+    border-radius: var(--radius-full);
+    color: var(--color-body);
+  }
+
+  .info-banner-box {
+    padding: 0.875rem 1rem;
+    background-color: var(--color-canvas-soft-2);
+    border: 1px solid var(--color-hairline);
+    border-radius: var(--radius-md);
+    display: flex;
+    flex-direction: column;
+    gap: 0.375rem;
+  }
+
+  .info-banner-header {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .form-actions {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 0.5rem;
+  }
+</style>
+
+<script>
+  import { MORTGAGE_DEFAULTS } from '../../config/mortgage/index';
+  import { COUNTRIES } from '../../config/countries/index';
+  import { mortgageService } from '../../services/mortgage/mortgage.service';
+  import { exportAmortizationToCSV } from '../../utils/csv-exporter';
+  import { encodeInputsToURL, decodeInputsFromURL } from '../../utils/url-state';
+  import type { CountryCode } from '../../types/country';
+  import type { AmortizationScheduleItem } from '../../types/mortgage';
+
+  document.addEventListener('DOMContentLoaded', () => {
+    // Input elements
+    const countrySelect = document.getElementById('country-select') as HTMLSelectElement | null;
+    const homeValueInput = document.getElementById('home-value') as HTMLInputElement | null;
+    const downPaymentAmountInput = document.getElementById('down-payment-amount') as HTMLInputElement | null;
+    const downPaymentPercentInput = document.getElementById('down-payment-percent') as HTMLInputElement | null;
+    const interestRateInput = document.getElementById('interest-rate') as HTMLInputElement | null;
+    const loanTermSelect = document.getElementById('loan-term') as HTMLSelectElement | null;
+    const paymentFreqSelect = document.getElementById('payment-frequency') as HTMLSelectElement | null;
+    const startDateInput = document.getElementById('start-date') as HTMLInputElement | null;
+
+    // Phase 2B Inputs
+    const propertyTaxRateInput = document.getElementById('property-tax-rate') as HTMLInputElement | null;
+    const homeInsuranceAnnualInput = document.getElementById('home-insurance-annual') as HTMLInputElement | null;
+    const hoaFeeMonthlyInput = document.getElementById('hoa-fee-monthly') as HTMLInputElement | null;
+    const auStateSelect = document.getElementById('au-state-select') as HTMLSelectElement | null;
+
+    // Phase 2C Extra Payment Inputs
+    const extraMonthlyInput = document.getElementById('extra-monthly') as HTMLInputElement | null;
+    const extraOneTimeInput = document.getElementById('extra-onetime') as HTMLInputElement | null;
+    const extraYearlyInput = document.getElementById('extra-yearly') as HTMLInputElement | null;
+
+    // Country Group Containers
+    const usCostsGroup = document.getElementById('us-costs-group');
+    const auCostsGroup = document.getElementById('au-costs-group');
+    const caCostsGroup = document.getElementById('ca-costs-group');
+    const resetBtn = document.getElementById('reset-btn') as HTMLButtonElement | null;
+
+    // Display elements
+    const calculatedLoanAmountEl = document.getElementById('calculated-loan-amount');
+    const countryRuleBadge = document.getElementById('country-rule-badge');
+    const countryCompoundingNote = document.getElementById('country-compounding-note');
+
+    // Primary Result elements in MortgageResultsPanel
+    const monthlyPaymentValEl = document.querySelector('.main-payment-card .result-value');
+    const monthlyPaymentCurrEl = document.querySelector('.main-payment-card .result-currency');
+    const principalValEl = document.querySelector('.principal-card .result-value');
+    const principalCurrEl = document.querySelector('.principal-card .result-currency');
+    const interestValEl = document.querySelector('.interest-card .result-value');
+    const interestCurrEl = document.querySelector('.interest-card .result-currency');
+    const totalCostValEl = document.querySelector('.total-cost-card .result-value');
+    const totalCostCurrEl = document.querySelector('.total-cost-card .result-currency');
+    const payoffValEl = document.querySelector('.payoff-card .result-value');
+
+    // Monthly Payment Breakdown elements
+    const valMonthlyPIEl = document.getElementById('val-monthly-pi');
+    const valMonthlyTaxEl = document.getElementById('val-monthly-tax');
+    const valMonthlyInsuranceEl = document.getElementById('val-monthly-insurance');
+    const valMonthlyHoaEl = document.getElementById('val-monthly-hoa');
+    const valMonthlyTotalEl = document.getElementById('val-monthly-total');
+    const rowMonthlyHoa = document.getElementById('row-monthly-hoa');
+
+    // One-Time Costs elements
+    const rowOnetimeCmhc = document.getElementById('row-onetime-cmhc');
+    const valOnetimeCmhc = document.getElementById('val-onetime-cmhc');
+    const rowOnetimeStampduty = document.getElementById('row-onetime-stampduty');
+    const valOnetimeStampduty = document.getElementById('val-onetime-stampduty');
+    const rowOnetimeNone = document.getElementById('row-onetime-none');
+
+    // Extra Payment Savings Summary elements in Results Panel
+    const extraSavingsCard = document.getElementById('extra-savings-card');
+    const valInterestSavedEl = document.getElementById('val-interest-saved');
+    const valTimeSavedEl = document.getElementById('val-time-saved');
+    const valNewPayoffEl = document.getElementById('val-new-payoff');
+
+    // Export & Share buttons
+    const btnExportCSV = document.getElementById('btn-export-csv');
+    const btnShareURL = document.getElementById('btn-share-url');
+    const btnPrintPDF = document.getElementById('btn-print-pdf');
+    const btnCopyResult = document.getElementById('btn-copy-result');
+    const btnViewAnnual = document.getElementById('btn-view-annual');
+    const btnViewAll = document.getElementById('btn-view-all');
+    const amortizationTbody = document.getElementById('amortization-tbody');
+
+    // SVG Chart Elements
+    const chartPathBalance = document.getElementById('chart-path-balance');
+    const chartAreaBalance = document.getElementById('chart-area-balance');
+    const chartYMax = document.getElementById('chart-y-max');
+    const chartXMid = document.getElementById('chart-x-mid');
+    const chartXEnd = document.getElementById('chart-x-end');
+
+    if (!countrySelect || !homeValueInput || !downPaymentAmountInput || !downPaymentPercentInput || !interestRateInput || !loanTermSelect) {
+      return;
+    }
+
+    let isUpdatingSync = false;
+    let currentSchedule: AmortizationScheduleItem[] = [];
+    let isAnnualView = true;
+
+    // Restore state from URL query parameters if present
+    const urlInputs = decodeInputsFromURL();
+    if (urlInputs) {
+      if (urlInputs.country) countrySelect.value = urlInputs.country;
+      if (urlInputs.homeValue) homeValueInput.value = String(urlInputs.homeValue);
+      if (urlInputs.downPaymentAmount) downPaymentAmountInput.value = String(urlInputs.downPaymentAmount);
+      if (urlInputs.downPaymentPercent) downPaymentPercentInput.value = String(urlInputs.downPaymentPercent);
+      if (urlInputs.interestRate) interestRateInput.value = String(urlInputs.interestRate);
+      if (urlInputs.loanTermYears) loanTermSelect.value = String(urlInputs.loanTermYears);
+      if (urlInputs.paymentFrequency && paymentFreqSelect) paymentFreqSelect.value = urlInputs.paymentFrequency;
+      if (urlInputs.propertyTaxRate !== undefined && propertyTaxRateInput) propertyTaxRateInput.value = String(urlInputs.propertyTaxRate);
+      if (urlInputs.homeInsuranceAnnual !== undefined && homeInsuranceAnnualInput) homeInsuranceAnnualInput.value = String(urlInputs.homeInsuranceAnnual);
+      if (urlInputs.hoaFeeMonthly !== undefined && hoaFeeMonthlyInput) hoaFeeMonthlyInput.value = String(urlInputs.hoaFeeMonthly);
+      if (urlInputs.stateAU && auStateSelect) auStateSelect.value = urlInputs.stateAU;
+
+      if (urlInputs.extraMonthly !== undefined && extraMonthlyInput) extraMonthlyInput.value = String(urlInputs.extraMonthly);
+      if (urlInputs.extraOneTime !== undefined && extraOneTimeInput) extraOneTimeInput.value = String(urlInputs.extraOneTime);
+      if (urlInputs.extraYearly !== undefined && extraYearlyInput) extraYearlyInput.value = String(urlInputs.extraYearly);
+    }
+
+    const formatNum = (val: number) => new Intl.NumberFormat('en-US').format(Math.round(val));
+    const getCurrencySymbol = (_countryCode: CountryCode) => '$';
+
+    const updateCountryUI = (countryCode: CountryCode) => {
+      if (usCostsGroup) usCostsGroup.style.display = countryCode === 'US' ? 'block' : 'none';
+      if (auCostsGroup) auCostsGroup.style.display = countryCode === 'AU' ? 'block' : 'none';
+      if (caCostsGroup) caCostsGroup.style.display = countryCode === 'CA' ? 'block' : 'none';
+      if (rowMonthlyHoa) rowMonthlyHoa.style.display = countryCode === 'US' ? 'flex' : 'none';
+    };
+
+    // Main live calculation and UI update function
+    const updateCalculator = (source: 'homeValue' | 'downAmount' | 'downPercent' | 'general' = 'general') => {
+      const countryCode = (countrySelect.value as CountryCode) || 'US';
+      updateCountryUI(countryCode);
+
+      let homeValue = parseFloat(homeValueInput.value) || 0;
+      let downAmount = parseFloat(downPaymentAmountInput.value) || 0;
+      let downPercent = parseFloat(downPaymentPercentInput.value) || 0;
+      const interestRate = parseFloat(interestRateInput.value) || 0;
+      const loanTermYears = parseInt(loanTermSelect.value, 10) || 30;
+      const frequency = (paymentFreqSelect?.value || 'monthly') as any;
+      const startDateStr = startDateInput?.value || 'Sep 2026';
+
+      const propertyTaxRate = propertyTaxRateInput ? parseFloat(propertyTaxRateInput.value) || 0 : 0;
+      const homeInsuranceAnnual = homeInsuranceAnnualInput ? parseFloat(homeInsuranceAnnualInput.value) || 0 : 0;
+      const hoaFeeMonthly = hoaFeeMonthlyInput ? parseFloat(hoaFeeMonthlyInput.value) || 0 : 0;
+      const stateAU = auStateSelect?.value || 'NSW';
+
+      const extraMonthly = extraMonthlyInput ? parseFloat(extraMonthlyInput.value) || 0 : 0;
+      const extraOneTime = extraOneTimeInput ? parseFloat(extraOneTimeInput.value) || 0 : 0;
+      const extraYearly = extraYearlyInput ? parseFloat(extraYearlyInput.value) || 0 : 0;
+
+      // Dynamic sync between Down Payment Amount & Percentage
+      if (!isUpdatingSync) {
+        isUpdatingSync = true;
+        if (source === 'homeValue' || source === 'downPercent') {
+          downAmount = Math.round((homeValue * downPercent) / 100);
+          downPaymentAmountInput.value = String(downAmount);
+        } else if (source === 'downAmount') {
+          downPercent = homeValue > 0 ? parseFloat(((downAmount / homeValue) * 100).toFixed(2)) : 0;
+          downPaymentPercentInput.value = String(downPercent);
+        }
+        isUpdatingSync = false;
+      }
+
+      // Calculate Loan Principal
+      const principal = Math.max(0, homeValue - downAmount);
+      if (calculatedLoanAmountEl) {
+        calculatedLoanAmountEl.textContent = `${getCurrencySymbol(countryCode)}${formatNum(principal)}`;
+      }
+
+      const inputPayload = {
+        country: countryCode,
+        homeValue,
+        downPaymentAmount: downAmount,
+        downPaymentPercent: downPercent,
+        interestRate,
+        loanTermYears,
+        paymentFrequency: frequency,
+        startDate: startDateStr,
+        propertyTaxRate,
+        homeInsuranceAnnual,
+        hoaFeeMonthly,
+        stateAU,
+        extraMonthly,
+        extraOneTime,
+        extraYearly,
+      };
+
+      // Encode URL parameters live
+      encodeInputsToURL(inputPayload);
+
+      // Invoke Mortgage Service
+      const results = mortgageService.calculate(inputPayload);
+      currentSchedule = results.amortizationSchedule || [];
+
+      // Compounding rule notes
+      const countryObj = COUNTRIES.find((c) => c.code === countryCode);
+      if (countryRuleBadge && countryObj) {
+        countryRuleBadge.textContent = `${countryObj.flag} ${countryObj.code} Rules`;
+      }
+      if (countryCompoundingNote && countryObj) {
+        countryCompoundingNote.textContent = countryObj.compoundingNote;
+      }
+
+      // Update Currency Symbols across Result Cards
+      const symbol = getCurrencySymbol(countryCode);
+      if (monthlyPaymentCurrEl) monthlyPaymentCurrEl.textContent = symbol;
+      if (principalCurrEl) principalCurrEl.textContent = symbol;
+      if (interestCurrEl) interestCurrEl.textContent = symbol;
+      if (totalCostCurrEl) totalCostCurrEl.textContent = symbol;
+
+      // Update Primary Highlighted Card (Total Monthly Payment)
+      if (monthlyPaymentValEl) monthlyPaymentValEl.textContent = formatNum(results.monthlyPayment);
+      if (principalValEl) principalValEl.textContent = formatNum(results.principalAmount);
+      if (interestValEl) interestValEl.textContent = formatNum(results.totalInterestPaid);
+      if (totalCostValEl) totalCostValEl.textContent = formatNum(results.totalPaymentAmount);
+      if (payoffValEl) payoffValEl.textContent = results.payoffDate;
+
+      // Update Monthly Payment Breakdown Card
+      const b = results.monthlyBreakdown;
+      if (valMonthlyPIEl) valMonthlyPIEl.textContent = `${symbol}${formatNum(b.principalAndInterest)}`;
+      if (valMonthlyTaxEl) valMonthlyTaxEl.textContent = `${symbol}${formatNum(b.propertyTax)}`;
+      if (valMonthlyInsuranceEl) valMonthlyInsuranceEl.textContent = `${symbol}${formatNum(b.homeInsurance)}`;
+      if (valMonthlyHoaEl) valMonthlyHoaEl.textContent = `${symbol}${formatNum(b.hoaFee)}`;
+      if (valMonthlyTotalEl) valMonthlyTotalEl.textContent = `${symbol}${formatNum(b.totalMonthlyPayment)}`;
+
+      // Update One-Time Upfront Costs Card (Displayed separately, NOT in monthly payment)
+      const ot = results.oneTimeCosts;
+      if (countryCode === 'CA' && ot.cmhcInsurance && ot.cmhcInsurance > 0) {
+        if (rowOnetimeCmhc) rowOnetimeCmhc.style.display = 'flex';
+        if (valOnetimeCmhc) valOnetimeCmhc.textContent = `${symbol}${formatNum(ot.cmhcInsurance)}`;
+        if (rowOnetimeStampduty) rowOnetimeStampduty.style.display = 'none';
+        if (rowOnetimeNone) rowOnetimeNone.style.display = 'none';
+      } else if (countryCode === 'AU' && ot.stampDuty && ot.stampDuty > 0) {
+        if (rowOnetimeStampduty) rowOnetimeStampduty.style.display = 'flex';
+        if (valOnetimeStampduty) valOnetimeStampduty.textContent = `${symbol}${formatNum(ot.stampDuty)}`;
+        if (rowOnetimeCmhc) rowOnetimeCmhc.style.display = 'none';
+        if (rowOnetimeNone) rowOnetimeNone.style.display = 'none';
+      } else {
+        if (rowOnetimeCmhc) rowOnetimeCmhc.style.display = 'none';
+        if (rowOnetimeStampduty) rowOnetimeStampduty.style.display = 'none';
+        if (rowOnetimeNone) rowOnetimeNone.style.display = 'flex';
+      }
+
+      // Update Extra Payment Savings Summary Card
+      const ex = results.extraPaymentResults;
+      if (extraSavingsCard) {
+        if (ex && ex.hasExtraPayments) {
+          extraSavingsCard.style.display = 'flex';
+          if (valInterestSavedEl) valInterestSavedEl.textContent = `${symbol}${formatNum(ex.interestSaved)}`;
+          if (valTimeSavedEl) valTimeSavedEl.textContent = ex.yearsSaved > 0 ? `${ex.yearsSaved} Yrs (${ex.monthsSaved} Mo)` : `${ex.monthsSaved} Mo`;
+          if (valNewPayoffEl) valNewPayoffEl.textContent = ex.newPayoffDate;
+        } else {
+          extraSavingsCard.style.display = 'none';
+        }
+      }
+
+      // Update SVG Chart Curves
+      updateSVGChart(results.principalAmount, currentSchedule, loanTermYears);
+
+      // Render Amortization Schedule Table
+      renderAmortizationTable();
+
+      // Inline validation errors handling
+      renderValidationErrors(countryCode, homeValue, downAmount, downPercent, interestRate, propertyTaxRate, homeInsuranceAnnual, hoaFeeMonthly);
+    };
+
+    // Render SVG Loan Balance Decline Curve
+    const updateSVGChart = (principal: number, schedule: AmortizationScheduleItem[], termYears: number) => {
+      if (!chartPathBalance || !chartAreaBalance || schedule.length === 0) return;
+
+      if (chartYMax) chartYMax.textContent = `$${Math.round(principal / 1000)}k`;
+      if (chartXMid) chartXMid.textContent = `Yr ${Math.round(termYears / 2)}`;
+      if (chartXEnd) chartXEnd.textContent = `Yr ${termYears}`;
+
+      const totalItems = schedule.length;
+      const points: { x: number; y: number }[] = [];
+
+      for (let i = 0; i < totalItems; i += Math.max(1, Math.floor(totalItems / 30))) {
+        const item = schedule[i];
+        const xPct = i / (totalItems - 1);
+        const yPct = item.remainingBalance / principal;
+        const svgX = 40 + xPct * (480 - 40);
+        const svgY = 170 - yPct * (170 - 20);
+        points.push({ x: Math.round(svgX), y: Math.round(svgY) });
+      }
+
+      // Add final point
+      points.push({ x: 480, y: 170 });
+
+      const dPath = points.map((pt, idx) => `${idx === 0 ? 'M' : 'L'} ${pt.x} ${pt.y}`).join(' ');
+      const dArea = `${dPath} L 480 170 L 40 170 Z`;
+
+      chartPathBalance.setAttribute('d', dPath);
+      chartAreaBalance.setAttribute('d', dArea);
+    };
+
+    // Render Amortization Table
+    const renderAmortizationTable = () => {
+      if (!amortizationTbody || currentSchedule.length === 0) {
+        if (amortizationTbody) amortizationTbody.innerHTML = '<tr><td colspan="7" class="loading-cell text-caption">No schedule data available.</td></tr>';
+        return;
+      }
+
+      let rowsHTML = '';
+      const periodsPerYear = paymentFreqSelect?.value === 'weekly' ? 52 : paymentFreqSelect?.value === 'bi-weekly' ? 26 : 12;
+
+      if (isAnnualView) {
+        // Group by Year
+        const annualData: Record<number, { year: number; paymentCount: number; principal: number; interest: number; extra: number; lastBalance: number; lastDate: string }> = {};
+
+        currentSchedule.forEach((item) => {
+          const year = parseInt(item.paymentDate.split(' ')[1] || '2026', 10);
+          if (!annualData[year]) {
+            annualData[year] = { year, paymentCount: 0, principal: 0, interest: 0, extra: 0, lastBalance: item.remainingBalance, lastDate: item.paymentDate };
+          }
+          annualData[year].paymentCount++;
+          annualData[year].principal += item.principalPaid;
+          annualData[year].interest += item.interestPaid;
+          annualData[year].extra += item.extraPaid;
+          annualData[year].lastBalance = item.remainingBalance;
+          annualData[year].lastDate = item.paymentDate;
+        });
+
+        Object.values(annualData).forEach((yrData, idx) => {
+          rowsHTML += `
+            <tr class="annual-row">
+              <td>Year ${idx + 1}</td>
+              <td>${yrData.year}</td>
+              <td>$${formatNum(yrData.principal + yrData.interest + yrData.extra)}</td>
+              <td>$${formatNum(yrData.principal)}</td>
+              <td>$${formatNum(yrData.interest)}</td>
+              <td>$${formatNum(yrData.extra)}</td>
+              <td>$${formatNum(yrData.lastBalance)}</td>
+            </tr>
+          `;
+        });
+      } else {
+        // Detailed All Payments View
+        currentSchedule.forEach((item) => {
+          rowsHTML += `
+            <tr>
+              <td>${item.paymentNumber}</td>
+              <td>${item.paymentDate}</td>
+              <td>$${formatNum(item.paymentAmount)}</td>
+              <td>$${formatNum(item.principalPaid)}</td>
+              <td>$${formatNum(item.interestPaid)}</td>
+              <td>$${formatNum(item.extraPaid)}</td>
+              <td>$${formatNum(item.remainingBalance)}</td>
+            </tr>
+          `;
+        });
+      }
+
+      amortizationTbody.innerHTML = rowsHTML;
+    };
+
+    const renderValidationErrors = (
+      countryCode: CountryCode,
+      homeValue: number,
+      downAmount: number,
+      downPercent: number,
+      interestRate: number,
+      taxRate: number,
+      insurance: number,
+      hoa: number
+    ) => {
+      toggleFieldError(homeValueInput, homeValue <= 0 ? 'Home value must be greater than $0.' : undefined);
+      
+      let downError: string | undefined;
+      if (downAmount < 0) downError = 'Down payment cannot be negative.';
+      else if (downAmount > homeValue && homeValue > 0) downError = 'Down payment cannot exceed home value.';
+      else if (countryCode === 'CA' && downPercent < 5 && homeValue > 0) downError = 'Minimum down payment in Canada is 5%.';
+      toggleFieldError(downPaymentAmountInput, downError);
+
+      toggleFieldError(interestRateInput, interestRate < 0 ? 'Interest rate cannot be negative.' : interestRate > 30 ? 'Interest rate cannot exceed 30%.' : undefined);
+      toggleFieldError(propertyTaxRateInput, taxRate < 0 ? 'Property tax cannot be negative.' : taxRate > 15 ? 'Property tax rate cannot exceed 15%.' : undefined);
+      toggleFieldError(homeInsuranceAnnualInput, insurance < 0 ? 'Insurance cannot be negative.' : undefined);
+      toggleFieldError(hoaFeeMonthlyInput, hoa < 0 ? 'HOA fee cannot be negative.' : undefined);
+    };
+
+    const toggleFieldError = (inputEl: HTMLInputElement | null, errorMsg?: string) => {
+      if (!inputEl) return;
+      const wrapper = inputEl.closest('.input-wrapper');
+      if (!wrapper) return;
+
+      let errorTextEl = wrapper.querySelector('.input-error-text');
+      if (errorMsg) {
+        wrapper.classList.add('has-error');
+        if (!errorTextEl) {
+          errorTextEl = document.createElement('p');
+          errorTextEl.className = 'input-error-text';
+          wrapper.appendChild(errorTextEl);
+        }
+        errorTextEl.textContent = errorMsg;
+      } else {
+        wrapper.classList.remove('has-error');
+        if (errorTextEl) {
+          errorTextEl.remove();
+        }
+      }
+    };
+
+    // Attach Event Listeners for Live Interactivity
+    homeValueInput.addEventListener('input', () => updateCalculator('homeValue'));
+    downPaymentAmountInput.addEventListener('input', () => updateCalculator('downAmount'));
+    downPaymentPercentInput.addEventListener('input', () => updateCalculator('downPercent'));
+    interestRateInput.addEventListener('input', () => updateCalculator('general'));
+    loanTermSelect.addEventListener('change', () => updateCalculator('general'));
+    if (paymentFreqSelect) paymentFreqSelect.addEventListener('change', () => updateCalculator('general'));
+    if (startDateInput) startDateInput.addEventListener('input', () => updateCalculator('general'));
+
+    if (propertyTaxRateInput) propertyTaxRateInput.addEventListener('input', () => updateCalculator('general'));
+    if (homeInsuranceAnnualInput) homeInsuranceAnnualInput.addEventListener('input', () => updateCalculator('general'));
+    if (hoaFeeMonthlyInput) hoaFeeMonthlyInput.addEventListener('input', () => updateCalculator('general'));
+    if (auStateSelect) auStateSelect.addEventListener('change', () => updateCalculator('general'));
+
+    if (extraMonthlyInput) extraMonthlyInput.addEventListener('input', () => updateCalculator('general'));
+    if (extraOneTimeInput) extraOneTimeInput.addEventListener('input', () => updateCalculator('general'));
+    if (extraYearlyInput) extraYearlyInput.addEventListener('input', () => updateCalculator('general'));
+
+    // Export & Share Handlers
+    if (btnExportCSV) {
+      btnExportCSV.addEventListener('click', () => {
+        exportAmortizationToCSV(currentSchedule);
+      });
+    }
+
+    if (btnShareURL) {
+      btnShareURL.addEventListener('click', () => {
+        const shareUrl = window.location.href;
+        navigator.clipboard.writeText(shareUrl).then(() => {
+          const originalText = btnShareURL.textContent;
+          btnShareURL.textContent = '✓ Link Copied!';
+          setTimeout(() => {
+            btnShareURL.textContent = originalText;
+          }, 2500);
+        });
+      });
+    }
+
+    if (btnPrintPDF) {
+      btnPrintPDF.addEventListener('click', () => {
+        window.print();
+      });
+    }
+
+    if (btnCopyResult) {
+      btnCopyResult.addEventListener('click', () => {
+        const totalMonthly = valMonthlyTotalEl ? valMonthlyTotalEl.textContent : '';
+        const homeVal = homeValueInput.value;
+        const summaryText = `CalcVantage Mortgage Calculation:\nHome Price: $${homeVal}\nTotal Monthly Payment: ${totalMonthly}\nPayoff Date: ${payoffValEl ? payoffValEl.textContent : ''}\nURL: ${window.location.href}`;
+        navigator.clipboard.writeText(summaryText).then(() => {
+          const originalText = btnCopyResult.textContent;
+          btnCopyResult.textContent = '✓ Copied Summary!';
+          setTimeout(() => {
+            btnCopyResult.textContent = originalText;
+          }, 2500);
+        });
+      });
+    }
+
+    if (btnViewAnnual && btnViewAll) {
+      btnViewAnnual.addEventListener('click', () => {
+        isAnnualView = true;
+        btnViewAnnual.classList.add('active');
+        btnViewAll.classList.remove('active');
+        renderAmortizationTable();
+      });
+      btnViewAll.addEventListener('click', () => {
+        isAnnualView = false;
+        btnViewAll.classList.add('active');
+        btnViewAnnual.classList.remove('active');
+        renderAmortizationTable();
+      });
+    }
+
+    countrySelect.addEventListener('change', () => {
+      const newCountry = countrySelect.value as CountryCode;
+      const defaults = MORTGAGE_DEFAULTS[newCountry] || MORTGAGE_DEFAULTS['US'];
+      
+      homeValueInput.value = String(defaults.homeValue);
+      downPaymentAmountInput.value = String(defaults.downPaymentAmount);
+      downPaymentPercentInput.value = String(defaults.downPaymentPercent);
+      interestRateInput.value = String(defaults.interestRate);
+      loanTermSelect.value = String(defaults.loanTermYears);
+      if (paymentFreqSelect) paymentFreqSelect.value = defaults.paymentFrequency;
+
+      if (propertyTaxRateInput) propertyTaxRateInput.value = String(defaults.propertyTaxRate || 0);
+      if (homeInsuranceAnnualInput) homeInsuranceAnnualInput.value = String(defaults.homeInsuranceAnnual || 0);
+      if (hoaFeeMonthlyInput) hoaFeeMonthlyInput.value = String(defaults.hoaFeeMonthly || 150);
+      if (auStateSelect) auStateSelect.value = defaults.stateAU || 'NSW';
+
+      if (extraMonthlyInput) extraMonthlyInput.value = '0';
+      if (extraOneTimeInput) extraOneTimeInput.value = '0';
+      if (extraYearlyInput) extraYearlyInput.value = '0';
+
+      updateCalculator('general');
+    });
+
+    if (resetBtn) {
+      resetBtn.addEventListener('click', () => {
+        const countryCode = (countrySelect.value as CountryCode) || 'US';
+        const defaults = MORTGAGE_DEFAULTS[countryCode] || MORTGAGE_DEFAULTS['US'];
+
+        homeValueInput.value = String(defaults.homeValue);
+        downPaymentAmountInput.value = String(defaults.downPaymentAmount);
+        downPaymentPercentInput.value = String(defaults.downPaymentPercent);
+        interestRateInput.value = String(defaults.interestRate);
+        loanTermSelect.value = String(defaults.loanTermYears);
+        if (paymentFreqSelect) paymentFreqSelect.value = defaults.paymentFrequency;
+
+        if (propertyTaxRateInput) propertyTaxRateInput.value = String(defaults.propertyTaxRate || 0);
+        if (homeInsuranceAnnualInput) homeInsuranceAnnualInput.value = String(defaults.homeInsuranceAnnual || 0);
+        if (hoaFeeMonthlyInput) hoaFeeMonthlyInput.value = String(defaults.hoaFeeMonthly || 150);
+        if (auStateSelect) auStateSelect.value = defaults.stateAU || 'NSW';
+
+        if (extraMonthlyInput) extraMonthlyInput.value = '0';
+        if (extraOneTimeInput) extraOneTimeInput.value = '0';
+        if (extraYearlyInput) extraYearlyInput.value = '0';
+
+        updateCalculator('general');
+      });
+    }
+
+    // Initial calculation on page load
+    updateCalculator('general');
+  });
+</script>
+
+

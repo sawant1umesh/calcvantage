@@ -1,0 +1,56 @@
+---
+import PageContainer from '../components/layout/PageContainer.astro';
+import Section from '../components/base/Section.astro';
+import MortgageCalculatorPanel from '../components/mortgage/MortgageCalculatorPanel.astro';
+import MortgageResultsPanel from '../components/mortgage/MortgageResultsPanel.astro';
+import MortgageChart from '../components/charts/MortgageChart.astro';
+import AmortizationTable from '../components/mortgage/AmortizationTable.astro';
+
+interface Props {
+  title?: string;
+  subtitle?: string;
+}
+
+const {
+  title = 'Mortgage Calculator',
+  subtitle = 'Calculate your estimated monthly mortgage payments, loan breakdown, and payoff timelines for properties in the US, Canada, and Australia.',
+} = Astro.props;
+---
+
+<PageContainer maxWidth="xl">
+  <Section title={title} subtitle={subtitle} badge="CalcVantage Financial Tools">
+    <div class="grid-mortgage-layout">
+      <!-- Left Panel: Calculator Controls -->
+      <div class="panel-left">
+        <slot name="calculator-panel">
+          <MortgageCalculatorPanel />
+        </slot>
+      </div>
+
+      <!-- Right Panel: Results & Summary -->
+      <div class="panel-right">
+        <slot name="results-panel">
+          <MortgageResultsPanel />
+        </slot>
+      </div>
+    </div>
+
+    <!-- Chart & Amortization Schedule Section -->
+    <div class="analysis-section">
+      <MortgageChart />
+      <AmortizationTable />
+    </div>
+  </Section>
+</PageContainer>
+
+<style>
+  .panel-left,
+  .panel-right {
+    width: 100%;
+  }
+
+  .analysis-section {
+    width: 100%;
+    margin-top: 2rem;
+  }
+</style>

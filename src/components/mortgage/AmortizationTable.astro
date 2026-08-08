@@ -1,0 +1,169 @@
+---
+import Card from '../base/Card.astro';
+import Button from '../base/Button.astro';
+---
+
+<Card variant="default" padding="xl" rounded="xl" class="amortization-table-card" id="amortization-card-section">
+  <div class="table-card-header">
+    <div class="header-titles">
+      <h3 class="text-display-sm">Amortization Schedule</h3>
+      <p class="text-caption" id="amortization-subtitle">Payment-by-payment breakdown over loan term</p>
+    </div>
+    <div class="table-actions">
+      <div class="view-toggle-buttons">
+        <button class="toggle-btn active" id="btn-view-annual">Annual Summary</button>
+        <button class="toggle-btn" id="btn-view-all">All Payments</button>
+      </div>
+      <Button variant="outline" size="sm" id="btn-export-csv">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" slot="icon-left">
+          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+          <polyline points="7 10 12 15 17 10"></polyline>
+          <line x1="12" y1="15" x2="12" y2="3"></line>
+        </svg>
+        Export CSV
+      </Button>
+    </div>
+  </div>
+
+  <div class="table-scroll-container">
+    <table class="amortization-table" id="amortization-table">
+      <thead>
+        <tr>
+          <th>Payment #</th>
+          <th>Date</th>
+          <th>Payment ($)</th>
+          <th>Principal ($)</th>
+          <th>Interest ($)</th>
+          <th>Extra ($)</th>
+          <th>Remaining Balance ($)</th>
+        </tr>
+      </thead>
+      <tbody id="amortization-tbody">
+        <tr>
+          <td colspan="7" class="loading-cell text-caption">Generating schedule...</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</Card>
+
+<style>
+  .amortization-table-card {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    width: 100%;
+    margin-top: 1.5rem;
+  }
+
+  .table-card-header {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--color-hairline);
+  }
+
+  @media (min-width: 640px) {
+    .table-card-header {
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+    }
+  }
+
+  .header-titles {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .table-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .view-toggle-buttons {
+    display: flex;
+    background-color: var(--color-canvas-soft-2);
+    padding: 0.2rem;
+    border-radius: var(--radius-pill);
+    border: 1px solid var(--color-hairline);
+  }
+
+  .toggle-btn {
+    border: none;
+    background: transparent;
+    font-size: 0.75rem;
+    font-weight: 500;
+    padding: 0.3rem 0.75rem;
+    border-radius: var(--radius-pill);
+    cursor: pointer;
+    color: var(--color-body);
+    transition: background-color var(--transition-fast), color var(--transition-fast);
+  }
+
+  .toggle-btn.active {
+    background-color: var(--color-canvas);
+    color: var(--color-ink);
+    box-shadow: var(--shadow-sm);
+    font-weight: 600;
+  }
+
+  .table-scroll-container {
+    width: 100%;
+    max-height: 400px;
+    overflow-y: auto;
+    border: 1px solid var(--color-hairline);
+    border-radius: var(--radius-md);
+  }
+
+  .amortization-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.8125rem;
+    text-align: right;
+  }
+
+  .amortization-table th {
+    background-color: var(--color-canvas-soft);
+    color: var(--color-ink);
+    font-weight: 600;
+    padding: 0.75rem 1rem;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    border-bottom: 1px solid var(--color-hairline-strong);
+    white-space: nowrap;
+  }
+
+  .amortization-table th:first-child,
+  .amortization-table td:first-child,
+  .amortization-table th:nth-child(2),
+  .amortization-table td:nth-child(2) {
+    text-align: left;
+  }
+
+  .amortization-table td {
+    padding: 0.625rem 1rem;
+    border-bottom: 1px solid var(--color-hairline);
+    color: var(--color-body);
+    font-family: var(--font-mono);
+  }
+
+  .amortization-table tr:hover td {
+    background-color: var(--color-canvas-soft-2);
+  }
+
+  .loading-cell {
+    text-align: center !important;
+    padding: 2rem !important;
+  }
+
+  .annual-row td {
+    font-weight: 600;
+    background-color: var(--color-canvas-soft-2);
+    color: var(--color-ink);
+  }
+</style>

@@ -1,0 +1,332 @@
+---
+import Card from '../base/Card.astro';
+import ResultCard from '../base/ResultCard.astro';
+import Button from '../base/Button.astro';
+import { MORTGAGE_DEFAULTS } from '../../config/mortgage/index';
+import { formatCurrency } from '../../utils/formatters';
+
+const defaults = MORTGAGE_DEFAULTS['US'];
+const sampleLoanAmount = defaults.homeValue - defaults.downPaymentAmount;
+---
+
+<div class="results-panel-container sticky-results-panel">
+  <Card variant="default" padding="xl" rounded="xl" class="results-card">
+    <div class="results-header">
+      <div>
+        <h3 class="text-display-sm">Calculation Summary</h3>
+        <p class="text-caption" id="country-compounding-note">Standard monthly compounding (US)</p>
+      </div>
+      <span class="status-indicator" id="calc-status">Live</span>
+    </div>
+
+    <!-- Highlighted Primary Result: Total Monthly Payment -->
+    <div class="primary-result-container">
+      <ResultCard
+        label="Total Monthly Payment"
+        value="2,838"
+        currencySymbol="$"
+        subtext="Principal, Interest, Taxes & Fees"
+        highlight={true}
+        badge="Full PITI"
+        class="main-payment-card"
+      />
+    </div>
+
+    <!-- Monthly Payment Breakdown Card -->
+    <div class="breakdown-card-box" id="monthly-breakdown-card">
+      <div class="card-box-header">
+        <span class="text-body-sm-strong">Monthly Payment Breakdown</span>
+        <span class="text-caption font-mono">Monthly</span>
+      </div>
+      <div class="breakdown-list">
+        <div class="breakdown-row" id="row-monthly-pi">
+          <div class="row-label">
+            <span class="dot-indicator dot-pi"></span>
+            <span class="text-body-sm">Principal & Interest</span>
+          </div>
+          <span class="text-body-sm-strong font-mono" id="val-monthly-pi">$2,178</span>
+        </div>
+        <div class="breakdown-row" id="row-monthly-tax">
+          <div class="row-label">
+            <span class="dot-indicator dot-tax"></span>
+            <span class="text-body-sm">Property Tax</span>
+          </div>
+          <span class="text-body-sm-strong font-mono" id="val-monthly-tax">$385</span>
+        </div>
+        <div class="breakdown-row" id="row-monthly-insurance">
+          <div class="row-label">
+            <span class="dot-indicator dot-insurance"></span>
+            <span class="text-body-sm">Home Insurance</span>
+          </div>
+          <span class="text-body-sm-strong font-mono" id="val-monthly-insurance">$125</span>
+        </div>
+        <div class="breakdown-row" id="row-monthly-hoa">
+          <div class="row-label">
+            <span class="dot-indicator dot-hoa"></span>
+            <span class="text-body-sm">HOA Fees</span>
+          </div>
+          <span class="text-body-sm-strong font-mono" id="val-monthly-hoa">$150</span>
+        </div>
+        <div class="breakdown-divider"></div>
+        <div class="breakdown-row total-row">
+          <span class="text-body-sm-strong">Total Monthly Payment</span>
+          <span class="text-body-sm-strong font-mono total-value" id="val-monthly-total">$2,838</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- One-Time Upfront Costs Card (Displayed Separately - NOT in monthly payment) -->
+    <div class="onetime-card-box" id="onetime-costs-card">
+      <div class="card-box-header">
+        <span class="text-body-sm-strong">One-Time Upfront Costs</span>
+        <span class="one-time-badge">One-Time Fee</span>
+      </div>
+      <p class="text-caption onetime-note">These are paid upfront at closing and NOT added to monthly payments.</p>
+      <div class="breakdown-list" id="onetime-costs-list">
+        <div class="breakdown-row" id="row-onetime-cmhc" style="display: none;">
+          <span class="text-body-sm">CMHC Insurance Premium</span>
+          <span class="text-body-sm-strong font-mono" id="val-onetime-cmhc">$0</span>
+        </div>
+        <div class="breakdown-row" id="row-onetime-stampduty" style="display: none;">
+          <span class="text-body-sm">State Stamp Duty</span>
+          <span class="text-body-sm-strong font-mono" id="val-onetime-stampduty">$0</span>
+        </div>
+        <div class="breakdown-row" id="row-onetime-none">
+          <span class="text-body-sm text-mute">No mandatory one-time fees for US standard down payment.</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Extra Payment Savings Summary Card (Hidden unless extra payments enabled) -->
+    <div class="extra-savings-card-box" id="extra-savings-card" style="display: none;">
+      <div class="card-box-header">
+        <span class="text-body-sm-strong">Extra Payment Savings</span>
+        <span class="savings-badge">Projected</span>
+      </div>
+      <div class="breakdown-list">
+        <div class="breakdown-row">
+          <span class="text-body-sm">Total Interest Saved</span>
+          <span class="text-body-sm-strong font-mono" id="val-interest-saved">$0</span>
+        </div>
+        <div class="breakdown-row">
+          <span class="text-body-sm">Loan Term Shortened</span>
+          <span class="text-body-sm-strong font-mono" id="val-time-saved">0 Mo</span>
+        </div>
+        <div class="breakdown-row">
+          <span class="text-body-sm">New Payoff Date</span>
+          <span class="text-body-sm-strong font-mono" id="val-new-payoff">Aug 2056</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Secondary Summary Metrics -->
+    <div class="secondary-results-grid">
+      <ResultCard
+        label="Total Principal"
+        value={formatCurrency(sampleLoanAmount, 'USD').replace('$', '').trim()}
+        currencySymbol="$"
+        subtext="Original loan amount"
+        class="principal-card"
+      />
+      <ResultCard
+        label="Total Interest Paid"
+        value="444,120"
+        currencySymbol="$"
+        subtext="Over loan term"
+        class="interest-card"
+      />
+      <ResultCard
+        label="Total Loan Cost"
+        value="780,120"
+        currencySymbol="$"
+        subtext="Principal + Interest"
+        class="total-cost-card"
+      />
+      <ResultCard
+        label="Payoff Date"
+        value="Aug 2056"
+        currencySymbol=""
+        subtext="Based on start date"
+        class="payoff-card"
+      />
+    </div>
+
+    <!-- Output Actions -->
+    <div class="panel-actions">
+      <Button variant="secondary" fullWidth size="md" id="btn-print-pdf" type="button">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" slot="icon-left">
+          <polyline points="6 9 6 2 18 2 18 9"></polyline>
+          <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path>
+          <rect x="6" y="14" width="12" height="8"></rect>
+        </svg>
+        Download PDF Summary
+      </Button>
+      <Button variant="ghost" fullWidth size="md" id="btn-share-url" type="button">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" slot="icon-left">
+          <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"></path>
+          <polyline points="16 6 12 2 8 6"></polyline>
+          <line x1="12" y1="2" x2="12" y2="15"></line>
+        </svg>
+        Share Calculation
+      </Button>
+      <Button variant="ghost" fullWidth size="md" id="btn-copy-result" type="button">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" slot="icon-left">
+          <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+          <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+        </svg>
+        Copy Results
+      </Button>
+    </div>
+  </Card>
+</div>
+
+<style>
+  .results-panel-container {
+    width: 100%;
+  }
+
+  .results-card {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+
+  .results-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-bottom: 0.875rem;
+    border-bottom: 1px solid var(--color-hairline);
+  }
+
+  .status-indicator {
+    font-size: 0.75rem;
+    font-weight: 500;
+    padding: 0.25rem 0.625rem;
+    background-color: var(--color-accent-soft);
+    color: var(--color-accent-deep);
+    border-radius: var(--radius-full);
+  }
+
+  .primary-result-container {
+    width: 100%;
+  }
+
+  /* Breakdown Card Box */
+  .breakdown-card-box,
+  .onetime-card-box {
+    padding: 1.125rem;
+    background-color: var(--color-canvas-soft);
+    border: 1px solid var(--color-hairline);
+    border-radius: var(--radius-lg);
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .onetime-card-box {
+    background-color: #fafafa;
+    border-color: var(--color-hairline-strong);
+  }
+
+  .extra-savings-card-box {
+    padding: 1.125rem;
+    background: linear-gradient(135deg, var(--color-accent-soft), var(--color-canvas-soft));
+    border: 1px solid var(--color-accent);
+    border-radius: var(--radius-lg);
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .savings-badge {
+    font-size: 0.7rem;
+    font-weight: 600;
+    padding: 0.15rem 0.5rem;
+    border-radius: var(--radius-full);
+    background-color: var(--color-accent);
+    color: var(--color-on-primary);
+  }
+
+  .card-box-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .one-time-badge {
+    font-size: 0.7rem;
+    font-weight: 600;
+    padding: 0.15rem 0.5rem;
+    border-radius: var(--radius-full);
+    background-color: var(--color-canvas-soft-2);
+    color: var(--color-body);
+    border: 1px solid var(--color-hairline);
+  }
+
+  .onetime-note {
+    margin-top: -0.25rem;
+  }
+
+  .breakdown-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .breakdown-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .row-label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .dot-indicator {
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: var(--radius-full);
+  }
+
+  .dot-pi { background-color: var(--color-primary); }
+  .dot-tax { background-color: var(--color-accent); }
+  .dot-insurance { background-color: #10b981; }
+  .dot-hoa { background-color: #f5a623; }
+
+  .breakdown-divider {
+    height: 1px;
+    background-color: var(--color-hairline);
+    margin: 0.25rem 0;
+  }
+
+  .total-row {
+    padding-top: 0.25rem;
+  }
+
+  .total-value {
+    font-size: 1.0625rem;
+    color: var(--color-ink);
+  }
+
+  .secondary-results-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.875rem;
+  }
+
+  .text-mute {
+    color: var(--color-mute);
+  }
+
+  .panel-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    padding-top: 0.5rem;
+  }
+</style>
+

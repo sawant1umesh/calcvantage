@@ -1,0 +1,112 @@
+---
+import type { ToggleProps } from '../../types/components';
+
+interface Props extends ToggleProps {}
+
+const {
+  id,
+  name = id,
+  label,
+  checked = false,
+  helperText,
+  disabled = false,
+  class: className = '',
+} = Astro.props;
+---
+
+<div class={`toggle-wrapper ${className} ${disabled ? 'is-disabled' : ''}`}>
+  <label for={id} class="toggle-container">
+    <input
+      id={id}
+      name={name}
+      type="checkbox"
+      checked={checked}
+      disabled={disabled}
+      class="toggle-input"
+    />
+    <span class="toggle-switch">
+      <span class="toggle-thumb"></span>
+    </span>
+    {label && <span class="toggle-label">{label}</span>}
+  </label>
+  {helperText && <p class="toggle-helper-text">{helperText}</p>}
+</div>
+
+<style>
+  .toggle-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .toggle-container {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    cursor: pointer;
+    user-select: none;
+  }
+
+  .toggle-input {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  .toggle-switch {
+    position: relative;
+    width: 2.75rem;
+    height: 1.5rem;
+    background-color: var(--color-hairline-strong);
+    border-radius: var(--radius-full);
+    transition: background-color var(--transition-fast);
+  }
+
+  .toggle-thumb {
+    position: absolute;
+    top: 0.125rem;
+    left: 0.125rem;
+    width: 1.25rem;
+    height: 1.25rem;
+    background-color: var(--color-canvas);
+    border-radius: var(--radius-full);
+    box-shadow: var(--shadow-sm);
+    transition: transform var(--transition-fast);
+  }
+
+  .toggle-input:checked + .toggle-switch {
+    background-color: var(--color-primary);
+  }
+
+  .toggle-input:checked + .toggle-switch .toggle-thumb {
+    transform: translateX(1.25rem);
+  }
+
+  .toggle-input:focus-visible + .toggle-switch {
+    box-shadow: var(--shadow-focus);
+  }
+
+  .toggle-label {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--color-ink);
+  }
+
+  .toggle-wrapper.is-disabled .toggle-container {
+    cursor: not-allowed;
+    opacity: 0.6;
+  }
+
+  .toggle-helper-text {
+    font-size: 0.75rem;
+    color: var(--color-mute);
+    margin: 0;
+    padding-left: 3.5rem;
+  }
+</style>

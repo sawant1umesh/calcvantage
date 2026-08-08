@@ -1,0 +1,26 @@
+[
+  {
+    "code": "USD",
+    "symbol": "$",
+    "name": "US Dollar",
+    "symbolPosition": "prefix",
+    "decimalSeparator": ".",
+    "thousandSeparator": ","
+  },
+  {
+    "code": "CAD",
+    "symbol": "$",
+    "name": "Canadian Dollar",
+    "symbolPosition": "prefix",
+    "decimalSeparator": ".",
+    "thousandSeparator": ","
+  },
+  {
+    "code": "AUD",
+    "symbol": "$",
+    "name": "Australian Dollar",
+    "symbolPosition": "prefix",
+    "decimalSeparator": ".",
+    "thousandSeparator": ","
+  }
+]

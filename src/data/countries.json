@@ -1,0 +1,29 @@
+[
+  {
+    "code": "US",
+    "name": "United States",
+    "flag": "🇺🇸",
+    "currencyCode": "USD",
+    "locale": "en-US",
+    "compoundingType": "monthly",
+    "compoundingNote": "Compounded monthly in standard US mortgages"
+  },
+  {
+    "code": "CA",
+    "name": "Canada",
+    "flag": "🇨🇦",
+    "currencyCode": "CAD",
+    "locale": "en-CA",
+    "compoundingType": "semi-annual",
+    "compoundingNote": "Compounded semi-annually by law for fixed-rate Canadian mortgages"
+  },
+  {
+    "code": "AU",
+    "name": "Australia",
+    "flag": "🇦🇺",
+    "currencyCode": "AUD",
+    "locale": "en-AU",
+    "compoundingType": "monthly",
+    "compoundingNote": "Compounded monthly for standard Australian mortgages"
+  }
+]

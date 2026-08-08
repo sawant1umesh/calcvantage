@@ -1,0 +1,65 @@
+---
+import type { CardProps } from '../../types/components';
+
+interface Props extends CardProps {}
+
+const {
+  variant = 'default',
+  padding = 'lg',
+  rounded = 'lg',
+  class: className = '',
+} = Astro.props;
+---
+
+<div class={`card variant-${variant} padding-${padding} rounded-${rounded} ${className}`}>
+  <slot />
+</div>
+
+<style>
+  .card {
+    background-color: var(--color-canvas);
+    transition: box-shadow var(--transition-fast), border-color var(--transition-fast);
+  }
+
+  /* Variants */
+  .variant-default {
+    background-color: var(--color-canvas);
+    border: 1px solid var(--color-hairline);
+    box-shadow: var(--shadow-sm);
+  }
+
+  .variant-soft {
+    background-color: var(--color-canvas-soft);
+    border: 1px solid var(--color-hairline);
+  }
+
+  .variant-outline {
+    background-color: transparent;
+    border: 1px solid var(--color-hairline-strong);
+  }
+
+  .variant-interactive {
+    background-color: var(--color-canvas);
+    border: 1px solid var(--color-hairline);
+    cursor: pointer;
+  }
+
+  .variant-interactive:hover {
+    border-color: var(--color-hairline-strong);
+    box-shadow: var(--shadow-md);
+  }
+
+  /* Padding */
+  .padding-none { padding: 0; }
+  .padding-sm { padding: 0.75rem; }
+  .padding-md { padding: 1.25rem; }
+  .padding-lg { padding: 1.75rem; }
+  .padding-xl { padding: 2.25rem; }
+
+  /* Rounded Radii */
+  .rounded-sm { border-radius: var(--radius-sm); }
+  .rounded-md { border-radius: var(--radius-md); }
+  .rounded-lg { border-radius: var(--radius-lg); }
+  .rounded-xl { border-radius: var(--radius-xl); }
+  .rounded-full { border-radius: var(--radius-full); }
+</style>

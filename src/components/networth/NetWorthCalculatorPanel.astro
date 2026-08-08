@@ -1,0 +1,503 @@
+---
+import Card from '../base/Card.astro';
+import Input from '../base/Input.astro';
+import Select from '../base/Select.astro';
+import Button from '../base/Button.astro';
+import { COUNTRIES } from '../../config/countries/index';
+import { NET_WORTH_DEFAULTS } from '../../config/networth/index';
+
+const defaultCountry = 'US';
+const defaults = NET_WORTH_DEFAULTS[defaultCountry];
+
+const countryOptions = COUNTRIES.map((c) => ({
+  value: c.code,
+  label: `${c.flag} ${c.name}`,
+}));
+---
+
+<Card variant="default" padding="xl" rounded="xl" class="networth-calculator-panel">
+  <div class="panel-header">
+    <div class="header-title-group">
+      <h2 class="text-display-md">Net Worth Inputs</h2>
+      <p class="text-body-sm">Add your assets and liabilities for an instant balance sheet.</p>
+    </div>
+    <span class="arch-badge" id="nw-country-badge">🇺🇸 US</span>
+  </div>
+
+  <form class="networth-form" id="networth-form" onsubmit="return false;">
+    <!-- Country Selector -->
+    <div class="form-section">
+      <Select
+        id="nw-country-select"
+        label="Target Country / Region"
+        value={defaultCountry}
+        options={countryOptions}
+        helperText="Select country for currency display conventions."
+      />
+    </div>
+
+    <!-- Assets Group -->
+    <div class="form-section-title">
+      <h3 class="text-body-sm-strong">Assets</h3>
+    </div>
+
+    <div class="form-row two-col">
+      <Input
+        id="nw-cash"
+        label="Cash & Savings"
+        type="number"
+        prefix="$"
+        value={defaults.cash}
+        min={0}
+        step={1000}
+        helperText="Checking, savings & cash"
+      />
+      <Input
+        id="nw-investments"
+        label="Investments"
+        type="number"
+        prefix="$"
+        value={defaults.investments}
+        min={0}
+        step={1000}
+        helperText="Stocks, bonds, ETFs, crypto"
+      />
+    </div>
+
+    <div class="form-row two-col">
+      <Input
+        id="nw-retirement-accounts"
+        label="Retirement Accounts"
+        type="number"
+        prefix="$"
+        value={defaults.retirementAccounts}
+        min={0}
+        step={5000}
+        helperText="401(k), IRA, RRSP, Super"
+      />
+      <Input
+        id="nw-real-estate"
+        label="Real Estate"
+        type="number"
+        prefix="$"
+        value={defaults.realEstate}
+        min={0}
+        step={10000}
+        helperText="Current market value of homes"
+      />
+    </div>
+
+    <div class="form-row two-col">
+      <Input
+        id="nw-vehicles"
+        label="Vehicles"
+        type="number"
+        prefix="$"
+        value={defaults.vehicles}
+        min={0}
+        step={1000}
+        helperText="Fair market value of cars & boats"
+      />
+      <Input
+        id="nw-business"
+        label="Business Assets"
+        type="number"
+        prefix="$"
+        value={defaults.businessAssets}
+        min={0}
+        step={1000}
+        helperText="Business equity & equipment"
+      />
+    </div>
+
+    <div class="form-row one-col">
+      <Input
+        id="nw-other-assets"
+        label="Other Assets"
+        type="number"
+        prefix="$"
+        value={defaults.otherAssets}
+        min={0}
+        step={1000}
+        helperText="Collectibles, valuables, & anything else"
+      />
+    </div>
+
+    <!-- Liabilities Group -->
+    <div class="form-section-title">
+      <h3 class="text-body-sm-strong">Liabilities</h3>
+    </div>
+
+    <div class="form-row two-col">
+      <Input
+        id="nw-mortgage"
+        label="Mortgage"
+        type="number"
+        prefix="$"
+        value={defaults.mortgageLiabilities}
+        min={0}
+        step={10000}
+        helperText="Outstanding home loan balance"
+      />
+      <Input
+        id="nw-personal-loans"
+        label="Personal Loans"
+        type="number"
+        prefix="$"
+        value={defaults.personalLoans}
+        min={0}
+        step={1000}
+        helperText="Unsecured bank & personal loans"
+      />
+    </div>
+
+    <div class="form-row two-col">
+      <Input
+        id="nw-auto-loans"
+        label="Auto Loans"
+        type="number"
+        prefix="$"
+        value={defaults.autoLoans}
+        min={0}
+        step={1000}
+        helperText="Remaining vehicle loans"
+      />
+      <Input
+        id="nw-credit-cards"
+        label="Credit Card Debt"
+        type="number"
+        prefix="$"
+        value={defaults.creditCards}
+        min={0}
+        step={100}
+        helperText="Revolving credit balances"
+      />
+    </div>
+
+    <div class="form-row two-col">
+      <Input
+        id="nw-student-loans"
+        label="Student Loans"
+        type="number"
+        prefix="$"
+        value={defaults.studentLoans}
+        min={0}
+        step={1000}
+        helperText="Education & tuition debt"
+      />
+      <Input
+        id="nw-other-liabilities"
+        label="Other Liabilities"
+        type="number"
+        prefix="$"
+        value={defaults.otherLiabilities}
+        min={0}
+        step={1000}
+        helperText="Taxes owed, leases, & other debts"
+      />
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="form-actions">
+      <Button variant="outline" size="md" type="reset" id="nw-reset-btn">
+        Reset to Country Defaults
+      </Button>
+    </div>
+  </form>
+</Card>
+
+<style>
+  .networth-calculator-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+
+  .panel-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--color-hairline);
+  }
+
+  .header-title-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .arch-badge {
+    font-size: 0.75rem;
+    font-weight: 500;
+    padding: 0.25rem 0.625rem;
+    background-color: var(--color-canvas-soft-2);
+    border: 1px solid var(--color-hairline);
+    border-radius: var(--radius-full);
+    color: var(--color-body);
+    white-space: nowrap;
+  }
+
+  .networth-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.125rem;
+  }
+
+  .form-section {
+    width: 100%;
+  }
+
+  .form-section-title {
+    padding-top: 0.75rem;
+    border-top: 1px dashed var(--color-hairline-strong);
+  }
+
+  .form-row {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.875rem;
+    width: 100%;
+  }
+
+  @media (min-width: 640px) {
+    .form-row.two-col {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  .form-actions {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 0.5rem;
+  }
+</style>
+
+<script>
+  import { COUNTRIES } from '../../config/countries/index';
+  import { NET_WORTH_DEFAULTS } from '../../config/networth/index';
+  import { netWorthService } from '../../services/networth/networth.service';
+  import type { CountryCode } from '../../types/country';
+  import type { NetWorthResults } from '../../types/networth';
+
+  document.addEventListener('DOMContentLoaded', () => {
+    const countrySelect = document.getElementById('nw-country-select') as HTMLSelectElement | null;
+    const countryBadge = document.getElementById('nw-country-badge');
+
+    const fieldIds: string[] = [
+      'nw-cash',
+      'nw-investments',
+      'nw-retirement-accounts',
+      'nw-real-estate',
+      'nw-vehicles',
+      'nw-business',
+      'nw-other-assets',
+      'nw-mortgage',
+      'nw-personal-loans',
+      'nw-auto-loans',
+      'nw-credit-cards',
+      'nw-student-loans',
+      'nw-other-liabilities',
+    ];
+
+    const inputs = fieldIds.reduce((acc, id) => {
+      const el = document.getElementById(id) as HTMLInputElement | null;
+      if (el) acc[id] = el;
+      return acc;
+    }, {} as Record<string, HTMLInputElement>);
+
+    const resetBtn = document.getElementById('nw-reset-btn') as HTMLButtonElement | null;
+
+    if (!countrySelect || !inputs['nw-cash']) {
+      return;
+    }
+
+    const formatNum = (val: number) => new Intl.NumberFormat('en-US').format(Math.round(val));
+    const getCurrencySymbol = (_countryCode: CountryCode) => '$';
+
+    const applyCountryDefaults = (countryCode: CountryCode) => {
+      const defaults = NET_WORTH_DEFAULTS[countryCode] || NET_WORTH_DEFAULTS['US'];
+      const mapping: Record<string, string> = {
+        'nw-cash': String(defaults.cash),
+        'nw-investments': String(defaults.investments),
+        'nw-retirement-accounts': String(defaults.retirementAccounts),
+        'nw-real-estate': String(defaults.realEstate),
+        'nw-vehicles': String(defaults.vehicles),
+        'nw-business': String(defaults.businessAssets),
+        'nw-other-assets': String(defaults.otherAssets),
+        'nw-mortgage': String(defaults.mortgageLiabilities),
+        'nw-personal-loans': String(defaults.personalLoans),
+        'nw-auto-loans': String(defaults.autoLoans),
+        'nw-credit-cards': String(defaults.creditCards),
+        'nw-student-loans': String(defaults.studentLoans),
+        'nw-other-liabilities': String(defaults.otherLiabilities),
+      };
+      Object.entries(mapping).forEach(([id, value]) => {
+        const el = inputs[id];
+        if (el) el.value = value;
+      });
+    };
+
+    const readValue = (id: string) => parseFloat(inputs[id]?.value ?? '') || 0;
+
+    const updateCalculator = () => {
+      const countryCode = (countrySelect.value as CountryCode) || 'US';
+
+      const countryObj = COUNTRIES.find((c) => c.code === countryCode);
+      if (countryBadge && countryObj) {
+        countryBadge.textContent = `${countryObj.flag} ${countryObj.code}`;
+      }
+
+      // Invoke Net Worth Service
+      const results = netWorthService.calculate({
+        country: countryCode,
+        cash: readValue('nw-cash'),
+        investments: readValue('nw-investments'),
+        retirementAccounts: readValue('nw-retirement-accounts'),
+        realEstate: readValue('nw-real-estate'),
+        vehicles: readValue('nw-vehicles'),
+        businessAssets: readValue('nw-business'),
+        otherAssets: readValue('nw-other-assets'),
+        mortgageLiabilities: readValue('nw-mortgage'),
+        personalLoans: readValue('nw-personal-loans'),
+        autoLoans: readValue('nw-auto-loans'),
+        creditCards: readValue('nw-credit-cards'),
+        studentLoans: readValue('nw-student-loans'),
+        otherLiabilities: readValue('nw-other-liabilities'),
+      });
+
+      updateResults(results, countryCode);
+
+      renderValidationErrors();
+    };
+
+    const updateResults = (results: NetWorthResults, countryCode: CountryCode) => {
+      const symbol = getCurrencySymbol(countryCode);
+
+      const assetsCard = document.querySelector('.nw-assets-card .result-value');
+      const assetsCurr = document.querySelector('.nw-assets-card .result-currency');
+      const liabilitiesCard = document.querySelector('.nw-liabilities-card .result-value');
+      const liabilitiesCurr = document.querySelector('.nw-liabilities-card .result-currency');
+      const netWorthCard = document.querySelector('.nw-networth-card .result-value');
+      const netWorthCardEl = document.querySelector('.nw-networth-card');
+      const netWorthCurr = document.querySelector('.nw-networth-card .result-currency');
+      const countryNote = document.getElementById('nw-country-note');
+
+      if (assetsCurr) assetsCurr.textContent = symbol;
+      if (liabilitiesCurr) liabilitiesCurr.textContent = symbol;
+      if (netWorthCurr) netWorthCurr.textContent = symbol;
+      if (assetsCard) assetsCard.textContent = formatNum(results.totalAssets);
+      if (liabilitiesCard) liabilitiesCard.textContent = formatNum(results.totalLiabilities);
+      if (netWorthCard) {
+        netWorthCard.textContent = `${results.netWorth < 0 ? '-' : ''}${formatNum(Math.abs(results.netWorth))}`;
+      }
+      if (netWorthCardEl) {
+        netWorthCardEl.classList.toggle('is-negative', results.netWorth < 0);
+      }
+      if (countryNote) {
+        const countryObj = COUNTRIES.find((c) => c.code === countryCode);
+        countryNote.textContent = countryObj
+          ? `Balance sheet based on ${countryObj.name} (${countryObj.currencyCode}).`
+          : '';
+      }
+
+      // Asset Allocation rows
+      results.assetAllocation?.forEach((item) => {
+        const valueEl = document.getElementById(`nw-alloc-${item.key}-value`);
+        const pctEl = document.getElementById(`nw-alloc-${item.key}-pct`);
+        if (valueEl) valueEl.textContent = `${symbol}${formatNum(item.value)}`;
+        if (pctEl) pctEl.textContent = `${item.percent}%`;
+      });
+
+      // Debt Breakdown rows
+      results.debtBreakdown?.forEach((item) => {
+        const valueEl = document.getElementById(`nw-debt-${item.key}-value`);
+        const pctEl = document.getElementById(`nw-debt-${item.key}-pct`);
+        if (valueEl) valueEl.textContent = `${symbol}${formatNum(item.value)}`;
+        if (pctEl) pctEl.textContent = `${item.percent}%`;
+      });
+
+      // Financial Health Score banner
+      const healthBanner = document.getElementById('nw-health-banner');
+      const healthScoreEl = document.getElementById('nw-health-score');
+      const healthRatingEl = document.getElementById('nw-health-rating');
+      const healthNoteEl = document.getElementById('nw-health-note');
+
+      const healthClassMap: Record<string, string> = {
+        'Excellent': 'health-excellent',
+        'Good': 'health-good',
+        'Fair': 'health-fair',
+        'Needs Improvement': 'health-needs-improvement',
+      };
+      if (healthBanner) {
+        healthBanner.className = `health-banner ${healthClassMap[results.healthRating] || 'health-needs-improvement'}`;
+      }
+      if (healthScoreEl) healthScoreEl.textContent = String(results.healthScore);
+      if (healthRatingEl) healthRatingEl.textContent = results.healthRating;
+      if (healthNoteEl) healthNoteEl.textContent = results.healthNote;
+
+      // Financial Insights
+      const insightsBox = document.getElementById('nw-insights-box');
+      const insightsList = document.getElementById('nw-insights-list');
+      if (insightsBox && insightsList) {
+        if (results.insights && results.insights.length > 0) {
+          insightsBox.style.display = 'flex';
+          insightsList.innerHTML = results.insights
+            .map((i) => `<li class="text-caption">${i}</li>`)
+            .join('');
+        } else {
+          insightsBox.style.display = 'none';
+          insightsList.innerHTML = '';
+        }
+      }
+    };
+
+    const renderValidationErrors = () => {
+      fieldIds.forEach((id) => {
+        toggleFieldError(inputs[id], readValue(id) < 0 ? 'Value cannot be negative.' : undefined);
+      });
+    };
+
+    const toggleFieldError = (inputEl: HTMLInputElement | null, errorMsg?: string) => {
+      if (!inputEl) return;
+      const wrapper = inputEl.closest('.input-wrapper');
+      if (!wrapper) return;
+
+      let errorTextEl = wrapper.querySelector('.input-error-text');
+      if (errorMsg) {
+        wrapper.classList.add('has-error');
+        if (!errorTextEl) {
+          errorTextEl = document.createElement('p');
+          errorTextEl.className = 'input-error-text';
+          wrapper.appendChild(errorTextEl);
+        }
+        errorTextEl.textContent = errorMsg;
+      } else {
+        wrapper.classList.remove('has-error');
+        if (errorTextEl) {
+          errorTextEl.remove();
+        }
+      }
+    };
+
+    // Live listeners
+    fieldIds.forEach((id) => {
+      inputs[id]?.addEventListener('input', updateCalculator);
+    });
+
+    countrySelect.addEventListener('change', () => {
+      applyCountryDefaults(countrySelect.value as CountryCode);
+      updateCalculator();
+    });
+
+    if (resetBtn) {
+      resetBtn.addEventListener('click', () => {
+        applyCountryDefaults(countrySelect.value as CountryCode);
+        updateCalculator();
+      });
+    }
+
+    // Initial calculation on page load
+    updateCalculator();
+  });
+</script>

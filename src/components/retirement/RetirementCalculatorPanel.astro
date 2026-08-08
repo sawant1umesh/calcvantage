@@ -1,0 +1,454 @@
+---
+import Card from '../base/Card.astro';
+import Input from '../base/Input.astro';
+import Select from '../base/Select.astro';
+import Button from '../base/Button.astro';
+import { COUNTRIES } from '../../config/countries/index';
+import { RETIREMENT_DEFAULTS } from '../../config/retirement/index';
+
+const defaultCountry = 'US';
+const defaults = RETIREMENT_DEFAULTS[defaultCountry];
+
+const countryOptions = COUNTRIES.map((c) => ({
+  value: c.code,
+  label: `${c.flag} ${c.name}`,
+}));
+---
+
+<Card variant="default" padding="xl" rounded="xl" class="retirement-calculator-panel">
+  <div class="panel-header">
+    <div class="header-title-group">
+      <h2 class="text-display-md">Retirement Parameters</h2>
+      <p class="text-body-sm">Project your retirement savings growth and contributions.</p>
+    </div>
+    <span class="arch-badge" id="ret-country-badge">🇺🇸 US</span>
+  </div>
+
+  <form class="retirement-form" id="retirement-form" onsubmit="return false;">
+    <!-- Country Selector -->
+    <div class="form-section">
+      <Select
+        id="ret-country-select"
+        label="Target Country / Region"
+        value={defaultCountry}
+        options={countryOptions}
+        helperText="Select country for currency display conventions."
+      />
+    </div>
+
+    <!-- Age Group -->
+    <div class="form-row two-col">
+      <Input
+        id="ret-current-age"
+        label="Current Age"
+        type="number"
+        value={defaults.currentAge}
+        min={18}
+        max={100}
+        step={1}
+        helperText="Your age today"
+        required={true}
+      />
+      <Input
+        id="ret-retirement-age"
+        label="Retirement Age"
+        type="number"
+        value={defaults.retirementAge}
+        min={50}
+        max={100}
+        step={1}
+        helperText="Target age to retire"
+        required={true}
+      />
+    </div>
+
+    <!-- Savings & Contribution Group -->
+    <div class="form-row two-col">
+      <Input
+        id="ret-current-savings"
+        label="Current Retirement Savings"
+        type="number"
+        prefix="$"
+        value={defaults.currentSavings}
+        min={0}
+        step={5000}
+        helperText="Existing nest egg balance"
+        required={true}
+      />
+      <Input
+        id="ret-monthly-contribution"
+        label="Monthly Contribution"
+        type="number"
+        prefix="$"
+        value={defaults.monthlyContribution}
+        min={0}
+        step={50}
+        helperText="Amount you add every month"
+        required={true}
+      />
+    </div>
+
+    <!-- Return & Inflation Group -->
+    <div class="form-row two-col">
+      <Input
+        id="ret-expected-return"
+        label="Expected Annual Return"
+        type="number"
+        suffix="%"
+        value={defaults.expectedReturnRate}
+        min={0}
+        max={30}
+        step={0.25}
+        helperText="Average annual investment return"
+        required={true}
+      />
+      <Input
+        id="ret-inflation-rate"
+        label="Inflation Rate"
+        type="number"
+        suffix="%"
+        value={defaults.inflationRate}
+        min={0}
+        max={20}
+        step={0.25}
+        helperText="Expected long-term inflation"
+        required={true}
+      />
+    </div>
+
+    <!-- Retirement Income Goal -->
+    <div class="form-section">
+      <Input
+        id="ret-income-goal"
+        label="Retirement Income Goal (monthly)"
+        type="number"
+        prefix="$"
+        value={defaults.retirementIncomeGoal}
+        min={0}
+        step={100}
+        helperText="Monthly income you want in retirement"
+      />
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="form-actions">
+      <Button variant="outline" size="md" type="reset" id="ret-reset-btn">
+        Reset to Country Defaults
+      </Button>
+    </div>
+  </form>
+</Card>
+
+<style>
+  .retirement-calculator-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .panel-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--color-hairline);
+  }
+
+  .header-title-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .arch-badge {
+    font-size: 0.75rem;
+    font-weight: 500;
+    padding: 0.25rem 0.625rem;
+    background-color: var(--color-canvas-soft-2);
+    border: 1px solid var(--color-hairline);
+    border-radius: var(--radius-full);
+    color: var(--color-body);
+    white-space: nowrap;
+  }
+
+  .retirement-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+
+  .form-section {
+    width: 100%;
+  }
+
+  .form-row.two-col {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  @media (min-width: 640px) {
+    .form-row.two-col {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  .form-actions {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 0.5rem;
+  }
+</style>
+
+<script>
+  import { COUNTRIES } from '../../config/countries/index';
+  import { RETIREMENT_DEFAULTS } from '../../config/retirement/index';
+  import { retirementService } from '../../services/retirement/retirement.service';
+  import type { CountryCode } from '../../types/country';
+
+  document.addEventListener('DOMContentLoaded', () => {
+    // Input elements
+    const countrySelect = document.getElementById('ret-country-select') as HTMLSelectElement | null;
+    const currentAgeInput = document.getElementById('ret-current-age') as HTMLInputElement | null;
+    const retirementAgeInput = document.getElementById('ret-retirement-age') as HTMLInputElement | null;
+    const currentSavingsInput = document.getElementById('ret-current-savings') as HTMLInputElement | null;
+    const monthlyContributionInput = document.getElementById('ret-monthly-contribution') as HTMLInputElement | null;
+    const expectedReturnInput = document.getElementById('ret-expected-return') as HTMLInputElement | null;
+    const inflationRateInput = document.getElementById('ret-inflation-rate') as HTMLInputElement | null;
+    const incomeGoalInput = document.getElementById('ret-income-goal') as HTMLInputElement | null;
+    const resetBtn = document.getElementById('ret-reset-btn') as HTMLButtonElement | null;
+
+    // Badge / note elements
+    const countryBadge = document.getElementById('ret-country-badge');
+    const countryNote = document.getElementById('ret-country-note');
+    const summaryText = document.getElementById('ret-summary-text');
+
+    // Result card elements (in RetirementResultsPanel)
+    const futureCard = document.querySelector('.ret-future-card .result-value');
+    const futureCurr = document.querySelector('.ret-future-card .result-currency');
+    const inflatedCard = document.querySelector('.ret-inflated-card .result-value');
+    const inflatedCurr = document.querySelector('.ret-inflated-card .result-currency');
+    const incomeCard = document.querySelector('.ret-income-card .result-value');
+    const incomeCurr = document.querySelector('.ret-income-card .result-currency');
+    const contribCard = document.querySelector('.ret-contrib-card .result-value');
+    const contribCurr = document.querySelector('.ret-contrib-card .result-currency');
+    const growthCard = document.querySelector('.ret-growth-card .result-value');
+    const growthCurr = document.querySelector('.ret-growth-card .result-currency');
+    const yearsCard = document.querySelector('.ret-years-card .result-value');
+    const goaltargetCard = document.querySelector('.ret-goaltarget-card .result-value');
+    const goaltargetCurr = document.querySelector('.ret-goaltarget-card .result-currency');
+    const goaltargetSubtext = document.querySelector('.ret-goaltarget-card .result-subtext');
+
+    // Readiness + goal achievement elements
+    const readinessBanner = document.getElementById('ret-readiness-banner');
+    const readinessLabel = document.getElementById('ret-readiness-label');
+    const readinessNote = document.getElementById('ret-readiness-note');
+    const goalPercent = document.getElementById('ret-goal-percent');
+    const goalProgress = document.getElementById('ret-goal-progress');
+    const goalTarget = document.getElementById('ret-goal-target');
+    const goalCaption = document.getElementById('ret-goal-caption');
+
+    // Warnings box
+    const warningsBox = document.getElementById('ret-warnings-box');
+    const warningsList = document.getElementById('ret-warnings-list');
+
+    if (
+      !countrySelect || !currentAgeInput || !retirementAgeInput ||
+      !currentSavingsInput || !monthlyContributionInput || !expectedReturnInput ||
+      !inflationRateInput || !incomeGoalInput
+    ) {
+      return;
+    }
+
+    const formatNum = (val: number) => new Intl.NumberFormat('en-US').format(Math.round(val));
+    const getCurrencySymbol = (_countryCode: CountryCode) => '$';
+
+    const applyCountryDefaults = (countryCode: CountryCode) => {
+      const defaults = RETIREMENT_DEFAULTS[countryCode] || RETIREMENT_DEFAULTS['US'];
+      currentAgeInput.value = String(defaults.currentAge);
+      retirementAgeInput.value = String(defaults.retirementAge);
+      currentSavingsInput.value = String(defaults.currentSavings);
+      monthlyContributionInput.value = String(defaults.monthlyContribution);
+      expectedReturnInput.value = String(defaults.expectedReturnRate);
+      inflationRateInput.value = String(defaults.inflationRate);
+      incomeGoalInput.value = String(defaults.retirementIncomeGoal);
+    };
+
+    const updateCalculator = () => {
+      const countryCode = (countrySelect.value as CountryCode) || 'US';
+
+      const currentAge = parseFloat(currentAgeInput.value) || 0;
+      const retirementAge = parseFloat(retirementAgeInput.value) || 0;
+      const currentSavings = parseFloat(currentSavingsInput.value) || 0;
+      const monthlyContribution = parseFloat(monthlyContributionInput.value) || 0;
+      const expectedReturnRate = parseFloat(expectedReturnInput.value) || 0;
+      const inflationRate = parseFloat(inflationRateInput.value) || 0;
+      const retirementIncomeGoal = parseFloat(incomeGoalInput.value) || 0;
+
+      // Badge & note text
+      const countryObj = COUNTRIES.find((c) => c.code === countryCode);
+      if (countryBadge && countryObj) {
+        countryBadge.textContent = `${countryObj.flag} ${countryObj.code}`;
+      }
+      const symbol = getCurrencySymbol(countryCode);
+      if (countryNote && countryObj) {
+        countryNote.textContent = `Projection based on ${countryObj.name} (${countryObj.currencyCode}) assumptions`;
+      }
+
+      // Invoke Retirement Service
+      const results = retirementService.calculate({
+        country: countryCode,
+        currentAge,
+        retirementAge,
+        currentSavings,
+        monthlyContribution,
+        expectedReturnRate,
+        inflationRate,
+        retirementIncomeGoal,
+      });
+
+      // Update result cards
+      if (summaryText) {
+        summaryText.textContent =
+          results.yearsUntilRetirement > 0
+            ? `Saving for ${results.yearsUntilRetirement} years until age ${retirementAge}.`
+            : 'Enter a retirement age later than your current age.';
+      }
+
+      if (futureCurr) futureCurr.textContent = symbol;
+      if (futureCard) futureCard.textContent = formatNum(results.futureRetirementValue);
+      if (inflatedCurr) inflatedCurr.textContent = symbol;
+      if (inflatedCard) inflatedCard.textContent = formatNum(results.inflationAdjustedRetirementValue);
+      if (incomeCurr) incomeCurr.textContent = symbol;
+      if (incomeCard) incomeCard.textContent = formatNum(results.estimatedMonthlyIncome);
+      if (contribCurr) contribCurr.textContent = symbol;
+      if (contribCard) contribCard.textContent = formatNum(results.totalContributions);
+      if (growthCurr) growthCurr.textContent = symbol;
+      if (growthCard) growthCard.textContent = formatNum(results.investmentGrowth);
+      if (yearsCard) yearsCard.textContent = String(results.yearsUntilRetirement);
+      if (goaltargetCurr) goaltargetCurr.textContent = symbol;
+      if (goaltargetCard) goaltargetCard.textContent = formatNum(results.inflationAdjustedMonthlyGoal);
+
+      // Goal achievement, readiness status, and warnings
+      if (goalTarget) goalTarget.textContent = `Monthly goal $${formatNum(retirementIncomeGoal)}`;
+      if (goalPercent) {
+        goalPercent.textContent = results.goalAchievementPercent === null ? '--%' : `${results.goalAchievementPercent}%`;
+      }
+      if (goalProgress && goalProgress.parentElement) {
+        const pct = Math.min(100, results.goalAchievementPercent ?? 0);
+        goalProgress.style.width = `${pct}%`;
+        goalProgress.classList.remove('is-complete', 'is-fair', 'is-low');
+        if (results.goalAchievementPercent === null) {
+          goalProgress.classList.remove('is-fair', 'is-low', 'is-complete');
+        } else if (pct >= 100) {
+          goalProgress.classList.add('is-complete');
+        } else if (pct < 60) {
+          goalProgress.classList.add('is-low');
+        } else if (pct < 80) {
+          goalProgress.classList.add('is-fair');
+        }
+      }
+
+      // Readiness banner
+      if (readinessBanner && readinessLabel && readinessNote) {
+        const readinessClassMap: Record<string, string> = {
+          'Excellent': 'readiness-excellent',
+          'Good': 'readiness-good',
+          'Fair': 'readiness-fair',
+          'Needs Improvement': 'readiness-needs-improvement',
+        };
+        readinessBanner.className = `readiness-banner ${readinessClassMap[results.readiness] || 'readiness-needs-improvement'}`;
+        readinessLabel.textContent = results.readiness;
+        readinessNote.textContent = results.readinessNote;
+      }
+
+      // Render warnings if any
+      if (warningsBox && warningsList) {
+        if (results.warnings && results.warnings.length > 0) {
+          warningsBox.style.display = 'flex';
+          warningsList.innerHTML = results.warnings
+            .map((w) => `<li class="text-caption">${w}</li>`)
+            .join('');
+        } else {
+          warningsBox.style.display = 'none';
+          warningsList.innerHTML = '';
+        }
+      }
+
+      // Inline validation errors
+      renderValidationErrors(
+        currentAge,
+        retirementAge,
+        currentSavings,
+        monthlyContribution,
+        expectedReturnRate,
+        inflationRate,
+        retirementIncomeGoal
+      );
+    };
+
+    const renderValidationErrors = (
+      currentAge: number,
+      retirementAge: number,
+      currentSavings: number,
+      monthlyContribution: number,
+      expectedReturnRate: number,
+      inflationRate: number,
+      retirementIncomeGoal: number
+    ) => {
+      toggleFieldError(currentAgeInput, currentAge < 18 ? 'Current age must be at least 18.' : currentAge > 100 ? 'Current age cannot exceed 100.' : undefined);
+      toggleFieldError(retirementAgeInput, retirementAge <= currentAge ? 'Retirement age must be greater than current age.' : retirementAge > 100 ? 'Retirement age cannot exceed 100.' : undefined);
+      toggleFieldError(currentSavingsInput, currentSavings < 0 ? 'Current savings cannot be negative.' : undefined);
+      toggleFieldError(monthlyContributionInput, monthlyContribution < 0 ? 'Monthly contribution cannot be negative.' : undefined);
+      toggleFieldError(expectedReturnInput, expectedReturnRate < 0 ? 'Expected return cannot be negative.' : expectedReturnRate > 30 ? 'Expected return cannot exceed 30%.' : undefined);
+      toggleFieldError(inflationRateInput, inflationRate < 0 ? 'Inflation cannot be negative.' : inflationRate > 20 ? 'Inflation cannot exceed 20%.' : undefined);
+      toggleFieldError(incomeGoalInput, retirementIncomeGoal < 0 ? 'Income goal cannot be negative.' : undefined);
+    };
+
+    const toggleFieldError = (inputEl: HTMLInputElement | null, errorMsg?: string) => {
+      if (!inputEl) return;
+      const wrapper = inputEl.closest('.input-wrapper');
+      if (!wrapper) return;
+
+      let errorTextEl = wrapper.querySelector('.input-error-text');
+      if (errorMsg) {
+        wrapper.classList.add('has-error');
+        if (!errorTextEl) {
+          errorTextEl = document.createElement('p');
+          errorTextEl.className = 'input-error-text';
+          wrapper.appendChild(errorTextEl);
+        }
+        errorTextEl.textContent = errorMsg;
+      } else {
+        wrapper.classList.remove('has-error');
+        if (errorTextEl) {
+          errorTextEl.remove();
+        }
+      }
+    };
+
+    // Live listeners
+    currentAgeInput.addEventListener('input', updateCalculator);
+    retirementAgeInput.addEventListener('input', updateCalculator);
+    currentSavingsInput.addEventListener('input', updateCalculator);
+    monthlyContributionInput.addEventListener('input', updateCalculator);
+    expectedReturnInput.addEventListener('input', updateCalculator);
+    inflationRateInput.addEventListener('input', updateCalculator);
+    incomeGoalInput.addEventListener('input', updateCalculator);
+
+    countrySelect.addEventListener('change', () => {
+      applyCountryDefaults(countrySelect.value as CountryCode);
+      updateCalculator();
+    });
+
+    if (resetBtn) {
+      resetBtn.addEventListener('click', () => {
+        applyCountryDefaults(countrySelect.value as CountryCode);
+        updateCalculator();
+      });
+    }
+
+    // Initial calculation on page load
+    updateCalculator();
+  });
+</script>

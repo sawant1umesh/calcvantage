@@ -1,0 +1,113 @@
+---
+import type { ResultCardProps } from '../../types/components';
+
+interface Props extends ResultCardProps {}
+
+const {
+  label,
+  value,
+  currencySymbol = '$',
+  subtext,
+  highlight = false,
+  badge,
+  class: className = '',
+} = Astro.props;
+---
+
+<div class={`result-card ${highlight ? 'is-highlighted' : ''} ${className}`}>
+  <div class="result-card-header">
+    <span class="result-label">{label}</span>
+    {badge && <span class="result-badge">{badge}</span>}
+  </div>
+  <div class="result-value-container">
+    <span class="result-currency">{currencySymbol}</span>
+    <span class="result-value font-mono">{value}</span>
+  </div>
+  {subtext && <p class="result-subtext">{subtext}</p>}
+</div>
+
+<style>
+  .result-card {
+    background-color: var(--color-canvas);
+    border: 1px solid var(--color-hairline);
+    border-radius: var(--radius-lg);
+    padding: 1.25rem 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+  }
+
+  .result-card.is-highlighted {
+    background-color: var(--color-primary);
+    color: var(--color-on-primary);
+    border-color: var(--color-primary);
+  }
+
+  .result-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .result-label {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--color-body);
+  }
+
+  .result-card.is-highlighted .result-label {
+    color: rgba(255, 255, 255, 0.8);
+  }
+
+  .result-badge {
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 0.125rem 0.5rem;
+    border-radius: var(--radius-full);
+    background-color: var(--color-canvas-soft-2);
+    color: var(--color-ink);
+  }
+
+  .result-card.is-highlighted .result-badge {
+    background-color: rgba(255, 255, 255, 0.2);
+    color: var(--color-on-primary);
+  }
+
+  .result-value-container {
+    display: flex;
+    align-items: baseline;
+    gap: 0.25rem;
+  }
+
+  .result-currency {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--color-mute);
+  }
+
+  .result-card.is-highlighted .result-currency {
+    color: rgba(255, 255, 255, 0.7);
+  }
+
+  .result-value {
+    font-size: 1.875rem;
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    color: var(--color-ink);
+  }
+
+  .result-card.is-highlighted .result-value {
+    color: var(--color-on-primary);
+  }
+
+  .result-subtext {
+    font-size: 0.75rem;
+    color: var(--color-mute);
+    margin: 0;
+  }
+
+  .result-card.is-highlighted .result-subtext {
+    color: rgba(255, 255, 255, 0.7);
+  }
+</style>

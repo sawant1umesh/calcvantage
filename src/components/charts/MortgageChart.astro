@@ -1,0 +1,104 @@
+---
+import Card from '../base/Card.astro';
+---
+
+<Card variant="default" padding="lg" rounded="xl" class="chart-card">
+  <div class="chart-header">
+    <div>
+      <h3 class="text-body-sm-strong">Loan Balance & Interest Trajectory</h3>
+      <p class="text-caption">Remaining balance decline over loan term</p>
+    </div>
+    <div class="chart-legend">
+      <div class="legend-item">
+        <span class="legend-dot balance-dot"></span>
+        <span class="text-caption">Remaining Balance</span>
+      </div>
+      <div class="legend-item">
+        <span class="legend-dot interest-dot"></span>
+        <span class="text-caption">Cumulative Interest</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="chart-body">
+    <svg viewBox="0 0 500 200" class="svg-chart-container" preserveAspectRatio="none" id="mortgage-svg-chart">
+      <!-- Grid Lines -->
+      <line x1="40" y1="20" x2="480" y2="20" stroke="var(--color-hairline)" stroke-dasharray="4 4" />
+      <line x1="40" y1="70" x2="480" y2="70" stroke="var(--color-hairline)" stroke-dasharray="4 4" />
+      <line x1="40" y1="120" x2="480" y2="120" stroke="var(--color-hairline)" stroke-dasharray="4 4" />
+      <line x1="40" y1="170" x2="480" y2="170" stroke="var(--color-hairline)" />
+
+      <!-- Area Fills -->
+      <path id="chart-area-balance" d="M 40 20 L 480 170 L 40 170 Z" fill="rgba(0, 112, 243, 0.08)" />
+      <path id="chart-area-interest" d="M 40 170 L 480 70 L 480 170 Z" fill="rgba(238, 0, 0, 0.05)" />
+
+      <!-- Curve Lines -->
+      <path id="chart-path-balance" d="M 40 20 L 480 170" fill="none" stroke="var(--color-accent)" stroke-width="3.5" stroke-linecap="round" />
+      <path id="chart-path-interest" d="M 40 170 L 480 70" fill="none" stroke="var(--color-hairline-strong)" stroke-width="2.5" stroke-dasharray="6 4" stroke-linecap="round" />
+
+      <!-- Y Axis Labels -->
+      <text x="35" y="24" text-anchor="end" font-size="10" fill="var(--color-mute)" id="chart-y-max">$400k</text>
+      <text x="35" y="98" text-anchor="end" font-size="10" fill="var(--color-mute)" id="chart-y-mid">$200k</text>
+      <text x="35" y="174" text-anchor="end" font-size="10" fill="var(--color-mute)">$0</text>
+
+      <!-- X Axis Labels -->
+      <text x="40" y="190" text-anchor="start" font-size="10" fill="var(--color-mute)" id="chart-x-start">Yr 0</text>
+      <text x="260" y="190" text-anchor="middle" font-size="10" fill="var(--color-mute)" id="chart-x-mid">Yr 15</text>
+      <text x="480" y="190" text-anchor="end" font-size="10" fill="var(--color-mute)" id="chart-x-end">Yr 30</text>
+    </svg>
+  </div>
+</Card>
+
+<style>
+  .chart-card {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    width: 100%;
+  }
+
+  .chart-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--color-hairline);
+  }
+
+  .chart-legend {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 0.375rem;
+  }
+
+  .legend-dot {
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: var(--radius-full);
+  }
+
+  .balance-dot {
+    background-color: var(--color-accent);
+  }
+
+  .interest-dot {
+    background-color: var(--color-hairline-strong);
+  }
+
+  .chart-body {
+    width: 100%;
+    height: 200px;
+  }
+
+  .svg-chart-container {
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+  }
+</style>

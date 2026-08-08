@@ -1,0 +1,151 @@
+---
+import type { InputProps } from '../../types/components';
+
+interface Props extends InputProps {}
+
+const {
+  id,
+  name = id,
+  label,
+  type = 'text',
+  value,
+  placeholder,
+  prefix,
+  suffix,
+  helperText,
+  error,
+  disabled = false,
+  required = false,
+  min,
+  max,
+  step,
+  class: className = '',
+} = Astro.props;
+---
+
+<div class={`input-wrapper ${className} ${disabled ? 'is-disabled' : ''} ${error ? 'has-error' : ''}`}>
+  {label && (
+    <label for={id} class="input-label">
+      {label}
+      {required && <span class="required-asterisk">*</span>}
+    </label>
+  )}
+  <div class="input-field-container">
+    {prefix && <span class="input-prefix">{prefix}</span>}
+    <input
+      id={id}
+      name={name}
+      type={type}
+      value={value}
+      placeholder={placeholder}
+      disabled={disabled}
+      required={required}
+      min={min}
+      max={max}
+      step={step}
+      class={`input-control ${prefix ? 'has-prefix' : ''} ${suffix ? 'has-suffix' : ''}`}
+    />
+    {suffix && <span class="input-suffix">{suffix}</span>}
+  </div>
+  {error ? (
+    <p class="input-error-text">{error}</p>
+  ) : helperText ? (
+    <p class="input-helper-text">{helperText}</p>
+  ) : null}
+</div>
+
+<style>
+  .input-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 0.375rem;
+    width: 100%;
+  }
+
+  .input-label {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--color-ink);
+  }
+
+  .required-asterisk {
+    color: var(--color-error);
+    margin-left: 0.25rem;
+  }
+
+  .input-field-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 100%;
+  }
+
+  .input-prefix,
+  .input-suffix {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.875rem;
+    color: var(--color-mute);
+    pointer-events: none;
+    padding: 0 0.75rem;
+  }
+
+  .input-prefix {
+    left: 0;
+  }
+
+  .input-suffix {
+    right: 0;
+  }
+
+  .input-control {
+    width: 100%;
+    height: 2.75rem;
+    padding: 0 0.875rem;
+    font-family: var(--font-sans);
+    font-size: 0.9375rem;
+    color: var(--color-ink);
+    background-color: var(--color-canvas);
+    border: 1px solid var(--color-hairline-strong);
+    border-radius: var(--radius-sm);
+    outline: none;
+    transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+  }
+
+  .input-control.has-prefix {
+    padding-left: 2rem;
+  }
+
+  .input-control.has-suffix {
+    padding-right: 2.25rem;
+  }
+
+  .input-control:focus {
+    border-color: var(--color-accent);
+    box-shadow: var(--shadow-focus);
+  }
+
+  .input-wrapper.has-error .input-control {
+    border-color: var(--color-error);
+  }
+
+  .input-wrapper.is-disabled .input-control {
+    background-color: var(--color-canvas-soft-2);
+    cursor: not-allowed;
+    opacity: 0.7;
+  }
+
+  .input-helper-text {
+    font-size: 0.75rem;
+    color: var(--color-mute);
+    margin: 0;
+  }
+
+  .input-error-text {
+    font-size: 0.75rem;
+    color: var(--color-error);
+    margin: 0;
+  }
+</style>

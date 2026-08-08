@@ -1,0 +1,10 @@
+---
+import PageContainer from '../layout/PageContainer.astro';
+import type { PageContainerProps } from '../../types/components';
+
+interface Props extends PageContainerProps {}
+---
+
+<PageContainer {...Astro.props}>
+  <slot />
+</PageContainer>

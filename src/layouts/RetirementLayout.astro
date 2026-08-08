@@ -1,0 +1,43 @@
+---
+import PageContainer from '../components/layout/PageContainer.astro';
+import Section from '../components/base/Section.astro';
+import RetirementCalculatorPanel from '../components/retirement/RetirementCalculatorPanel.astro';
+import RetirementResultsPanel from '../components/retirement/RetirementResultsPanel.astro';
+
+interface Props {
+  title?: string;
+  subtitle?: string;
+}
+
+const {
+  title = 'Retirement Calculator',
+  subtitle = 'Project your future retirement value, total contributions, and investment growth for the US, Canada, and Australia.',
+} = Astro.props;
+---
+
+<PageContainer maxWidth="xl">
+  <Section title={title} subtitle={subtitle} badge="CalcVantage Financial Tools">
+    <div class="grid-retirement-layout">
+      <!-- Left Panel: Calculator Controls -->
+      <div class="panel-left">
+        <slot name="calculator-panel">
+          <RetirementCalculatorPanel />
+        </slot>
+      </div>
+
+      <!-- Right Panel: Results & Summary -->
+      <div class="panel-right">
+        <slot name="results-panel">
+          <RetirementResultsPanel />
+        </slot>
+      </div>
+    </div>
+  </Section>
+</PageContainer>
+
+<style>
+  .panel-left,
+  .panel-right {
+    width: 100%;
+  }
+</style>
