@@ -5,19 +5,20 @@ import type { AmortizationScheduleItem } from '../types/mortgage';
  */
 export function exportAmortizationToCSV(
   schedule: AmortizationScheduleItem[],
-  filename: string = 'mortgage-amortization-schedule.csv'
+  filename: string = 'mortgage-amortization-schedule.csv',
+  currencyCode: string = 'USD'
 ): void {
   if (!schedule || schedule.length === 0) return;
 
   const headers = [
     'Payment #',
     'Payment Date',
-    'Monthly Payment ($)',
-    'Principal ($)',
-    'Interest ($)',
-    'Extra Payment ($)',
-    'Remaining Balance ($)',
-    'Total Interest Paid ($)',
+    `Monthly Payment (${currencyCode})`,
+    `Principal (${currencyCode})`,
+    `Interest (${currencyCode})`,
+    `Extra Payment (${currencyCode})`,
+    `Remaining Balance (${currencyCode})`,
+    `Total Interest Paid (${currencyCode})`,
   ];
 
   const rows = schedule.map((item) => [

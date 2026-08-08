@@ -4,6 +4,7 @@ import Input from '../base/Input.astro';
 import Select from '../base/Select.astro';
 import Button from '../base/Button.astro';
 import { COUNTRIES } from '../../config/countries/index';
+import { CURRENCIES } from '../../config/currencies';
 import { NET_WORTH_DEFAULTS } from '../../config/networth/index';
 
 const defaultCountry = 'US';
@@ -12,6 +13,11 @@ const defaults = NET_WORTH_DEFAULTS[defaultCountry];
 const countryOptions = COUNTRIES.map((c) => ({
   value: c.code,
   label: `${c.flag} ${c.name}`,
+}));
+
+const currencyOptions = CURRENCIES.map((c) => ({
+  value: c.code,
+  label: `${c.code} · ${c.name}`,
 }));
 ---
 
@@ -34,6 +40,21 @@ const countryOptions = COUNTRIES.map((c) => ({
         options={countryOptions}
         helperText="Select country for currency display conventions."
       />
+    </div>
+
+    <!-- Display Currency Selector (Phase 4B) -->
+    <div class="form-section">
+      <Select
+        id="nw-display-currency-select"
+        label="Display Currency"
+        value="USD"
+        options={currencyOptions}
+        helperText="Balance sheet is calculated with the country's native rules; results are displayed in this currency."
+      />
+      <div class="currency-status-row" id="nw-currency-status" hidden>
+        <span class="currency-spinner" id="nw-currency-spinner"></span>
+        <span class="currency-status-message" id="nw-currency-message"></span>
+      </div>
     </div>
 
     <!-- Assets Group -->
@@ -248,6 +269,34 @@ const countryOptions = COUNTRIES.map((c) => ({
     width: 100%;
   }
 
+  .currency-status-row {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+    font-size: 0.75rem;
+    color: var(--color-mute);
+  }
+
+  .currency-status-row[hidden] {
+    display: none;
+  }
+
+  .currency-spinner {
+    width: 0.875rem;
+    height: 0.875rem;
+    border: 2px solid var(--color-hairline);
+    border-top-color: var(--color-accent);
+    border-radius: var(--radius-full);
+    animation: currency-spin 0.7s linear infinite;
+  }
+
+  @keyframes currency-spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
   .form-section-title {
     padding-top: 0.75rem;
     border-top: 1px dashed var(--color-hairline-strong);
@@ -277,7 +326,16 @@ const countryOptions = COUNTRIES.map((c) => ({
   import { COUNTRIES } from '../../config/countries/index';
   import { NET_WORTH_DEFAULTS } from '../../config/networth/index';
   import { netWorthService } from '../../services/networth/networth.service';
+  import {
+    getConversionContext,
+    getCurrencySymbol,
+    getNativeCurrency,
+    loadDisplayCurrency,
+    saveDisplayCurrency,
+    subscribeCurrencyStatus,
+  } from '../../utils/currency-display';
   import type { CountryCode } from '../../types/country';
+  import type { CurrencyCode } from '../../types/currency';
   import type { NetWorthResults } from '../../types/networth';
 
   document.addEventListener('DOMContentLoaded', () => {
@@ -308,12 +366,41 @@ const countryOptions = COUNTRIES.map((c) => ({
 
     const resetBtn = document.getElementById('nw-reset-btn') as HTMLButtonElement | null;
 
+    // Phase 4B: Display currency selector + status indicator
+    const displayCurrencySelect = document.getElementById('nw-display-currency-select') as HTMLSelectElement | null;
+    const currencyStatus = document.getElementById('nw-currency-status');
+    const currencySpinner = document.getElementById('nw-currency-spinner');
+    const currencyStatusMessage = document.getElementById('nw-currency-message');
+
     if (!countrySelect || !inputs['nw-cash']) {
       return;
     }
 
     const formatNum = (val: number) => new Intl.NumberFormat('en-US').format(Math.round(val));
-    const getCurrencySymbol = (_countryCode: CountryCode) => '$';
+
+    // Phase 4B: shared currency conversion state
+    let displayCurrency: CurrencyCode = 'USD';
+    let nativeCurrency: CurrencyCode = 'USD';
+    let convRate = 1;
+    let convSource: 'live' | 'cache' | 'fallback' = 'live';
+    let sameCurrency = true;
+    let renderToken = 0;
+    let lastResults: NetWorthResults | null = null;
+
+    // Phase 4B helpers
+    const applyRate = (val: number) =>
+      sameCurrency || convSource === 'fallback' ? val : Math.round(val * convRate);
+
+    const showCurrencyStatus = (msg: string, spinner = false) => {
+      if (!currencyStatus) return;
+      currencyStatus.hidden = false;
+      if (currencySpinner) currencySpinner.style.display = spinner ? 'inline-block' : 'none';
+      if (currencyStatusMessage) currencyStatusMessage.textContent = msg;
+    };
+
+    const hideCurrencyStatus = () => {
+      if (currencyStatus) currencyStatus.hidden = true;
+    };
 
     const applyCountryDefaults = (countryCode: CountryCode) => {
       const defaults = NET_WORTH_DEFAULTS[countryCode] || NET_WORTH_DEFAULTS['US'];
@@ -372,50 +459,16 @@ const countryOptions = COUNTRIES.map((c) => ({
     };
 
     const updateResults = (results: NetWorthResults, countryCode: CountryCode) => {
-      const symbol = getCurrencySymbol(countryCode);
+      // Phase 4B: persist native results and render them in the selected display currency
+      lastResults = results;
 
-      const assetsCard = document.querySelector('.nw-assets-card .result-value');
-      const assetsCurr = document.querySelector('.nw-assets-card .result-currency');
-      const liabilitiesCard = document.querySelector('.nw-liabilities-card .result-value');
-      const liabilitiesCurr = document.querySelector('.nw-liabilities-card .result-currency');
-      const netWorthCard = document.querySelector('.nw-networth-card .result-value');
-      const netWorthCardEl = document.querySelector('.nw-networth-card');
-      const netWorthCurr = document.querySelector('.nw-networth-card .result-currency');
       const countryNote = document.getElementById('nw-country-note');
-
-      if (assetsCurr) assetsCurr.textContent = symbol;
-      if (liabilitiesCurr) liabilitiesCurr.textContent = symbol;
-      if (netWorthCurr) netWorthCurr.textContent = symbol;
-      if (assetsCard) assetsCard.textContent = formatNum(results.totalAssets);
-      if (liabilitiesCard) liabilitiesCard.textContent = formatNum(results.totalLiabilities);
-      if (netWorthCard) {
-        netWorthCard.textContent = `${results.netWorth < 0 ? '-' : ''}${formatNum(Math.abs(results.netWorth))}`;
-      }
-      if (netWorthCardEl) {
-        netWorthCardEl.classList.toggle('is-negative', results.netWorth < 0);
-      }
       if (countryNote) {
         const countryObj = COUNTRIES.find((c) => c.code === countryCode);
         countryNote.textContent = countryObj
           ? `Balance sheet based on ${countryObj.name} (${countryObj.currencyCode}).`
           : '';
       }
-
-      // Asset Allocation rows
-      results.assetAllocation?.forEach((item) => {
-        const valueEl = document.getElementById(`nw-alloc-${item.key}-value`);
-        const pctEl = document.getElementById(`nw-alloc-${item.key}-pct`);
-        if (valueEl) valueEl.textContent = `${symbol}${formatNum(item.value)}`;
-        if (pctEl) pctEl.textContent = `${item.percent}%`;
-      });
-
-      // Debt Breakdown rows
-      results.debtBreakdown?.forEach((item) => {
-        const valueEl = document.getElementById(`nw-debt-${item.key}-value`);
-        const pctEl = document.getElementById(`nw-debt-${item.key}-pct`);
-        if (valueEl) valueEl.textContent = `${symbol}${formatNum(item.value)}`;
-        if (pctEl) pctEl.textContent = `${item.percent}%`;
-      });
 
       // Financial Health Score banner
       const healthBanner = document.getElementById('nw-health-banner');
@@ -449,6 +502,74 @@ const countryOptions = COUNTRIES.map((c) => ({
           insightsBox.style.display = 'none';
           insightsList.innerHTML = '';
         }
+      }
+
+      renderDisplay();
+    };
+
+    // Phase 4B: Convert native-currency results into the selected display currency
+    const renderDisplay = async () => {
+      const token = ++renderToken;
+      nativeCurrency = getNativeCurrency((countrySelect.value as CountryCode) || 'US');
+      const ctx = await getConversionContext(nativeCurrency, displayCurrency);
+      if (token !== renderToken) return;
+
+      convRate = ctx.rate;
+      convSource = ctx.source;
+      sameCurrency = ctx.isSameCurrency;
+
+      const symbol = getCurrencySymbol(displayCurrency);
+
+      const assetsCard = document.querySelector('.nw-assets-card .result-value');
+      const assetsCurr = document.querySelector('.nw-assets-card .result-currency');
+      const liabilitiesCard = document.querySelector('.nw-liabilities-card .result-value');
+      const liabilitiesCurr = document.querySelector('.nw-liabilities-card .result-currency');
+      const netWorthCard = document.querySelector('.nw-networth-card .result-value');
+      const netWorthCardEl = document.querySelector('.nw-networth-card');
+      const netWorthCurr = document.querySelector('.nw-networth-card .result-currency');
+
+      if (assetsCurr) assetsCurr.textContent = symbol;
+      if (liabilitiesCurr) liabilitiesCurr.textContent = symbol;
+      if (netWorthCurr) netWorthCurr.textContent = symbol;
+
+      if (!lastResults) return;
+
+      const r = lastResults;
+      if (assetsCard) assetsCard.textContent = formatNum(applyRate(r.totalAssets));
+      if (liabilitiesCard) liabilitiesCard.textContent = formatNum(applyRate(r.totalLiabilities));
+      if (netWorthCard) {
+        const converted = applyRate(r.netWorth);
+        netWorthCard.textContent = `${converted < 0 ? '-' : ''}${formatNum(Math.abs(converted))}`;
+      }
+      if (netWorthCardEl) {
+        netWorthCardEl.classList.toggle('is-negative', applyRate(r.netWorth) < 0);
+      }
+
+      // Asset Allocation rows
+      r.assetAllocation?.forEach((item) => {
+        const valueEl = document.getElementById(`nw-alloc-${item.key}-value`);
+        const pctEl = document.getElementById(`nw-alloc-${item.key}-pct`);
+        if (valueEl) valueEl.textContent = `${symbol}${formatNum(applyRate(item.value))}`;
+        if (pctEl) pctEl.textContent = `${item.percent}%`;
+      });
+
+      // Debt Breakdown rows
+      r.debtBreakdown?.forEach((item) => {
+        const valueEl = document.getElementById(`nw-debt-${item.key}-value`);
+        const pctEl = document.getElementById(`nw-debt-${item.key}-pct`);
+        if (valueEl) valueEl.textContent = `${symbol}${formatNum(applyRate(item.value))}`;
+        if (pctEl) pctEl.textContent = `${item.percent}%`;
+      });
+
+      // Currency status messaging
+      if (ctx.isSameCurrency) {
+        hideCurrencyStatus();
+      } else if (ctx.source === 'fallback') {
+        showCurrencyStatus(`Live exchange rates are unavailable right now — showing original ${ctx.native} values.`);
+      } else if (ctx.source === 'cache') {
+        showCurrencyStatus('Live exchange rates unavailable — showing last cached rates.');
+      } else {
+        hideCurrencyStatus();
       }
     };
 
@@ -496,6 +617,23 @@ const countryOptions = COUNTRIES.map((c) => ({
         updateCalculator();
       });
     }
+
+    // Phase 4B: Wire up the display currency selector and shared-service status indicator
+    if (displayCurrencySelect) {
+      displayCurrency = loadDisplayCurrency('networth', getNativeCurrency((countrySelect.value as CountryCode) || 'US'));
+      displayCurrencySelect.value = displayCurrency;
+      displayCurrencySelect.addEventListener('change', () => {
+        displayCurrency = displayCurrencySelect.value as CurrencyCode;
+        saveDisplayCurrency('networth', displayCurrency);
+        renderDisplay();
+      });
+    }
+
+    subscribeCurrencyStatus((snap) => {
+      if (snap.status === 'loading') {
+        showCurrencyStatus('Fetching exchange rates…', true);
+      }
+    });
 
     // Initial calculation on page load
     updateCalculator();

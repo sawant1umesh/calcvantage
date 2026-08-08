@@ -4,6 +4,7 @@ import Input from '../base/Input.astro';
 import Select from '../base/Select.astro';
 import Button from '../base/Button.astro';
 import { COUNTRIES } from '../../config/countries/index';
+import { CURRENCIES } from '../../config/currencies';
 import { RETIREMENT_DEFAULTS } from '../../config/retirement/index';
 
 const defaultCountry = 'US';
@@ -12,6 +13,11 @@ const defaults = RETIREMENT_DEFAULTS[defaultCountry];
 const countryOptions = COUNTRIES.map((c) => ({
   value: c.code,
   label: `${c.flag} ${c.name}`,
+}));
+
+const currencyOptions = CURRENCIES.map((c) => ({
+  value: c.code,
+  label: `${c.code} · ${c.name}`,
 }));
 ---
 
@@ -34,6 +40,21 @@ const countryOptions = COUNTRIES.map((c) => ({
         options={countryOptions}
         helperText="Select country for currency display conventions."
       />
+    </div>
+
+    <!-- Display Currency Selector (Phase 4B) -->
+    <div class="form-section">
+      <Select
+        id="ret-display-currency-select"
+        label="Display Currency"
+        value="USD"
+        options={currencyOptions}
+        helperText="Projections are calculated with the country's native rules; results are displayed in this currency."
+      />
+      <div class="currency-status-row" id="ret-currency-status" hidden>
+        <span class="currency-spinner" id="ret-currency-spinner"></span>
+        <span class="currency-status-message" id="ret-currency-message"></span>
+      </div>
     </div>
 
     <!-- Age Group -->
@@ -181,6 +202,34 @@ const countryOptions = COUNTRIES.map((c) => ({
     width: 100%;
   }
 
+  .currency-status-row {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+    font-size: 0.75rem;
+    color: var(--color-mute);
+  }
+
+  .currency-status-row[hidden] {
+    display: none;
+  }
+
+  .currency-spinner {
+    width: 0.875rem;
+    height: 0.875rem;
+    border: 2px solid var(--color-hairline);
+    border-top-color: var(--color-accent);
+    border-radius: var(--radius-full);
+    animation: currency-spin 0.7s linear infinite;
+  }
+
+  @keyframes currency-spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
   .form-row.two-col {
     display: grid;
     grid-template-columns: 1fr;
@@ -204,7 +253,17 @@ const countryOptions = COUNTRIES.map((c) => ({
   import { COUNTRIES } from '../../config/countries/index';
   import { RETIREMENT_DEFAULTS } from '../../config/retirement/index';
   import { retirementService } from '../../services/retirement/retirement.service';
+  import {
+    getConversionContext,
+    getCurrencySymbol,
+    getNativeCurrency,
+    loadDisplayCurrency,
+    saveDisplayCurrency,
+    subscribeCurrencyStatus,
+  } from '../../utils/currency-display';
   import type { CountryCode } from '../../types/country';
+  import type { CurrencyCode } from '../../types/currency';
+  import type { RetirementResults } from '../../types/retirement';
 
   document.addEventListener('DOMContentLoaded', () => {
     // Input elements
@@ -217,6 +276,12 @@ const countryOptions = COUNTRIES.map((c) => ({
     const inflationRateInput = document.getElementById('ret-inflation-rate') as HTMLInputElement | null;
     const incomeGoalInput = document.getElementById('ret-income-goal') as HTMLInputElement | null;
     const resetBtn = document.getElementById('ret-reset-btn') as HTMLButtonElement | null;
+
+    // Phase 4B: Display currency selector + status indicator
+    const displayCurrencySelect = document.getElementById('ret-display-currency-select') as HTMLSelectElement | null;
+    const currencyStatus = document.getElementById('ret-currency-status');
+    const currencySpinner = document.getElementById('ret-currency-spinner');
+    const currencyStatusMessage = document.getElementById('ret-currency-message');
 
     // Badge / note elements
     const countryBadge = document.getElementById('ret-country-badge');
@@ -261,7 +326,31 @@ const countryOptions = COUNTRIES.map((c) => ({
     }
 
     const formatNum = (val: number) => new Intl.NumberFormat('en-US').format(Math.round(val));
-    const getCurrencySymbol = (_countryCode: CountryCode) => '$';
+
+    // Phase 4B: shared currency conversion state
+    let displayCurrency: CurrencyCode = 'USD';
+    let nativeCurrency: CurrencyCode = 'USD';
+    let convRate = 1;
+    let convSource: 'live' | 'cache' | 'fallback' = 'live';
+    let sameCurrency = true;
+    let renderToken = 0;
+    let lastResults: RetirementResults | null = null;
+    let lastIncomeGoal = 0;
+
+    // Phase 4B helpers
+    const applyRate = (val: number) =>
+      sameCurrency || convSource === 'fallback' ? val : Math.round(val * convRate);
+
+    const showCurrencyStatus = (msg: string, spinner = false) => {
+      if (!currencyStatus) return;
+      currencyStatus.hidden = false;
+      if (currencySpinner) currencySpinner.style.display = spinner ? 'inline-block' : 'none';
+      if (currencyStatusMessage) currencyStatusMessage.textContent = msg;
+    };
+
+    const hideCurrencyStatus = () => {
+      if (currencyStatus) currencyStatus.hidden = true;
+    };
 
     const applyCountryDefaults = (countryCode: CountryCode) => {
       const defaults = RETIREMENT_DEFAULTS[countryCode] || RETIREMENT_DEFAULTS['US'];
@@ -290,7 +379,6 @@ const countryOptions = COUNTRIES.map((c) => ({
       if (countryBadge && countryObj) {
         countryBadge.textContent = `${countryObj.flag} ${countryObj.code}`;
       }
-      const symbol = getCurrencySymbol(countryCode);
       if (countryNote && countryObj) {
         countryNote.textContent = `Projection based on ${countryObj.name} (${countryObj.currencyCode}) assumptions`;
       }
@@ -315,22 +403,10 @@ const countryOptions = COUNTRIES.map((c) => ({
             : 'Enter a retirement age later than your current age.';
       }
 
-      if (futureCurr) futureCurr.textContent = symbol;
-      if (futureCard) futureCard.textContent = formatNum(results.futureRetirementValue);
-      if (inflatedCurr) inflatedCurr.textContent = symbol;
-      if (inflatedCard) inflatedCard.textContent = formatNum(results.inflationAdjustedRetirementValue);
-      if (incomeCurr) incomeCurr.textContent = symbol;
-      if (incomeCard) incomeCard.textContent = formatNum(results.estimatedMonthlyIncome);
-      if (contribCurr) contribCurr.textContent = symbol;
-      if (contribCard) contribCard.textContent = formatNum(results.totalContributions);
-      if (growthCurr) growthCurr.textContent = symbol;
-      if (growthCard) growthCard.textContent = formatNum(results.investmentGrowth);
-      if (yearsCard) yearsCard.textContent = String(results.yearsUntilRetirement);
-      if (goaltargetCurr) goaltargetCurr.textContent = symbol;
-      if (goaltargetCard) goaltargetCard.textContent = formatNum(results.inflationAdjustedMonthlyGoal);
-
-      // Goal achievement, readiness status, and warnings
-      if (goalTarget) goalTarget.textContent = `Monthly goal $${formatNum(retirementIncomeGoal)}`;
+      // Phase 4B: Store native results and render them in the selected display currency
+      lastResults = results;
+      lastIncomeGoal = retirementIncomeGoal;
+      renderDisplay();
       if (goalPercent) {
         goalPercent.textContent = results.goalAchievementPercent === null ? '--%' : `${results.goalAchievementPercent}%`;
       }
@@ -385,6 +461,50 @@ const countryOptions = COUNTRIES.map((c) => ({
         inflationRate,
         retirementIncomeGoal
       );
+    };
+
+    // Phase 4B: Convert native-currency results into the selected display currency
+    const renderDisplay = async () => {
+      const token = ++renderToken;
+      nativeCurrency = getNativeCurrency((countrySelect.value as CountryCode) || 'US');
+      const ctx = await getConversionContext(nativeCurrency, displayCurrency);
+      if (token !== renderToken) return;
+
+      convRate = ctx.rate;
+      convSource = ctx.source;
+      sameCurrency = ctx.isSameCurrency;
+
+      const symbol = getCurrencySymbol(displayCurrency);
+
+      if (futureCurr) futureCurr.textContent = symbol;
+      if (inflatedCurr) inflatedCurr.textContent = symbol;
+      if (incomeCurr) incomeCurr.textContent = symbol;
+      if (contribCurr) contribCurr.textContent = symbol;
+      if (growthCurr) growthCurr.textContent = symbol;
+      if (goaltargetCurr) goaltargetCurr.textContent = symbol;
+
+      if (!lastResults) return;
+
+      const r = lastResults;
+      if (futureCard) futureCard.textContent = formatNum(applyRate(r.futureRetirementValue));
+      if (inflatedCard) inflatedCard.textContent = formatNum(applyRate(r.inflationAdjustedRetirementValue));
+      if (incomeCard) incomeCard.textContent = formatNum(applyRate(r.estimatedMonthlyIncome));
+      if (contribCard) contribCard.textContent = formatNum(applyRate(r.totalContributions));
+      if (growthCard) growthCard.textContent = formatNum(applyRate(r.investmentGrowth));
+      if (yearsCard) yearsCard.textContent = String(r.yearsUntilRetirement);
+      if (goaltargetCard) goaltargetCard.textContent = formatNum(applyRate(r.inflationAdjustedMonthlyGoal));
+      if (goalTarget) goalTarget.textContent = `Monthly goal ${symbol}${formatNum(applyRate(lastIncomeGoal))}`;
+
+      // Currency status messaging
+      if (ctx.isSameCurrency) {
+        hideCurrencyStatus();
+      } else if (ctx.source === 'fallback') {
+        showCurrencyStatus(`Live exchange rates are unavailable right now — showing original ${ctx.native} values.`);
+      } else if (ctx.source === 'cache') {
+        showCurrencyStatus('Live exchange rates unavailable — showing last cached rates.');
+      } else {
+        hideCurrencyStatus();
+      }
     };
 
     const renderValidationErrors = (
@@ -447,6 +567,23 @@ const countryOptions = COUNTRIES.map((c) => ({
         updateCalculator();
       });
     }
+
+    // Phase 4B: Wire up the display currency selector and shared-service status indicator
+    if (displayCurrencySelect) {
+      displayCurrency = loadDisplayCurrency('retirement', getNativeCurrency((countrySelect.value as CountryCode) || 'US'));
+      displayCurrencySelect.value = displayCurrency;
+      displayCurrencySelect.addEventListener('change', () => {
+        displayCurrency = displayCurrencySelect.value as CurrencyCode;
+        saveDisplayCurrency('retirement', displayCurrency);
+        renderDisplay();
+      });
+    }
+
+    subscribeCurrencyStatus((snap) => {
+      if (snap.status === 'loading') {
+        showCurrencyStatus('Fetching exchange rates…', true);
+      }
+    });
 
     // Initial calculation on page load
     updateCalculator();
