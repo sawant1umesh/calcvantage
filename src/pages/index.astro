@@ -1,11 +1,45 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import HomeLayout from '../layouts/HomeLayout.astro';
+
+const SITE_URL = 'https://www.calcvantage.com';
+
+const organizationSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'Organization',
+	name: 'CalcVantage',
+	url: SITE_URL,
+	logo: `${SITE_URL}/favicon.svg`,
+	description: 'Free, private mortgage, retirement, and net worth calculators tailored for the United States, Canada, and Australia.',
+	sameAs: [],
+	contactPoint: {
+		'@type': 'ContactPoint',
+		email: 'hello@calcvantage.com',
+		contactType: 'customer service',
+	},
+};
+
+const websiteSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'WebSite',
+	name: 'CalcVantage',
+	url: SITE_URL,
+	description: 'Free, private mortgage, retirement, and net worth calculators tailored for the United States, Canada, and Australia.',
+	potentialAction: {
+		'@type': 'SearchAction',
+		target: {
+			'@type': 'EntryPoint',
+			urlTemplate: `${SITE_URL}/?q={search_term_string}`,
+		},
+		'query-input': 'required name=search_term_string',
+	},
+};
 ---
 
 <Layout
 	title="CalcVantage | Free Mortgage, Retirement & Net Worth Calculators"
 	description="Free, private mortgage, retirement, and net worth calculators tailored for the United States, Canada, and Australia. Accurate, country-specific financial math that runs in your browser."
+	structuredData={[organizationSchema, websiteSchema]}
 >
 	<HomeLayout />
 </Layout>

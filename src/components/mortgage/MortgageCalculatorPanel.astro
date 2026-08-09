@@ -707,8 +707,12 @@ const auStateOptions = AU_STATES.map((s) => ({
       const dPath = points.map((pt, idx) => `${idx === 0 ? 'M' : 'L'} ${pt.x} ${pt.y}`).join(' ');
       const dArea = `${dPath} L 480 170 L 40 170 Z`;
 
-      chartPathBalance.setAttribute('d', dPath);
-      chartAreaBalance.setAttribute('d', dArea);
+      if (chartPathBalance.getAttribute('d') !== dPath) {
+        chartPathBalance.setAttribute('d', dPath);
+      }
+      if (chartAreaBalance.getAttribute('d') !== dArea) {
+        chartAreaBalance.setAttribute('d', dArea);
+      }
     };
 
     // Render Amortization Table

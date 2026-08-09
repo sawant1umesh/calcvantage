@@ -1,0 +1,73 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0a0a0a"/>
+      <stop offset="100%" style="stop-color:#1a1a2e"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#0070f3"/>
+      <stop offset="100%" style="stop-color:#00a8ff"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1200" height="630" fill="url(#bg)"/>
+
+  <!-- Subtle grid pattern -->
+  <g opacity="0.04" stroke="white" stroke-width="1">
+    <line x1="0" y1="0" x2="0" y2="630"/>
+    <line x1="100" y1="0" x2="100" y2="630"/>
+    <line x1="200" y1="0" x2="200" y2="630"/>
+    <line x1="300" y1="0" x2="300" y2="630"/>
+    <line x1="400" y1="0" x2="400" y2="630"/>
+    <line x1="500" y1="0" x2="500" y2="630"/>
+    <line x1="600" y1="0" x2="600" y2="630"/>
+    <line x1="700" y1="0" x2="700" y2="630"/>
+    <line x1="800" y1="0" x2="800" y2="630"/>
+    <line x1="900" y1="0" x2="900" y2="630"/>
+    <line x1="1000" y1="0" x2="1000" y2="630"/>
+    <line x1="1100" y1="0" x2="1100" y2="630"/>
+    <line x1="1200" y1="0" x2="1200" y2="630"/>
+    <line x1="0" y1="0" x2="1200" y2="0"/>
+    <line x1="0" y1="100" x2="1200" y2="100"/>
+    <line x1="0" y1="200" x2="1200" y2="200"/>
+    <line x1="0" y1="300" x2="1200" y2="300"/>
+    <line x1="0" y1="400" x2="1200" y2="400"/>
+    <line x1="0" y1="500" x2="1200" y2="500"/>
+    <line x1="0" y1="630" x2="1200" y2="630"/>
+  </g>
+
+  <!-- Accent bar -->
+  <rect x="80" y="180" width="120" height="4" rx="2" fill="url(#accent)"/>
+
+  <!-- Brand logo box -->
+  <rect x="80" y="80" width="48" height="48" rx="8" fill="url(#accent)"/>
+  <text x="104" y="112" font-family="monospace" font-size="20" font-weight="700" fill="white" text-anchor="middle">CV</text>
+
+  <!-- Brand name -->
+  <text x="144" y="112" font-family="system-ui, -apple-system, sans-serif" font-size="22" font-weight="700" fill="white" letter-spacing="-0.5">CalcVantage</text>
+
+  <!-- Main headline -->
+  <text x="80" y="260" font-family="system-ui, -apple-system, sans-serif" font-size="56" font-weight="700" fill="white" letter-spacing="-2">
+    <tspan>Financial calculators,</tspan>
+  </text>
+  <text x="80" y="330" font-family="system-ui, -apple-system, sans-serif" font-size="56" font-weight="700" fill="white" letter-spacing="-2">
+    <tspan>made for the way</tspan>
+  </text>
+  <text x="80" y="400" font-family="system-ui, -apple-system, sans-serif" font-size="56" font-weight="700" fill="white" letter-spacing="-2">
+    <tspan>you live.</tspan>
+  </text>
+
+  <!-- Subtitle -->
+  <text x="80" y="460" font-family="system-ui, -apple-system, sans-serif" font-size="22" fill="#a0a0b0" letter-spacing="0">
+    <tspan>Mortgage · Retirement · Net Worth</tspan>
+  </text>
+
+  <!-- Country flags text -->
+  <text x="80" y="500" font-family="system-ui, -apple-system, sans-serif" font-size="18" fill="#606070" letter-spacing="0">
+    <tspan>US · Canada · Australia</tspan>
+  </text>
+
+  <!-- Domain -->
+  <text x="1120" y="580" font-family="monospace" font-size="16" fill="#505060" text-anchor="end">calcvantage.com</text>
+</svg>

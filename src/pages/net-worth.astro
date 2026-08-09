@@ -1,11 +1,29 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import NetWorthLayout from '../layouts/NetWorthLayout.astro';
+
+const SITE_URL = 'https://www.calcvantage.com';
+
+const netWorthSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'SoftwareApplication',
+	name: 'Net Worth Calculator',
+	applicationCategory: 'FinanceApplication',
+	operatingSystem: 'Web browser',
+	url: `${SITE_URL}/net-worth`,
+	description: 'Calculate your total assets, liabilities, and net worth for the US, Canada, and Australia. Includes asset allocation, debt breakdown, health score, and financial insights.',
+	offers: {
+		'@type': 'Offer',
+		price: '0',
+		priceCurrency: 'USD',
+	},
+};
 ---
 
 <Layout
 	title="Net Worth Calculator | CalcVantage"
 	description="Calculate your total assets, liabilities, and net worth for the US, Canada, and Australia."
+	structuredData={netWorthSchema}
 >
 	<NetWorthLayout />
 </Layout>

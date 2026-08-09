@@ -1,11 +1,29 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import MortgageLayout from '../layouts/MortgageLayout.astro';
+
+const SITE_URL = 'https://www.calcvantage.com';
+
+const mortgageSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'SoftwareApplication',
+	name: 'Mortgage Calculator',
+	applicationCategory: 'FinanceApplication',
+	operatingSystem: 'Web browser',
+	url: `${SITE_URL}/mortgage`,
+	description: 'Calculate mortgage payments and loan terms for US, Canada, and Australia. Includes amortization, CMHC insurance, stamp duty, property taxes, and extra payments.',
+	offers: {
+		'@type': 'Offer',
+		price: '0',
+		priceCurrency: 'USD',
+	},
+};
 ---
 
 <Layout
 	title="Mortgage Calculator | CalcVantage"
 	description="Calculate mortgage payments and loan terms for US, Canada, and Australia."
+	structuredData={mortgageSchema}
 >
 	<MortgageLayout />
 </Layout>

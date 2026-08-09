@@ -1,11 +1,29 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import RetirementLayout from '../layouts/RetirementLayout.astro';
+
+const SITE_URL = 'https://www.calcvantage.com';
+
+const retirementSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'SoftwareApplication',
+	name: 'Retirement Calculator',
+	applicationCategory: 'FinanceApplication',
+	operatingSystem: 'Web browser',
+	url: `${SITE_URL}/retirement`,
+	description: 'Project your retirement savings, future value, and investment growth for the US, Canada, and Australia. Includes inflation-adjusted values, income estimates, and goal tracking.',
+	offers: {
+		'@type': 'Offer',
+		price: '0',
+		priceCurrency: 'USD',
+	},
+};
 ---
 
 <Layout
 	title="Retirement Calculator | CalcVantage"
 	description="Project your retirement savings, future value, and investment growth for the US, Canada, and Australia."
+	structuredData={retirementSchema}
 >
 	<RetirementLayout />
 </Layout>

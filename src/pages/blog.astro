@@ -1,11 +1,34 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import BlogLayout from '../layouts/BlogLayout.astro';
+import { BLOG_POSTS } from '../data/blog-posts';
+
+const SITE_URL = 'https://www.calcvantage.com';
+
+const blogSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'CollectionPage',
+	name: 'Blog | CalcVantage',
+	description: 'Financial education articles, calculator guides, and personal finance resources from the CalcVantage team.',
+	url: `${SITE_URL}/blog`,
+	mainEntity: {
+		'@type': 'ItemList',
+		name: 'CalcVantage Blog Articles',
+	 numberOfItems: BLOG_POSTS.length,
+		itemListElement: BLOG_POSTS.map((post, index) => ({
+			'@type': 'ListItem',
+			position: index + 1,
+			name: post.title,
+			url: `${SITE_URL}/blog/${post.slug}`,
+		})),
+	},
+};
 ---
 
 <Layout
 	title="Blog | CalcVantage"
 	description="Financial education articles, calculator guides, and personal finance resources from the CalcVantage team."
+	structuredData={blogSchema}
 >
 	<BlogLayout />
 </Layout>

@@ -1,11 +1,32 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import FaqLayout from '../layouts/FaqLayout.astro';
+import { FAQ_CATEGORIES } from '../data/faq';
+
+const SITE_URL = 'https://www.calcvantage.com';
+
+const faqEntities = FAQ_CATEGORIES.flatMap((category) =>
+	category.items.map((item) => ({
+		'@type': 'Question',
+		name: item.question,
+		acceptedAnswer: {
+			'@type': 'Answer',
+			answerText: item.answer.replace(/<[^>]*>/g, ''),
+		},
+	}))
+);
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	mainEntity: faqEntities,
+};
 ---
 
 <Layout
 	title="FAQ | CalcVantage"
 	description="Answers to common questions about the CalcVantage mortgage, retirement, and net worth calculators — how they work, how country-specific rules are applied, currency conversion, and privacy."
+	structuredData={faqSchema}
 >
 	<FaqLayout />
 </Layout>

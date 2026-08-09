@@ -25,8 +25,11 @@ export function encodeInputsToURL(inputs: MortgageInputs): string {
 
   const queryStr = params.toString();
   if (typeof window !== 'undefined' && window.history && queryStr) {
-    const newUrl = `${window.location.pathname}?${queryStr}`;
-    window.history.replaceState({ path: newUrl }, '', newUrl);
+    const newSearch = `?${queryStr}`;
+    if (window.location.search !== newSearch) {
+      const newUrl = `${window.location.pathname}${newSearch}`;
+      window.history.replaceState({ path: newUrl }, '', newUrl);
+    }
   }
 
   return typeof window !== 'undefined' ? `${window.location.origin}${window.location.pathname}?${queryStr}` : queryStr;

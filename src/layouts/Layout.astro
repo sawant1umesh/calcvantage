@@ -4,14 +4,25 @@ import '../styles/global.css';
 interface Props {
 	title?: string;
 	description?: string;
+	image?: string;
+	canonical?: string;
+	noindex?: boolean;
+	structuredData?: Record<string, unknown> | Record<string, unknown>[];
 }
 
 const {
 	title = 'CalcVantage | Premium Financial Calculator Platform',
 	description = 'CalcVantage provides high-precision mortgage and financial calculators tailored for United States, Canada, and Australia.',
+	image = '/og-image.svg',
+	canonical,
+	noindex = false,
+	structuredData,
 } = Astro.props;
 
+const SITE_URL = 'https://www.calcvantage.com';
 const pathname = Astro.url.pathname;
+const canonicalUrl = canonical || `${SITE_URL}${pathname === '/' ? '/' : pathname}`;
+const absoluteImageUrl = image.startsWith('http') ? image : `${SITE_URL}${image}`;
 const isMortgageActive = pathname.startsWith('/mortgage');
 const isRetirementActive = pathname.startsWith('/retirement');
 const isNetWorthActive = pathname.startsWith('/net-worth');
@@ -38,8 +49,31 @@ const navItems = [
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<meta name="generator" content={Astro.generator} />
+
 		<title>{title}</title>
 		<meta name="description" content={description} />
+		<link rel="canonical" href={canonicalUrl} />
+		{noindex && <meta name="robots" content="noindex, nofollow" />}
+
+		<meta property="og:type" content="website" />
+		<meta property="og:url" content={canonicalUrl} />
+		<meta property="og:title" content={title} />
+		<meta property="og:description" content={description} />
+		<meta property="og:image" content={absoluteImageUrl} />
+		<meta property="og:site_name" content="CalcVantage" />
+
+		<meta name="twitter:card" content="summary_large_image" />
+		<meta name="twitter:title" content={title} />
+		<meta name="twitter:description" content={description} />
+		<meta name="twitter:image" content={absoluteImageUrl} />
+
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" />
+
+		{structuredData && (
+			<script type="application/ld+json" set:html={JSON.stringify(structuredData)} />
+		)}
 	</head>
 	<body>
 		<!-- Platform Navigation Header -->
