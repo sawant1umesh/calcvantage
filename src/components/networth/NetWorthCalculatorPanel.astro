@@ -602,21 +602,33 @@ const currencyOptions = CURRENCIES.map((c) => ({
     });
 
     countrySelect.addEventListener('change', () => {
-      applyCountryDefaults(countrySelect.value as CountryCode);
+      const newCountry = countrySelect.value as CountryCode;
+
+      // Phase 4B: auto-set the display currency to the country's native currency
+      displayCurrency = getNativeCurrency(newCountry);
+      if (displayCurrencySelect) displayCurrencySelect.value = displayCurrency;
+      saveDisplayCurrency('networth', displayCurrency);
+
+      applyCountryDefaults(newCountry);
       updateCalculator();
     });
 
     if (resetBtn) {
       resetBtn.addEventListener('click', () => {
-        applyCountryDefaults(countrySelect.value as CountryCode);
+        const country = (countrySelect.value as CountryCode) || 'US';
+        displayCurrency = getNativeCurrency(country);
+        if (displayCurrencySelect) displayCurrencySelect.value = displayCurrency;
+        saveDisplayCurrency('networth', displayCurrency);
+        applyCountryDefaults(country);
         updateCalculator();
       });
     }
 
     // Phase 4B: Wire up the display currency selector and shared-service status indicator
     if (displayCurrencySelect) {
-      displayCurrency = loadDisplayCurrency('networth', getNativeCurrency((countrySelect.value as CountryCode) || 'US'));
+      displayCurrency = getNativeCurrency((countrySelect.value as CountryCode) || 'US');
       displayCurrencySelect.value = displayCurrency;
+      saveDisplayCurrency('networth', displayCurrency);
       displayCurrencySelect.addEventListener('change', () => {
         displayCurrency = displayCurrencySelect.value as CurrencyCode;
         saveDisplayCurrency('networth', displayCurrency);

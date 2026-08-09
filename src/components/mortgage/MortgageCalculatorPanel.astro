@@ -1005,7 +1005,12 @@ const auStateOptions = AU_STATES.map((s) => ({
     countrySelect.addEventListener('change', () => {
       const newCountry = countrySelect.value as CountryCode;
       const defaults = MORTGAGE_DEFAULTS[newCountry] || MORTGAGE_DEFAULTS['US'];
-      
+
+      // Phase 4B: auto-set the display currency to the country's native currency
+      displayCurrency = getNativeCurrency(newCountry);
+      if (displayCurrencySelect) displayCurrencySelect.value = displayCurrency;
+      saveDisplayCurrency('mortgage', displayCurrency);
+
       homeValueInput.value = String(defaults.homeValue);
       downPaymentAmountInput.value = String(defaults.downPaymentAmount);
       downPaymentPercentInput.value = String(defaults.downPaymentPercent);
@@ -1030,6 +1035,10 @@ const auStateOptions = AU_STATES.map((s) => ({
         const countryCode = (countrySelect.value as CountryCode) || 'US';
         const defaults = MORTGAGE_DEFAULTS[countryCode] || MORTGAGE_DEFAULTS['US'];
 
+        displayCurrency = getNativeCurrency(countryCode);
+        if (displayCurrencySelect) displayCurrencySelect.value = displayCurrency;
+        saveDisplayCurrency('mortgage', displayCurrency);
+
         homeValueInput.value = String(defaults.homeValue);
         downPaymentAmountInput.value = String(defaults.downPaymentAmount);
         downPaymentPercentInput.value = String(defaults.downPaymentPercent);
@@ -1052,8 +1061,9 @@ const auStateOptions = AU_STATES.map((s) => ({
 
     // Phase 4B: Wire up the display currency selector and shared-service status indicator
     if (displayCurrencySelect) {
-      displayCurrency = loadDisplayCurrency('mortgage', getNativeCurrency((countrySelect.value as CountryCode) || 'US'));
+      displayCurrency = getNativeCurrency((countrySelect.value as CountryCode) || 'US');
       displayCurrencySelect.value = displayCurrency;
+      saveDisplayCurrency('mortgage', displayCurrency);
       displayCurrencySelect.addEventListener('change', () => {
         displayCurrency = displayCurrencySelect.value as CurrencyCode;
         saveDisplayCurrency('mortgage', displayCurrency);
