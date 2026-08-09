@@ -1,32 +1,37 @@
 ---
-import type { ButtonProps } from '../../types/components';
-
-interface Props extends ButtonProps {}
+interface Props {
+  href: string;
+  variant?: 'primary' | 'secondary' | 'outline' | 'inverse' | 'inverse-outline';
+  size?: 'sm' | 'md' | 'lg';
+  target?: string;
+  rel?: string;
+  ariaLabel?: string;
+  class?: string;
+}
 
 const {
+  href,
   variant = 'primary',
   size = 'md',
-  type = 'button',
-  disabled = false,
-  fullWidth = false,
+  target,
+  rel,
+  ariaLabel,
   class: className = '',
-  id,
 } = Astro.props;
 ---
 
-<button
-  id={id}
-  type={type}
-  disabled={disabled}
-  class={`btn variant-${variant} size-${size} ${fullWidth ? 'full-width' : ''} ${className}`}
+<a
+  href={href}
+  target={target}
+  rel={rel}
+  aria-label={ariaLabel}
+  class={`btn-link variant-${variant} size-${size} ${className}`}
 >
-  <slot name="icon-left" />
-  <span class="btn-label"><slot /></span>
-  <slot name="icon-right" />
-</button>
+  <slot />
+</a>
 
 <style>
-  .btn {
+  .btn-link {
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -36,28 +41,21 @@ const {
     line-height: 1;
     border-radius: var(--radius-pill);
     border: 1px solid transparent;
-    cursor: pointer;
+    text-decoration: none;
     white-space: nowrap;
     user-select: none;
-    transition: background-color var(--transition-fast), border-color var(--transition-fast), opacity var(--transition-fast), box-shadow var(--transition-fast), transform var(--transition-fast);
+    transition: background-color var(--transition-fast), border-color var(--transition-fast),
+      color var(--transition-fast), box-shadow var(--transition-fast),
+      transform var(--transition-fast);
   }
 
-  .btn:focus-visible {
+  .btn-link:focus-visible {
     outline: none;
     box-shadow: var(--shadow-focus);
   }
 
-  .btn:active:not(:disabled) {
+  .btn-link:active {
     transform: scale(0.985);
-  }
-
-  .btn.full-width {
-    width: 100%;
-  }
-
-  .btn:disabled {
-    cursor: not-allowed;
-    opacity: 0.5;
   }
 
   /* Sizes */
@@ -86,7 +84,7 @@ const {
     border-color: var(--color-primary);
   }
 
-  .variant-primary:hover:not(:disabled) {
+  .variant-primary:hover {
     background-color: #333333;
     border-color: #333333;
   }
@@ -97,7 +95,7 @@ const {
     border-color: var(--color-hairline-strong);
   }
 
-  .variant-secondary:hover:not(:disabled) {
+  .variant-secondary:hover {
     background-color: var(--color-canvas-soft);
     border-color: var(--color-ink);
   }
@@ -108,18 +106,29 @@ const {
     border-color: var(--color-hairline-strong);
   }
 
-  .variant-outline:hover:not(:disabled) {
+  .variant-outline:hover {
     background-color: var(--color-canvas-soft-2);
   }
 
-  .variant-ghost {
-    background-color: transparent;
-    color: var(--color-body);
-    border-color: transparent;
-  }
-
-  .variant-ghost:hover:not(:disabled) {
-    background-color: var(--color-canvas-soft-2);
+  .variant-inverse {
+    background-color: var(--color-on-primary);
     color: var(--color-ink);
+    border-color: var(--color-on-primary);
+  }
+
+  .variant-inverse:hover {
+    background-color: #ececec;
+    border-color: #ececec;
+  }
+
+  .variant-inverse-outline {
+    background-color: transparent;
+    color: var(--color-on-primary);
+    border-color: rgba(255, 255, 255, 0.35);
+  }
+
+  .variant-inverse-outline:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.6);
   }
 </style>

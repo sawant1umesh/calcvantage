@@ -86,7 +86,8 @@ const {
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 0.875rem;
+    font-size: 0.9375rem;
+    font-weight: 500;
     color: var(--color-mute);
     pointer-events: none;
     padding: 0 0.75rem;
@@ -106,20 +107,45 @@ const {
     padding: 0 0.875rem;
     font-family: var(--font-sans);
     font-size: 0.9375rem;
+    font-weight: 500;
+    font-variant-numeric: tabular-nums;
     color: var(--color-ink);
     background-color: var(--color-canvas);
     border: 1px solid var(--color-hairline-strong);
     border-radius: var(--radius-sm);
     outline: none;
-    transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+    caret-color: var(--color-accent);
+    transition: border-color var(--transition-fast), box-shadow var(--transition-fast),
+      background-color var(--transition-fast);
+  }
+
+  .input-control::placeholder {
+    color: var(--color-hairline-strong);
+    font-weight: 400;
+  }
+
+  /* Hide native number steppers for a cleaner calculator UI */
+  .input-control::-webkit-outer-spin-button,
+  .input-control::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  .input-control[type='number'] {
+    -moz-appearance: textfield;
+    appearance: textfield;
   }
 
   .input-control.has-prefix {
-    padding-left: 2rem;
+    padding-left: 2.5rem;
   }
 
   .input-control.has-suffix {
-    padding-right: 2.25rem;
+    padding-right: 2.5rem;
+  }
+
+  .input-control:hover:not(:focus):not(:disabled) {
+    border-color: var(--color-mute);
   }
 
   .input-control:focus {
@@ -129,6 +155,15 @@ const {
 
   .input-wrapper.has-error .input-control {
     border-color: var(--color-error);
+  }
+
+  .input-wrapper.has-error .input-control:hover:not(:focus) {
+    border-color: var(--color-error);
+  }
+
+  .input-wrapper.has-error .input-control:focus {
+    border-color: var(--color-error);
+    box-shadow: 0 0 0 3px rgba(238, 0, 0, 0.12);
   }
 
   .input-wrapper.is-disabled .input-control {

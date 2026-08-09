@@ -5,3 +5,4 @@ export * from './mortgage';
 export * from './retirement';
 export * from './networth';
 export * from './components';
+export * from './faq';

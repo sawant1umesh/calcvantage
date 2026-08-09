@@ -12,11 +12,23 @@ const {
 } = Astro.props;
 
 const pathname = Astro.url.pathname;
-const isMortgageActive = pathname === '/' || pathname.startsWith('/mortgage');
+const isMortgageActive = pathname.startsWith('/mortgage');
 const isRetirementActive = pathname.startsWith('/retirement');
 const isNetWorthActive = pathname.startsWith('/net-worth');
 const isAboutActive = pathname.startsWith('/about');
 const isBlogActive = pathname.startsWith('/blog');
+const isFaqActive = pathname.startsWith('/faq');
+const isContactActive = pathname.startsWith('/contact');
+
+const navItems = [
+	{ label: 'Mortgage', href: '/mortgage', active: isMortgageActive },
+	{ label: 'Retirement', href: '/retirement', active: isRetirementActive },
+	{ label: 'Net Worth', href: '/net-worth', active: isNetWorthActive },
+	{ label: 'Blog', href: '/blog', active: isBlogActive },
+	{ label: 'About', href: '/about', active: isAboutActive },
+	{ label: 'FAQ', href: '/faq', active: isFaqActive },
+	{ label: 'Contact', href: '/contact', active: isContactActive },
+];
 ---
 
 <!DOCTYPE html>
@@ -33,24 +45,50 @@ const isBlogActive = pathname.startsWith('/blog');
 		<!-- Platform Navigation Header -->
 		<header class="app-header">
 			<div class="header-container">
-				<a href="/" class="brand-link">
+				<a href="/" class="brand-link" aria-label="CalcVantage home">
 					<div class="brand-logo font-mono">CV</div>
 					<span class="brand-name">CalcVantage<span class="brand-domain">.com</span></span>
 				</a>
-				<nav class="header-nav">
-					<a href="/mortgage" class={`nav-item ${isMortgageActive ? 'active' : ''}`}>Mortgage</a>
-					<a href="/retirement" class={`nav-item ${isRetirementActive ? 'active' : ''}`}>Retirement</a>
-					<a href="/net-worth" class={`nav-item ${isNetWorthActive ? 'active' : ''}`}>Net Worth</a>
-					<a href="/blog" class={`nav-item ${isBlogActive ? 'active' : ''}`}>Blog</a>
-					<a href="/about" class={`nav-item ${isAboutActive ? 'active' : ''}`}>About</a>
-					<a href="#" class="nav-item disabled">Refinance</a>
-					<a href="#" class="nav-item disabled">Affordability</a>
-					<a href="#" class="nav-item disabled">Auto</a>
+				<nav class="header-nav" aria-label="Primary navigation">
+					{navItems.map((item) => (
+						<a href={item.href} class={`nav-item ${item.active ? 'active' : ''}`}>
+							{item.label}
+						</a>
+					))}
 				</nav>
 				<div class="header-actions">
-					<span class="country-badge">🇺🇸 US | 🇨🇦 CA | 🇦🇺 AU</span>
+					<span class="country-badge">🇺🇸 US · 🇨🇦 CA · 🇦🇺 AU</span>
+					<button
+						class="nav-toggle"
+						id="nav-toggle"
+						type="button"
+						aria-expanded="false"
+						aria-controls="mobile-nav"
+						aria-label="Open navigation menu"
+					>
+						<span class="nav-toggle-bar"></span>
+						<span class="nav-toggle-bar"></span>
+						<span class="nav-toggle-bar"></span>
+					</button>
 				</div>
 			</div>
+
+			<!-- Collapsible mobile navigation -->
+			<nav class="mobile-nav" id="mobile-nav" aria-label="Mobile navigation">
+				<div class="mobile-nav-inner">
+					{navItems.map((item) => (
+						<a
+							href={item.href}
+							class={`mobile-nav-link ${item.active ? 'active' : ''}`}
+						>
+							{item.label}
+						</a>
+					))}
+					<div class="mobile-nav-fallback">
+						<span class="mobile-nav-more text-caption">More tools coming soon</span>
+					</div>
+				</div>
+			</nav>
 		</header>
 
 		<!-- Main Page Content -->
@@ -61,26 +99,93 @@ const isBlogActive = pathname.startsWith('/blog');
 		<!-- Platform Footer -->
 		<footer class="app-footer">
 			<div class="footer-container">
-				<div class="footer-info">
-					<span class="brand-name text-body-sm font-mono">CalcVantage</span>
-					<p class="text-caption">© 2026 CalcVantage Inc. High-precision financial intelligence platform for US, CA & AU.</p>
+				<div class="footer-grid">
+					<div class="footer-brand">
+						<a href="/" class="footer-brand-link" aria-label="CalcVantage home">
+							<div class="brand-logo font-mono">CV</div>
+							<span class="brand-name">CalcVantage.com</span>
+						</a>
+						<p class="footer-tagline">
+							High-precision financial intelligence platform for the United States,
+							Canada, and Australia.
+						</p>
+						<span class="country-badge footer-country-badge">🇺🇸 US · 🇨🇦 CA · 🇦🇺 AU</span>
+					</div>
+
+					<nav class="footer-col" aria-label="Calculators">
+						<h3 class="footer-col-title">Calculators</h3>
+						<ul class="footer-links">
+							<li><a class="footer-link" href="/mortgage">Mortgage Calculator</a></li>
+							<li><a class="footer-link" href="/retirement">Retirement Calculator</a></li>
+							<li><a class="footer-link" href="/net-worth">Net Worth Calculator</a></li>
+						</ul>
+					</nav>
+
+					<nav class="footer-col" aria-label="Company">
+						<h3 class="footer-col-title">Company</h3>
+						<ul class="footer-links">
+							<li><a class="footer-link" href="/about">About Us</a></li>
+							<li><a class="footer-link" href="/blog">Blog</a></li>
+							<li><a class="footer-link" href="/faq">FAQ</a></li>
+							<li><a class="footer-link" href="/contact">Contact</a></li>
+						</ul>
+					</nav>
+
+					<nav class="footer-col" aria-label="Legal">
+						<h3 class="footer-col-title">Legal</h3>
+						<ul class="footer-links">
+							<li><a class="footer-link" href="/privacy-policy">Privacy Policy</a></li>
+							<li><a class="footer-link" href="/terms">Terms &amp; Conditions</a></li>
+							<li><a class="footer-link" href="/disclaimer">Disclaimer</a></li>
+							<li><a class="footer-link" href="/cookie-policy">Cookie Policy</a></li>
+						</ul>
+					</nav>
 				</div>
-				<div class="footer-links text-caption">
-					<a class="footer-link" href="/mortgage">Mortgage</a>
-					<a class="footer-link" href="/retirement">Retirement</a>
-					<a class="footer-link" href="/net-worth">Net Worth</a>
-					<span class="footer-sep" aria-hidden="true">·</span>
-					<a class="footer-link" href="/blog">Blog</a>
-					<a class="footer-link" href="/about">About</a>
-					<a class="footer-link" href="/contact">Contact</a>
-					<span class="footer-sep" aria-hidden="true">·</span>
-					<a class="footer-link" href="/privacy-policy">Privacy Policy</a>
-					<a class="footer-link" href="/terms">Terms &amp; Conditions</a>
-					<a class="footer-link" href="/disclaimer">Disclaimer</a>
-					<a class="footer-link" href="/cookie-policy">Cookie Policy</a>
+
+				<div class="footer-bottom">
+					<span class="text-caption">© 2026 CalcVantage Inc. All rights reserved.</span>
+					<span class="footer-note text-caption">
+						Calculators provide estimates for educational purposes only — not financial,
+						legal, or tax advice.
+					</span>
 				</div>
 			</div>
 		</footer>
+
+		<script>
+			(() => {
+				const toggle = document.getElementById('nav-toggle');
+				const panel = document.getElementById('mobile-nav');
+				if (!toggle || !panel) return;
+
+				const isOpen = () => toggle.getAttribute('aria-expanded') === 'true';
+
+				const setOpen = (open: boolean) => {
+					toggle.setAttribute('aria-expanded', String(open));
+					toggle.setAttribute('aria-label', open ? 'Close navigation menu' : 'Open navigation menu');
+					panel.classList.toggle('is-open', open);
+				};
+
+				toggle.addEventListener('click', () => {
+					setOpen(!isOpen());
+				});
+
+				panel.querySelectorAll('a').forEach((link) => {
+					link.addEventListener('click', () => setOpen(false));
+				});
+
+				document.addEventListener('click', (event) => {
+					const target = event.target as HTMLElement | null;
+					if (isOpen() && target && !panel.contains(target) && !toggle.contains(target)) {
+						setOpen(false);
+					}
+				});
+
+				document.addEventListener('keydown', (event) => {
+					if (event.key === 'Escape') setOpen(false);
+				});
+			})();
+		</script>
 	</body>
 </html>
 
@@ -101,6 +206,7 @@ const isBlogActive = pathname.startsWith('/blog');
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
+		gap: 1.5rem;
 	}
 
 	.brand-link {
@@ -109,6 +215,12 @@ const isBlogActive = pathname.startsWith('/blog');
 		gap: 0.75rem;
 		text-decoration: none;
 		color: var(--color-ink);
+		border-radius: var(--radius-sm);
+	}
+
+	.brand-link:focus-visible {
+		outline: 2px solid var(--color-accent);
+		outline-offset: 3px;
 	}
 
 	.brand-logo {
@@ -141,18 +253,51 @@ const isBlogActive = pathname.startsWith('/blog');
 		gap: 1.5rem;
 	}
 
-	@media (min-width: 768px) {
+	@media (min-width: 1024px) {
 		.header-nav {
 			display: flex;
 		}
 	}
 
+	@media (min-width: 1200px) {
+		.header-nav {
+			gap: 2rem;
+		}
+	}
+
 	.nav-item {
+		position: relative;
+		display: inline-block;
+		padding: 0.375rem 0;
 		font-size: 0.875rem;
 		font-weight: 500;
 		color: var(--color-body);
 		text-decoration: none;
+		border-radius: var(--radius-xs);
 		transition: color var(--transition-fast);
+	}
+
+	.nav-item::after {
+		content: '';
+		position: absolute;
+		left: 0;
+		right: 0;
+		bottom: -0.25rem;
+		height: 2px;
+		border-radius: 2px;
+		background-color: var(--color-accent);
+		transform: scaleX(0);
+		transform-origin: center;
+		transition: transform var(--transition-normal);
+	}
+
+	.nav-item:hover {
+		color: var(--color-ink);
+	}
+
+	.nav-item:focus-visible {
+		outline: 2px solid var(--color-accent);
+		outline-offset: 4px;
 	}
 
 	.nav-item.active {
@@ -160,18 +305,136 @@ const isBlogActive = pathname.startsWith('/blog');
 		font-weight: 600;
 	}
 
-	.nav-item.disabled {
-		color: var(--color-hairline-strong);
-		cursor: not-allowed;
+	.nav-item.active::after {
+		transform: scaleX(1);
 	}
 
 	.country-badge {
+		display: none;
 		font-size: 0.75rem;
 		font-weight: 500;
 		padding: 0.25rem 0.625rem;
 		background-color: var(--color-canvas-soft-2);
 		border: 1px solid var(--color-hairline);
 		border-radius: var(--radius-full);
+		white-space: nowrap;
+	}
+
+	@media (min-width: 1024px) and (max-width: 1279px) {
+		.header-actions .country-badge {
+			display: none;
+		}
+	}
+
+	@media (min-width: 1280px) {
+		.header-actions .country-badge {
+			display: inline-flex;
+		}
+	}
+
+	/* ─── Mobile nav toggle ─── */
+	.nav-toggle {
+		display: inline-flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		gap: 3px;
+		width: 2.5rem;
+		height: 2.5rem;
+		padding: 0;
+		background-color: var(--color-canvas);
+		border: 1px solid var(--color-hairline);
+		border-radius: var(--radius-md);
+		cursor: pointer;
+		transition: border-color var(--transition-fast), background-color var(--transition-fast), box-shadow var(--transition-fast);
+	}
+
+	.nav-toggle:hover {
+		border-color: var(--color-hairline-strong);
+	}
+
+	.nav-toggle:focus-visible {
+		outline: none;
+		box-shadow: var(--shadow-focus);
+	}
+
+	.nav-toggle-bar {
+		display: block;
+		width: 1.25rem;
+		height: 2px;
+		border-radius: 2px;
+		background-color: var(--color-ink);
+		transition: transform var(--transition-normal), opacity var(--transition-fast);
+	}
+
+	.nav-toggle[aria-expanded='true'] .nav-toggle-bar:nth-child(1) {
+		transform: translateY(5px) rotate(45deg);
+	}
+
+	.nav-toggle[aria-expanded='true'] .nav-toggle-bar:nth-child(2) {
+		opacity: 0;
+	}
+
+	.nav-toggle[aria-expanded='true'] .nav-toggle-bar:nth-child(3) {
+		transform: translateY(-5px) rotate(-45deg);
+	}
+
+	@media (min-width: 1024px) {
+		.nav-toggle {
+			display: none;
+		}
+	}
+
+	/* ─── Mobile nav panel ─── */
+	.mobile-nav {
+		display: grid;
+		grid-template-rows: 0fr;
+		border-bottom: 1px solid transparent;
+		transition: grid-template-rows var(--transition-normal);
+	}
+
+	.mobile-nav.is-open {
+		grid-template-rows: 1fr;
+		border-bottom-color: var(--color-hairline);
+	}
+
+	.mobile-nav-inner {
+		overflow: hidden;
+		min-height: 0;
+		display: flex;
+		flex-direction: column;
+		padding: 0 1.5rem;
+	}
+
+	.mobile-nav-link {
+		display: block;
+		padding: 0.875rem 0;
+		font-size: 0.9375rem;
+		font-weight: 500;
+		color: var(--color-body);
+		text-decoration: none;
+		border-bottom: 1px solid var(--color-hairline);
+		transition: color var(--transition-fast);
+		text-align: left;
+	}
+
+	.mobile-nav-link:last-of-type {
+		border-bottom: none;
+	}
+
+	.mobile-nav-link:hover,
+	.mobile-nav-link.active {
+		color: var(--color-accent);
+		font-weight: 600;
+	}
+
+	.mobile-nav-link:focus-visible {
+		outline: 2px solid var(--color-accent);
+		outline-offset: -2px;
+	}
+
+	.mobile-nav-fallback {
+		padding: 0.75rem 0 1.25rem;
 	}
 
 	.app-main {
@@ -183,46 +446,135 @@ const isBlogActive = pathname.startsWith('/blog');
 	.app-footer {
 		background-color: var(--color-canvas);
 		border-top: 1px solid var(--color-hairline);
-		padding: 2rem 0;
+		padding: 3rem 0 0;
+		margin-top: 4rem;
 	}
 
 	.footer-container {
 		max-width: 80rem;
 		margin: 0 auto;
 		padding: 0 1.5rem;
-		display: flex;
-		flex-direction: column;
-		gap: 1rem;
-		align-items: center;
-		justify-content: space-between;
+	}
+
+	.footer-grid {
+		display: grid;
+		grid-template-columns: 1fr;
+		gap: 2.5rem;
 	}
 
 	@media (min-width: 640px) {
-		.footer-container {
-			flex-direction: row;
+		.footer-grid {
+			grid-template-columns: repeat(2, 1fr);
+			gap: 2.5rem 2rem;
 		}
 	}
 
-	.footer-links {
+	@media (min-width: 1024px) {
+		.footer-grid {
+			grid-template-columns: 2fr 1fr 1fr 1.25fr;
+			gap: 3rem;
+		}
+	}
+
+	.footer-brand {
 		display: flex;
-		flex-wrap: wrap;
+		flex-direction: column;
+		align-items: flex-start;
+		gap: 1rem;
+	}
+
+	.footer-brand-link {
+		display: inline-flex;
 		align-items: center;
-		justify-content: center;
-		gap: 0.25rem 1rem;
+		gap: 0.75rem;
+		text-decoration: none;
+		color: var(--color-ink);
+		border-radius: var(--radius-sm);
+		font-weight: 700;
+		font-size: 1.125rem;
+		letter-spacing: -0.02em;
+	}
+
+	.footer-brand-link:focus-visible {
+		outline: 2px solid var(--color-accent);
+		outline-offset: 3px;
+	}
+
+	.footer-tagline {
+		font-size: 0.875rem;
+		line-height: 1.65;
+		color: var(--color-mute);
+		max-width: 22rem;
+		margin: 0;
+	}
+
+	.footer-country-badge {
+		display: inline-flex;
+	}
+
+	.footer-col {
+		display: flex;
+		flex-direction: column;
+		gap: 1rem;
+	}
+
+	.footer-col-title {
+		font-size: 0.75rem;
+		font-weight: 600;
+		letter-spacing: 0.06em;
+		text-transform: uppercase;
+		color: var(--color-ink);
+		margin: 0;
+	}
+
+	.footer-links {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+		display: flex;
+		flex-direction: column;
+		gap: 0.625rem;
 	}
 
 	.footer-link {
-		color: var(--color-mute);
+		display: inline-block;
+		font-size: 0.875rem;
+		line-height: 1.5;
+		color: var(--color-body);
 		text-decoration: none;
+		border-radius: var(--radius-xs);
 		transition: color var(--transition-fast);
 	}
 
 	.footer-link:hover {
 		color: var(--color-accent);
-		text-decoration: underline;
 	}
 
-	.footer-sep {
-		color: var(--color-hairline-strong);
+	.footer-link:focus-visible {
+		outline: 2px solid var(--color-accent);
+		outline-offset: 2px;
+	}
+
+	.footer-bottom {
+		display: flex;
+		flex-direction: column;
+		gap: 0.5rem;
+		align-items: flex-start;
+		margin-top: 3rem;
+		padding: 1.5rem 0;
+		border-top: 1px solid var(--color-hairline);
+	}
+
+	@media (min-width: 640px) {
+		.footer-bottom {
+			flex-direction: row;
+			align-items: center;
+			justify-content: space-between;
+		}
+	}
+
+	.footer-note {
+		max-width: 40rem;
+		line-height: 1.6;
 	}
 </style>

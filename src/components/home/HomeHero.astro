@@ -1,0 +1,352 @@
+---
+const tools = [
+  {
+    name: 'Mortgage Calculator',
+    href: '/mortgage',
+    tag: 'US · CA · AU',
+    copy: 'Monthly payments, amortization, CMHC, stamp duty, taxes, extra payments, charts and export.',
+  },
+  {
+    name: 'Retirement Calculator',
+    href: '/retirement',
+    tag: 'Future value',
+    copy: 'Project your nest egg, inflation-adjusted value, income estimate, goal progress and readiness.',
+  },
+  {
+    name: 'Net Worth Calculator',
+    href: '/net-worth',
+    tag: 'Balance sheet',
+    copy: 'Assets minus liabilities, allocation, debt breakdown, health score, and financial insights.',
+  },
+];
+
+const trustPoints = [
+  'Free, no account',
+  'Runs in your browser',
+  'Private by design',
+  'US, Canada & Australia',
+];
+---
+
+<section class="home-hero">
+  <span class="home-badge font-mono">Free financial calculators · US · CA · AU</span>
+  <h1 class="home-title">
+    Financial calculators,<br />made for the way you live.
+  </h1>
+  <p class="home-lead">
+    Precise mortgage, retirement, and net worth calculators built on the real rules of the United
+    States, Canada, and Australia — fast, accurate, and honest about what every number means.
+  </p>
+  <div class="home-cta-row">
+    <a class="home-btn home-btn-primary" href="#tools">
+      Explore the calculators
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <polyline points="4 12 20 12"></polyline>
+        <polyline points="13 5 20 12 13 19"></polyline>
+      </svg>
+    </a>
+    <a class="home-btn home-btn-secondary" href="/mortgage">
+      Start a mortgage estimate
+    </a>
+  </div>
+  <ul class="home-trust">
+    {trustPoints.map((point) => (
+      <li class="home-trust-item">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <polyline points="20 6 9 17 4 12"></polyline>
+        </svg>
+        <span class="text-caption">{point}</span>
+      </li>
+    ))}
+  </ul>
+</section>
+
+<section class="home-tools" id="tools">
+  <header class="home-tools-header">
+    <span class="home-eyebrow font-mono">Calculator library</span>
+    <h2 class="home-tools-title">Pick a tool. See the real math.</h2>
+    <p class="home-tools-copy">
+      Every calculator applies the country-specific rules you expect — Canadian compounding, stamp
+      duty, local taxes — and shows its assumptions so you can trust the answer.
+    </p>
+  </header>
+
+  <div class="home-tool-grid">
+    {
+      tools.map((tool) => (
+        <a class="home-tool-link" href={tool.href}>
+          <div class="home-tool-card">
+            <div class="home-tool-head">
+              <span class="home-tool-name">{tool.name}</span>
+              <span class="home-tool-tag font-mono">{tool.tag}</span>
+            </div>
+            <p class="home-tool-copy">{tool.copy}</p>
+            <span class="home-tool-cta">
+              Open calculator
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <polyline points="4 12 20 12"></polyline>
+                <polyline points="13 5 20 12 13 19"></polyline>
+              </svg>
+            </span>
+          </div>
+        </a>
+      ))
+    }
+  </div>
+</section>
+
+<style>
+  .home-hero {
+    padding: 4rem 0 1.5rem;
+    max-width: 52rem;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.25rem;
+  }
+
+  .home-badge {
+    display: inline-flex;
+    align-items: center;
+    width: fit-content;
+    padding: 0.25rem 0.625rem;
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: var(--color-body);
+    background-color: var(--color-canvas);
+    border: 1px solid var(--color-hairline);
+    border-radius: var(--radius-full);
+    box-shadow: var(--shadow-sm);
+  }
+
+  .home-title {
+    font-size: clamp(2.25rem, 6vw, 3.5rem);
+    font-weight: 700;
+    line-height: 1.08;
+    letter-spacing: -0.04em;
+    color: var(--color-ink);
+    margin: 0;
+  }
+
+  .home-lead {
+    font-size: 1.125rem;
+    line-height: 1.7;
+    color: var(--color-body);
+    margin: 0;
+    max-width: 40rem;
+  }
+
+  .home-cta-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    padding-top: 0.5rem;
+  }
+
+  .home-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    height: 3rem;
+    padding: 0 1.75rem;
+    font-size: 1rem;
+    font-weight: 500;
+    line-height: 1;
+    border-radius: var(--radius-pill);
+    text-decoration: none;
+    border: 1px solid transparent;
+    transition: background-color var(--transition-fast), color var(--transition-fast),
+      border-color var(--transition-fast), box-shadow var(--transition-fast);
+  }
+
+  .home-btn:focus-visible {
+    outline: none;
+    box-shadow: var(--shadow-focus);
+  }
+
+  .home-btn-primary {
+    background-color: var(--color-primary);
+    color: var(--color-on-primary);
+  }
+
+  .home-btn-primary:hover {
+    background-color: #2b2b2b;
+  }
+
+  .home-btn-primary svg {
+    transition: transform var(--transition-fast);
+  }
+
+  .home-btn-primary:hover svg {
+    transform: translateX(2px);
+  }
+
+  .home-btn-secondary {
+    background-color: var(--color-canvas);
+    color: var(--color-ink);
+    border-color: var(--color-hairline-strong);
+  }
+
+  .home-btn-secondary:hover {
+    border-color: var(--color-primary);
+  }
+
+  .home-trust {
+    list-style: none;
+    margin: 0.5rem 0 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 1.5rem;
+  }
+
+  .home-trust-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    color: var(--color-mute);
+  }
+
+  .home-trust-item svg {
+    color: var(--color-success);
+  }
+
+  /* ─── Calculator library ─── */
+  .home-tools {
+    padding: 3rem 0 1rem;
+  }
+
+  .home-tools-header {
+    display: flex;
+    flex-direction: column;
+    gap: 0.625rem;
+    max-width: 44rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .home-eyebrow {
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--color-mute);
+  }
+
+  .home-tools-title {
+    font-size: clamp(1.5rem, 3.5vw, 2rem);
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    color: var(--color-ink);
+    margin: 0;
+  }
+
+  .home-tools-copy {
+    font-size: 1rem;
+    line-height: 1.65;
+    color: var(--color-body);
+    margin: 0;
+  }
+
+  .home-tool-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  @media (min-width: 768px) {
+    .home-tool-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  .home-tool-link {
+    text-decoration: none;
+    border-radius: var(--radius-lg);
+  }
+
+  .home-tool-card {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 0.875rem;
+    padding: 1.75rem 1.5rem;
+    background-color: var(--color-canvas);
+    border: 1px solid var(--color-hairline);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+    transition: border-color var(--transition-fast), box-shadow var(--transition-fast),
+      transform var(--transition-fast);
+  }
+
+  .home-tool-link:focus-visible .home-tool-card {
+    outline: none;
+    box-shadow: var(--shadow-focus);
+  }
+
+  .home-tool-card:hover {
+    border-color: var(--color-hairline-strong);
+    box-shadow: var(--shadow-md);
+    transform: translateY(-2px);
+  }
+
+  .home-tool-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.75rem;
+  }
+
+  .home-tool-name {
+    font-size: 1.0625rem;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    color: var(--color-ink);
+  }
+
+  .home-tool-tag {
+    font-size: 0.6875rem;
+    font-weight: 500;
+    padding: 0.1875rem 0.5rem;
+    background-color: var(--color-canvas-soft-2);
+    border: 1px solid var(--color-hairline);
+    border-radius: var(--radius-full);
+    color: var(--color-body);
+    white-space: nowrap;
+  }
+
+  .home-tool-copy {
+    font-size: 0.875rem;
+    line-height: 1.6;
+    color: var(--color-body);
+    margin: 0;
+    flex: 1;
+  }
+
+  .home-tool-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--color-accent);
+  }
+
+  .home-tool-cta svg {
+    transition: transform var(--transition-fast);
+  }
+
+  .home-tool-card:hover .home-tool-cta svg {
+    transform: translateX(2px);
+  }
+
+  @media (max-width: 640px) {
+    .home-hero {
+      padding: 2.5rem 0 1rem;
+    }
+
+    .home-tools {
+      padding: 2.5rem 0 0.5rem;
+    }
+  }
+</style>

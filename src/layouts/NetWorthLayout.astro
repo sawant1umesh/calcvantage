@@ -16,7 +16,7 @@ const {
 ---
 
 <PageContainer maxWidth="xl">
-  <Section title={title} subtitle={subtitle} badge="CalcVantage Financial Tools">
+  <Section title={title} subtitle={subtitle} badge="CalcVantage Financial Tools" heading="h1">
     <div class="grid-networth-layout">
       <!-- Left Panel: Calculator Controls -->
       <div class="panel-left">
@@ -39,25 +39,5 @@ const {
   .panel-left,
   .panel-right {
     width: 100%;
-  }
-
-  .grid-networth-layout {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 2rem;
-    width: 100%;
-    align-items: start;
-  }
-
-  @media (min-width: 1024px) {
-    .grid-networth-layout {
-      grid-template-columns: 1.1fr 0.9fr;
-      gap: 2.5rem;
-    }
-
-    .panel-right {
-      position: sticky;
-      top: 2rem;
-    }
   }
 </style>

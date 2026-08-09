@@ -1,0 +1,296 @@
+---
+import PageContainer from '../components/layout/PageContainer.astro';
+import FaqAccordion from '../components/faq/FaqAccordion.astro';
+import ButtonLink from '../components/base/ButtonLink.astro';
+import { FAQ_CATEGORIES } from '../data/faq';
+
+interface Props {
+  title?: string;
+  lead?: string;
+}
+
+const {
+  title = 'Frequently asked questions.',
+  lead = 'Straight answers about how CalcVantage works, how each calculator does its math, where the numbers come from, and how your data stays private.',
+} = Astro.props;
+---
+
+<PageContainer maxWidth="xl">
+  <!-- 1. Hero -->
+  <section class="faq-hero">
+    <span class="pill-badge font-mono">FAQ</span>
+    <h1 class="faq-title">{title}</h1>
+    <p class="faq-lead">{lead}</p>
+    <div class="faq-hero-actions">
+      <ButtonLink href="#mortgage" size="lg" variant="primary">Mortgage questions</ButtonLink>
+      <ButtonLink href="#privacy" size="lg" variant="secondary">Privacy &amp; data</ButtonLink>
+    </div>
+  </section>
+
+  <!-- 2. Categories index -->
+  <nav class="faq-index" aria-label="Browse FAQ categories">
+    <span class="faq-index-label font-mono">Browse by topic</span>
+    <ul class="faq-index-list">
+      {FAQ_CATEGORIES.map((category) => (
+        <li class="faq-index-item">
+          <a class="faq-index-link" href={`#${category.id}`}>
+            <span>{category.label}</span>
+            <span class="faq-index-count font-mono">{category.items.length}</span>
+          </a>
+        </li>
+      ))}
+    </ul>
+  </nav>
+
+  <!-- 3. Category accordions -->
+  <div class="faq-sections">
+    {FAQ_CATEGORIES.map((category) => (
+      <section class="faq-section" id={category.id} aria-labelledby={`${category.id}-heading`}>
+        <header class="faq-section-header">
+          <span class="faq-eyebrow font-mono">Category</span>
+          <h2 class="faq-category-title" id={`${category.id}-heading`}>{category.label}</h2>
+          {category.description && <p class="faq-section-copy">{category.description}</p>}
+        </header>
+        <FaqAccordion group={category.id} items={category.items} allowMultiple={false} />
+      </section>
+    ))}
+  </div>
+
+  <!-- 4. Contact CTA -->
+  <section class="faq-cta">
+    <div class="faq-cta-card">
+      <span class="faq-cta-badge font-mono">Still stuck?</span>
+      <h2 class="faq-cta-title">Have a question that isn&rsquo;t listed here?</h2>
+      <p class="faq-cta-copy">
+        Ask us directly. We read every message and reply to everything — whether it&rsquo;s a
+        question about how a calculation works or feedback on a result that looks off.
+      </p>
+      <ButtonLink href="/contact" size="lg" variant="inverse">Contact us</ButtonLink>
+    </div>
+  </section>
+</PageContainer>
+
+<style>
+  /* ─── Hero ─── */
+  .faq-hero {
+    padding: 3.5rem 0 1.5rem;
+    max-width: 48rem;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .faq-title {
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 700;
+    line-height: 1.1;
+    letter-spacing: -0.035em;
+    color: var(--color-ink);
+    margin: 0;
+  }
+
+  .faq-lead {
+    font-size: 1.125rem;
+    line-height: 1.65;
+    color: var(--color-body);
+    margin: 0;
+  }
+
+  .faq-hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    padding-top: 0.5rem;
+  }
+
+  /* ─── Category index ─── */
+  .faq-index {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    margin: 2rem 0 0;
+    padding: 1.25rem 1.5rem;
+    background-color: var(--color-canvas);
+    border: 1px solid var(--color-hairline);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+  }
+
+  .faq-index-label {
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--color-mute);
+  }
+
+  .faq-index-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(14rem, 1fr));
+    gap: 0.5rem;
+  }
+
+  .faq-index-link {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    padding: 0.625rem 0.875rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--color-accent);
+    background-color: var(--color-canvas-soft);
+    border: 1px solid var(--color-hairline);
+    border-radius: var(--radius-md);
+    text-decoration: none;
+    transition: border-color var(--transition-fast), box-shadow var(--transition-fast),
+      color var(--transition-fast);
+  }
+
+  .faq-index-link:hover {
+    border-color: var(--color-hairline-strong);
+    box-shadow: var(--shadow-md);
+    color: var(--color-accent-deep);
+  }
+
+  .faq-index-link:focus-visible {
+    outline: none;
+    box-shadow: var(--shadow-focus);
+    border-color: var(--color-accent);
+  }
+
+  .faq-index-count {
+    font-size: 0.75rem;
+    color: var(--color-mute);
+  }
+
+  /* ─── Category sections ─── */
+  .faq-sections {
+    padding: 2.5rem 0 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+  }
+
+  .faq-section {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    scroll-margin-top: 5rem;
+  }
+
+  .faq-section-header {
+    display: flex;
+    flex-direction: column;
+    gap: 0.625rem;
+    max-width: 46rem;
+  }
+
+  .faq-eyebrow {
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--color-mute);
+  }
+
+  .faq-category-title {
+    position: relative;
+    font-size: clamp(1.25rem, 2.5vw, 1.5rem);
+    font-weight: 600;
+    line-height: 1.3;
+    letter-spacing: -0.015em;
+    color: var(--color-ink);
+    margin: 0;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid var(--color-hairline);
+  }
+
+  .faq-category-title::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -1px;
+    width: 2.5rem;
+    height: 2px;
+    border-radius: 2px;
+    background-color: var(--color-accent);
+  }
+
+  .faq-section-copy {
+    font-size: 1.0625rem;
+    line-height: 1.65;
+    color: var(--color-body);
+    margin: 0;
+  }
+
+  /* ─── Contact CTA band ─── */
+  .faq-cta {
+    padding: 2.5rem 0 1rem;
+  }
+
+  .faq-cta-card {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+    padding: 3rem 2rem;
+    background-color: var(--color-primary);
+    border-radius: var(--radius-xl);
+    color: var(--color-on-primary);
+  }
+
+  .faq-cta-badge {
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.7);
+  }
+
+  .faq-cta-title {
+    font-size: clamp(1.5rem, 3.5vw, 2rem);
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    color: var(--color-on-primary);
+    margin: 0;
+  }
+
+  .faq-cta-copy {
+    font-size: 1rem;
+    line-height: 1.65;
+    color: rgba(255, 255, 255, 0.8);
+    max-width: 40rem;
+    margin: 0;
+  }
+
+  /* ─── Responsive ─── */
+  @media (max-width: 640px) {
+    .faq-hero {
+      padding: 2.5rem 0 1rem;
+    }
+
+    .faq-index {
+      padding: 1rem 1.125rem;
+    }
+
+    .faq-sections {
+      padding: 2rem 0 0.5rem;
+      gap: 2.5rem;
+    }
+
+    .faq-hero-actions {
+      flex-direction: column;
+      align-items: stretch;
+      width: 100%;
+    }
+
+    .faq-cta-card {
+      padding: 2rem 1.25rem;
+    }
+  }
+</style>

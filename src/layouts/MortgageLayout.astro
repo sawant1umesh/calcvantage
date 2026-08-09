@@ -9,16 +9,18 @@ import AmortizationTable from '../components/mortgage/AmortizationTable.astro';
 interface Props {
   title?: string;
   subtitle?: string;
+  heading?: 'h1' | 'h2';
 }
 
 const {
   title = 'Mortgage Calculator',
   subtitle = 'Calculate your estimated monthly mortgage payments, loan breakdown, and payoff timelines for properties in the US, Canada, and Australia.',
+  heading = 'h1',
 } = Astro.props;
 ---
 
 <PageContainer maxWidth="xl">
-  <Section title={title} subtitle={subtitle} badge="CalcVantage Financial Tools">
+  <Section title={title} subtitle={subtitle} badge="CalcVantage Financial Tools" heading={heading}>
     <div class="grid-mortgage-layout">
       <!-- Left Panel: Calculator Controls -->
       <div class="panel-left">

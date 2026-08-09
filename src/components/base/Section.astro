@@ -3,14 +3,18 @@ import type { SectionProps } from '../../types/components';
 
 interface Props extends SectionProps {}
 
-const { title, subtitle, badge, class: className = '' } = Astro.props;
+const { title, subtitle, badge, heading = 'h2', class: className = '' } = Astro.props;
 ---
 
 <section class={`section-container ${className}`}>
   {(title || subtitle || badge) && (
     <header class="section-header">
       {badge && <span class="section-badge">{badge}</span>}
-      {title && <h2 class="section-title text-display-md">{title}</h2>}
+      {title && heading === 'h1' ? (
+        <h1 class="section-title text-display-md">{title}</h1>
+      ) : (
+        <h2 class="section-title text-display-md">{title}</h2>
+      )}
       {subtitle && <p class="section-subtitle text-body-md">{subtitle}</p>}
     </header>
   )}

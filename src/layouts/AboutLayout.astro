@@ -1,6 +1,7 @@
 ---
 import PageContainer from '../components/layout/PageContainer.astro';
 import Card from '../components/base/Card.astro';
+import ButtonLink from '../components/base/ButtonLink.astro';
 
 const calculators = [
   {
@@ -76,7 +77,7 @@ const principles = [
 <PageContainer maxWidth="xl">
   <!-- 1. Hero -->
   <section class="about-hero">
-    <span class="about-badge font-mono">About CalcVantage</span>
+    <span class="pill-badge font-mono">About CalcVantage</span>
     <h1 class="about-title">
       Clear numbers,<br />better financial decisions.
     </h1>
@@ -85,8 +86,8 @@ const principles = [
       US, Canada, and Australia — fast, accurate, and honest about what each number means.
     </p>
     <div class="about-hero-actions">
-      <a class="btn-pill btn-dark" href="/mortgage">Explore the calculators</a>
-      <a class="btn-pill btn-light" href="#offerings">See what we offer</a>
+      <ButtonLink href="/mortgage" size="lg" variant="primary">Explore the calculators</ButtonLink>
+      <ButtonLink href="#offerings" size="lg" variant="secondary">See what we offer</ButtonLink>
     </div>
   </section>
 
@@ -225,9 +226,9 @@ const principles = [
       numbers you need.
     </p>
     <div class="about-hero-actions">
-      <a class="btn-pill btn-white" href="/mortgage">Start with Mortgage</a>
-      <a class="btn-pill btn-outline-white" href="/retirement">Try Retirement</a>
-      <a class="btn-pill btn-outline-white" href="/net-worth">Check Net Worth</a>
+      <ButtonLink href="/mortgage" size="lg" variant="inverse">Start with Mortgage</ButtonLink>
+      <ButtonLink href="/retirement" size="lg" variant="inverse-outline">Try Retirement</ButtonLink>
+      <ButtonLink href="/net-worth" size="lg" variant="inverse-outline">Check Net Worth</ButtonLink>
     </div>
   </section>
 </PageContainer>
@@ -241,20 +242,6 @@ const principles = [
     flex-direction: column;
     align-items: center;
     gap: 1rem;
-  }
-
-  .about-badge {
-    display: inline-flex;
-    align-items: center;
-    width: fit-content;
-    padding: 0.25rem 0.625rem;
-    font-size: 0.75rem;
-    font-weight: 500;
-    color: var(--color-body);
-    background-color: var(--color-canvas);
-    border: 1px solid var(--color-hairline);
-    border-radius: var(--radius-full);
-    box-shadow: var(--shadow-sm);
   }
 
   .about-title {
@@ -279,38 +266,6 @@ const principles = [
     justify-content: center;
     gap: 0.75rem;
     margin-top: 0.5rem;
-  }
-
-  .btn-pill {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    height: 3rem;
-    padding: 0 1.75rem;
-    font-size: 1rem;
-    font-weight: 500;
-    line-height: 1;
-    border-radius: var(--radius-pill);
-    text-decoration: none;
-    border: 1px solid transparent;
-    transition: background-color var(--transition-fast), border-color var(--transition-fast), color var(--transition-fast);
-  }
-
-  .btn-dark {
-    background-color: var(--color-primary);
-    color: var(--color-on-primary);
-  }
-  .btn-dark:hover {
-    background-color: #333333;
-  }
-
-  .btn-light {
-    background-color: var(--color-canvas);
-    color: var(--color-ink);
-    border-color: var(--color-hairline-strong);
-  }
-  .btn-light:hover {
-    background-color: var(--color-canvas-soft-2);
   }
 
   /* ─── Editorial Blocks ─── */
@@ -380,6 +335,12 @@ const principles = [
 
   @media (min-width: 640px) {
     .offer-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .offer-grid {
       grid-template-columns: repeat(3, 1fr);
     }
   }
@@ -387,6 +348,16 @@ const principles = [
   .offer-card-link {
     text-decoration: none;
     display: block;
+    border-radius: var(--radius-lg);
+  }
+
+  .offer-card-link:focus-visible {
+    outline: none;
+  }
+
+  .offer-card-link:focus-visible .offer-card {
+    box-shadow: var(--shadow-focus);
+    border-color: var(--color-accent);
   }
 
   .offer-card {
@@ -400,6 +371,14 @@ const principles = [
   .offer-card-link:hover .offer-card {
     border-color: var(--color-hairline-strong);
     box-shadow: var(--shadow-md);
+  }
+
+  .offer-card-link .offer-cta {
+    transition: color var(--transition-fast);
+  }
+
+  .offer-card-link:hover .offer-cta {
+    color: var(--color-accent-deep);
   }
 
   .offer-name {
@@ -570,24 +549,6 @@ const principles = [
     max-width: 36rem;
   }
 
-  .btn-white {
-    background-color: var(--color-on-primary);
-    color: var(--color-ink);
-  }
-  .btn-white:hover {
-    background-color: #ececec;
-  }
-
-  .btn-outline-white {
-    background-color: transparent;
-    color: var(--color-on-primary);
-    border-color: rgba(255, 255, 255, 0.35);
-  }
-  .btn-outline-white:hover {
-    background-color: rgba(255, 255, 255, 0.1);
-    border-color: rgba(255, 255, 255, 0.6);
-  }
-
   /* ─── Responsive tweaks ─── */
   @media (max-width: 640px) {
     .about-hero {
@@ -599,8 +560,10 @@ const principles = [
       padding: 2rem 0;
     }
 
-    .about-hero-actions .btn-pill {
-      flex: 1 1 auto;
+    .about-hero-actions {
+      flex-direction: column;
+      align-items: stretch;
+      width: 100%;
     }
 
     .about-cta-band {

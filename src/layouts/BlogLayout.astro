@@ -1,5 +1,6 @@
 ---
 import PageContainer from '../components/layout/PageContainer.astro';
+import Section from '../components/base/Section.astro';
 import CategoryBadge from '../components/blog/CategoryBadge.astro';
 import BlogCard from '../components/blog/BlogCard.astro';
 import BlogEmptyState from '../components/blog/BlogEmptyState.astro';
@@ -22,7 +23,7 @@ const hasPosts = posts.length > 0;
 <PageContainer maxWidth="xl">
   <!-- 1. Hero -->
   <section class="blog-hero">
-    <span class="blog-badge font-mono">CalcVantage Blog</span>
+    <span class="pill-badge font-mono">CalcVantage Blog</span>
     <h1 class="blog-title">Financial education, without the jargon.</h1>
     <p class="blog-lead">
       CalcVantage publishes financial education articles, calculator guides, and personal finance
@@ -33,63 +34,60 @@ const hasPosts = posts.length > 0;
   <!-- 2. Featured Article -->
   {featuredPost && (
     <section class="blog-section">
-      <header class="section-header">
-        <h2 class="section-title text-display-md">Featured Article</h2>
-        <p class="section-subtitle text-body-sm">A hand-picked deep dive from the CalcVantage team.</p>
-      </header>
-      <div class="featured-grid">
-        <BlogCard post={featuredPost} featured class="featured-spotlight" />
-      </div>
+      <Section title="Featured Article" subtitle="A hand-picked deep dive from the CalcVantage team.">
+        <div class="featured-grid">
+          <BlogCard post={featuredPost} featured />
+        </div>
+      </Section>
     </section>
   )}
 
   <!-- 3. Categories -->
   <section class="blog-section">
-    <header class="section-header">
-      <h2 class="section-title text-display-md">Explore by Category</h2>
-      <p class="section-subtitle text-body-sm">Topics we cover across the CalcVantage library.</p>
-    </header>
-    <div class="categories-grid">
-      {BLOG_CATEGORIES.map((category) => (
-        <div class="category-chip">
-          <CategoryBadge category={category.slug} />
-          <span class="category-count">
-            {hasPosts ? `${getCategoryCount(posts, category.slug)} article(s)` : 'Coming soon'}
-          </span>
-        </div>
-      ))}
-    </div>
+    <Section title="Explore by Category" subtitle="Topics we cover across the CalcVantage library.">
+      <div class="categories-grid">
+        {BLOG_CATEGORIES.map((category) => {
+          const count = hasPosts ? getCategoryCount(posts, category.slug) : 0;
+          return (
+            <div class="category-chip">
+              <CategoryBadge category={category.slug} />
+              <span class="category-count">
+                {hasPosts && count > 0
+                  ? `${count} ${count === 1 ? 'article' : 'articles'}`
+                  : 'Coming soon'}
+              </span>
+            </div>
+          );
+        })}
+      </div>
+    </Section>
   </section>
 
   <!-- 4. Latest Articles -->
   <section class="blog-section">
-    <header class="section-header">
-      <h2 class="section-title text-display-md">Latest Articles</h2>
-      <p class="section-subtitle text-body-sm">Fresh from the CalcVantage team.</p>
-    </header>
-    {hasPosts ? (
-      <div class="cards-grid latest-grid">
-        {latestPosts.map((post) => (
-          <BlogCard post={post} />
-        ))}
-      </div>
-    ) : (
-      <BlogEmptyState class="blog-empty-block" />
-    )}
+    <Section title="Latest Articles" subtitle="Fresh from the CalcVantage team.">
+      {hasPosts ? (
+        <div class="cards-grid latest-grid">
+          {latestPosts.map((post) => (
+            <BlogCard post={post} />
+          ))}
+        </div>
+      ) : (
+        <BlogEmptyState class="blog-empty-block" />
+      )}
+    </Section>
   </section>
 
   <!-- 5. Popular Articles -->
   {popularPosts.length > 0 && (
     <section class="blog-section">
-      <header class="section-header">
-        <h2 class="section-title text-display-md">Popular Articles</h2>
-        <p class="section-subtitle text-body-sm">Most-read guides from the CalcVantage team.</p>
-      </header>
-      <div class="cards-grid popular-grid">
-        {popularPosts.map((post) => (
-          <BlogCard post={post} />
-        ))}
-      </div>
+      <Section title="Popular Articles" subtitle="Most-read guides from the CalcVantage team.">
+        <div class="cards-grid popular-grid">
+          {popularPosts.map((post) => (
+            <BlogCard post={post} />
+          ))}
+        </div>
+      </Section>
     </section>
   )}
 
@@ -97,7 +95,7 @@ const hasPosts = posts.length > 0;
   <section class="newsletter-section">
     <div class="newsletter-card">
       <div class="newsletter-copy">
-        <span class="blog-badge font-mono">Stay in the loop</span>
+        <span class="pill-badge newsletter-badge font-mono">Stay in the loop</span>
         <h2 class="newsletter-title">Get the latest articles and calculator guides</h2>
         <p class="newsletter-text">
           New financial education content, delivered straight to your inbox. No spam — just clear,
@@ -130,20 +128,6 @@ const hasPosts = posts.length > 0;
     gap: 1rem;
     padding: 3rem 0 2.5rem;
     border-bottom: 1px solid var(--color-hairline);
-  }
-
-  .blog-badge {
-    display: inline-flex;
-    align-items: center;
-    width: fit-content;
-    padding: 0.25rem 0.625rem;
-    font-size: 0.75rem;
-    font-weight: 500;
-    color: var(--color-body);
-    background-color: var(--color-canvas);
-    border: 1px solid var(--color-hairline);
-    border-radius: var(--radius-full);
-    box-shadow: var(--shadow-sm);
   }
 
   .blog-title {
@@ -192,24 +176,17 @@ const hasPosts = posts.length > 0;
     flex-direction: column;
     gap: 1.5rem;
     padding: 3rem 0;
+    align-items: flex-start;
   }
 
   .blog-section + .blog-section {
     border-top: 1px solid var(--color-hairline);
   }
 
-  .section-header {
-    display: flex;
-    flex-direction: column;
-    gap: 0.375rem;
-  }
-
-  .section-title {
-    color: var(--color-ink);
-  }
-
-  .section-subtitle {
-    color: var(--color-body);
+  .blog-section :global(.section-container) {
+    width: 100%;
+    margin-top: 0;
+    margin-bottom: 0;
   }
 
   .cards-grid {
@@ -232,6 +209,12 @@ const hasPosts = posts.length > 0;
   }
 
   @media (min-width: 640px) {
+    .categories-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  @media (min-width: 1024px) {
     .categories-grid {
       grid-template-columns: repeat(4, 1fr);
     }
@@ -301,10 +284,12 @@ const hasPosts = posts.length > 0;
     margin-bottom: 1.5rem;
   }
 
-  .newsletter-copy .blog-badge {
+  .newsletter-copy .newsletter-badge {
     color: var(--color-on-primary);
     background-color: rgba(255, 255, 255, 0.1);
     border-color: rgba(255, 255, 255, 0.2);
+    box-shadow: none;
+    margin-bottom: 0.5rem;
   }
 
   .newsletter-title {
@@ -339,6 +324,12 @@ const hasPosts = posts.length > 0;
     }
   }
 
+  @media (max-width: 639px) {
+    .newsletter-button {
+      width: 100%;
+    }
+  }
+
   .newsletter-input {
     flex: 1;
     min-width: 0;
@@ -359,11 +350,16 @@ const hasPosts = posts.length > 0;
     border: none;
     border-radius: var(--radius-pill);
     cursor: pointer;
-    transition: background-color var(--transition-fast);
+    transition: background-color var(--transition-fast), box-shadow var(--transition-fast);
   }
 
   .newsletter-button:hover {
     background-color: #ececec;
+  }
+
+  .newsletter-button:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.35);
   }
 
   .visually-hidden {

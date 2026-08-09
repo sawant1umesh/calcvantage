@@ -40,6 +40,7 @@ const { title, excerpt, readingTime, pubDate, author } = post;
     <CategoryBadge category={post.category} />
     <h3 class="blog-card-title">{title}</h3>
     <p class="blog-card-excerpt">{excerpt}</p>
+    <span class="blog-card-read">Read article</span>
     <div class="blog-card-meta">
       <span>{formatDate(pubDate)}</span>
       <span class="meta-separator">•</span>
@@ -51,12 +52,14 @@ const { title, excerpt, readingTime, pubDate, author } = post;
 
 <style>
   .blog-card-link {
+    position: relative;
     display: block;
     text-decoration: none;
     height: 100%;
   }
 
   .blog-card {
+    position: relative;
     display: flex;
     flex-direction: column;
     gap: 0.625rem;
@@ -108,6 +111,12 @@ const { title, excerpt, readingTime, pubDate, author } = post;
     color: var(--color-body);
   }
 
+  .blog-card-read {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--color-accent);
+  }
+
   .featured-tag {
     position: absolute;
     top: 1.25rem;
@@ -120,5 +129,33 @@ const { title, excerpt, readingTime, pubDate, author } = post;
     color: var(--color-on-primary);
     background-color: var(--color-primary);
     border-radius: var(--radius-full);
+  }
+
+  /* Featured presentation */
+  .blog-card-featured {
+    gap: 0.75rem;
+  }
+
+  .blog-card-featured .blog-card-title {
+    font-size: clamp(1.375rem, 3vw, 1.75rem);
+    line-height: 1.25;
+    letter-spacing: -0.02em;
+    max-width: 34ch;
+    padding-right: 4rem;
+  }
+
+  @media (min-width: 640px) {
+    .blog-card-featured .blog-card-title {
+      padding-right: 5.5rem;
+    }
+  }
+
+  .blog-card-featured .blog-card-excerpt {
+    font-size: 1rem;
+    max-width: 42rem;
+  }
+
+  .blog-card-featured .blog-card-read {
+    font-size: 0.9375rem;
   }
 </style>

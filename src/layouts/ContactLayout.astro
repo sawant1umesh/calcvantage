@@ -27,7 +27,7 @@ const responseTimes = [
 const quickLinks = [
   {
     label: 'Frequently asked questions',
-    href: '/blog',
+    href: '/faq',
     copy: 'Common answers about calculators, assumptions, and how the math works.',
   },
   {
@@ -41,7 +41,7 @@ const quickLinks = [
 <PageContainer maxWidth="xl">
   <!-- 1. Hero -->
   <section class="contact-hero">
-    <span class="contact-badge font-mono">Contact Us</span>
+    <span class="pill-badge font-mono">Contact Us</span>
     <h1 class="contact-title">
       Questions, feedback, or an idea — Let&rsquo;s talk.
     </h1>
@@ -179,20 +179,6 @@ const quickLinks = [
     gap: 1rem;
   }
 
-  .contact-badge {
-    display: inline-flex;
-    align-items: center;
-    width: fit-content;
-    padding: 0.25rem 0.625rem;
-    font-size: 0.75rem;
-    font-weight: 500;
-    color: var(--color-body);
-    background-color: var(--color-canvas);
-    border: 1px solid var(--color-hairline);
-    border-radius: var(--radius-full);
-    box-shadow: var(--shadow-sm);
-  }
-
   .contact-title {
     font-size: clamp(2rem, 5vw, 3rem);
     font-weight: 700;
@@ -307,6 +293,12 @@ const quickLinks = [
     box-shadow: var(--shadow-md);
   }
 
+  .contact-quick-link:focus-visible {
+    outline: none;
+    box-shadow: var(--shadow-focus);
+    border-color: var(--color-accent);
+  }
+
   .contact-quick-title {
     font-size: 0.9375rem;
     font-weight: 600;
@@ -394,7 +386,12 @@ const quickLinks = [
   }
 
   .contact-textarea::placeholder {
-    color: var(--color-mute);
+    color: var(--color-hairline-strong);
+    font-weight: 400;
+  }
+
+  .contact-textarea:hover:not(:focus) {
+    border-color: var(--color-mute);
   }
 
   .contact-textarea:focus {
@@ -409,11 +406,19 @@ const quickLinks = [
     align-items: flex-start;
   }
 
+  .contact-form-foot :global(.btn) {
+    width: 100%;
+  }
+
   @media (min-width: 640px) {
     .contact-form-foot {
       flex-direction: row;
       align-items: center;
       justify-content: space-between;
+    }
+
+    .contact-form-foot :global(.btn) {
+      width: auto;
     }
   }
 
@@ -462,6 +467,12 @@ const quickLinks = [
   }
 
   @media (min-width: 640px) {
+    .contact-response-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 1024px) {
     .contact-response-grid {
       grid-template-columns: repeat(3, 1fr);
     }

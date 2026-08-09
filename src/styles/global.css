@@ -17,8 +17,11 @@
   --color-accent-soft: #d3e5ff;
   --color-accent-deep: #0761d1;
   --color-success: #10b981;
+  --color-success-soft: #e9fbf3;
   --color-warning: #f5a623;
+  --color-warning-soft: #ffefcf;
   --color-error: #ee0000;
+  --color-error-soft: #fbe9e9;
 
   /* Typography */
   --font-sans: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
@@ -58,6 +61,11 @@ html {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   line-height: 1.5;
+  scroll-behavior: smooth;
+}
+
+[id] {
+  scroll-margin-top: 4.5rem;
 }
 
 body {
@@ -65,6 +73,16 @@ body {
   display: flex;
   flex-direction: column;
   background: radial-gradient(circle at 50% 0%, #fafafa 0%, #f5f5f5 100%);
+}
+
+a {
+  color: var(--color-accent);
+}
+
+a:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+  border-radius: 2px;
 }
 
 /* Typography Utility Classes */
@@ -89,6 +107,13 @@ body {
   letter-spacing: -0.02em;
 }
 
+.text-display-sm {
+  font-size: 1.125rem;
+  font-weight: 600;
+  line-height: 1.35;
+  letter-spacing: -0.015em;
+}
+
 .text-body-md {
   font-size: 1rem;
   font-weight: 400;
@@ -101,6 +126,12 @@ body {
   color: var(--color-body);
 }
 
+.text-body-sm-strong {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--color-ink);
+}
+
 .text-caption {
   font-size: 0.75rem;
   font-weight: 400;
@@ -109,27 +140,74 @@ body {
 
 .font-mono {
   font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Shared pill badge used across supporting-page heroes */
+.pill-badge {
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  padding: 0.25rem 0.625rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--color-body);
+  background-color: var(--color-canvas);
+  border: 1px solid var(--color-hairline);
+  border-radius: var(--radius-full);
+  box-shadow: var(--shadow-sm);
 }
 
 /* Layout Grid Utilities */
-.grid-mortgage-layout {
+.grid-mortgage-layout,
+.grid-retirement-layout,
+.grid-networth-layout {
   display: grid;
   grid-template-columns: 1fr;
   gap: 2rem;
   width: 100%;
+  align-items: start;
 }
 
 @media (min-width: 1024px) {
-  .grid-mortgage-layout {
+  .grid-mortgage-layout,
+  .grid-retirement-layout,
+  .grid-networth-layout {
     grid-template-columns: 1.1fr 0.9fr;
     gap: 2.5rem;
-    align-items: start;
   }
 
   .sticky-results-panel {
     position: sticky;
-    top: 2rem;
+    top: 5rem;
   }
+}
+
+/* Form group label used across calculator panels */
+.form-section-title {
+  padding-top: 0.875rem;
+  border-top: 1px solid var(--color-hairline);
+}
+
+.form-section-title h3 {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-body);
+}
+
+.form-section-title h3::before {
+  content: '';
+  width: 0.375rem;
+  height: 0.375rem;
+  border-radius: var(--radius-full);
+  background-color: var(--color-accent);
+  flex-shrink: 0;
 }
 
 /* ─── Print-friendly View (PDF Export) ─── */
@@ -159,7 +237,9 @@ body {
     padding: 0;
   }
 
-  .grid-mortgage-layout {
+  .grid-mortgage-layout,
+  .grid-retirement-layout,
+  .grid-networth-layout {
     display: block;
     gap: 0;
   }

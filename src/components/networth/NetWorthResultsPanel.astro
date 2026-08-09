@@ -91,10 +91,10 @@ const initialHealthClass = healthClassMap[initialResults.healthRating] || 'healt
         <span class="text-caption font-mono">% of total assets</span>
       </div>
       <div class="breakdown-list">
-        {initialResults.assetAllocation.map((item) => (
+        {initialResults.assetAllocation.map((item, index) => (
           <div class="breakdown-row">
             <div class="row-label">
-              <span class="dot-indicator"></span>
+              <span class={`dot-indicator dot-c{index % 6}`}></span>
               <span class="text-body-sm">{item.label}</span>
             </div>
             <span class="text-body-sm-strong font-mono">
@@ -114,10 +114,10 @@ const initialHealthClass = healthClassMap[initialResults.healthRating] || 'healt
         <span class="text-caption font-mono">% of total liabilities</span>
       </div>
       <div class="breakdown-list">
-        {initialResults.debtBreakdown.map((item) => (
+        {initialResults.debtBreakdown.map((item, index) => (
           <div class="breakdown-row">
             <div class="row-label">
-              <span class="dot-indicator"></span>
+              <span class={`dot-indicator dot-c{index % 6}`}></span>
               <span class="text-body-sm">{item.label}</span>
             </div>
             <span class="text-body-sm-strong font-mono">
@@ -292,7 +292,7 @@ const initialHealthClass = healthClassMap[initialResults.healthRating] || 'healt
 
   /* Breakdown boxes */
   .breakdown-card-box {
-    padding: 1.125rem;
+    padding: 1.125rem 1.25rem;
     background-color: var(--color-canvas-soft);
     border: 1px solid var(--color-hairline);
     border-radius: var(--radius-lg);
@@ -334,6 +334,13 @@ const initialHealthClass = healthClassMap[initialResults.healthRating] || 'healt
     border-radius: var(--radius-full);
     background-color: var(--color-accent);
   }
+
+  .dot-c0 { background-color: var(--color-accent); }
+  .dot-c1 { background-color: var(--color-success); }
+  .dot-c2 { background-color: var(--color-warning); }
+  .dot-c3 { background-color: var(--color-primary); }
+  .dot-c4 { background-color: #7928ca; }
+  .dot-c5 { background-color: #ff0080; }
 
   .alloc-sep {
     color: var(--color-mute);

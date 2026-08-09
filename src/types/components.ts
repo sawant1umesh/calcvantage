@@ -7,6 +7,7 @@ export interface SectionProps {
   title?: string;
   subtitle?: string;
   badge?: string;
+  heading?: 'h1' | 'h2';
   class?: string;
 }
 
