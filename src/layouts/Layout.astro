@@ -80,8 +80,7 @@ const navItems = [
 		<header class="app-header">
 			<div class="header-container">
 				<a href="/" class="brand-link" aria-label="CalcVantage home">
-					<div class="brand-logo font-mono">CV</div>
-					<span class="brand-name">CalcVantage<span class="brand-domain">.com</span></span>
+					<img src="/logo.svg" alt="CalcVantage" class="brand-logo" width="140" height="37" />
 				</a>
 				<nav class="header-nav" aria-label="Primary navigation">
 					{navItems.map((item) => (
@@ -136,8 +135,7 @@ const navItems = [
 				<div class="footer-grid">
 					<div class="footer-brand">
 						<a href="/" class="footer-brand-link" aria-label="CalcVantage home">
-							<div class="brand-logo font-mono">CV</div>
-							<span class="brand-name">CalcVantage.com</span>
+							<img src="/logo.svg" alt="CalcVantage" class="brand-logo" width="140" height="37" />
 						</a>
 						<p class="footer-tagline">
 							High-precision financial intelligence platform for the United States,
@@ -257,29 +255,11 @@ const navItems = [
 		outline-offset: 3px;
 	}
 
-	.brand-logo {
-		width: 2rem;
-		height: 2rem;
-		background-color: var(--color-primary);
-		color: var(--color-on-primary);
-		font-weight: 700;
-		font-size: 0.875rem;
-		border-radius: var(--radius-sm);
-		display: flex;
-		align-items: center;
-		justify-content: center;
-	}
-
-	.brand-name {
-		font-weight: 700;
-		font-size: 1.125rem;
-		letter-spacing: -0.02em;
-	}
-
-	.brand-domain {
-		color: var(--color-mute);
-		font-weight: 400;
-	}
+.brand-logo {
+	height: 2rem;
+	width: auto;
+	display: block;
+}
 
 	.header-nav {
 		display: none;
