@@ -125,11 +125,12 @@ export function calculateEstimatedMonthlyIncome(
 
 /**
  * Retirement readiness thresholds based on goal achievement percent.
+ * - Score >= 70%: "On Track"
+ * - Score >= 40% and < 70%: "Improving"
+ * - Score < 40%: "Needs Focus"
  */
 export function getRetirementReadiness(achievementPercent: number | null): RetirementReadiness {
-  if (achievementPercent === null) return 'Needs Improvement';
-  if (achievementPercent >= 100) return 'Excellent';
-  if (achievementPercent >= 80) return 'Good';
-  if (achievementPercent >= 60) return 'Fair';
-  return 'Needs Improvement';
+  if (achievementPercent === null || achievementPercent < 40) return 'Needs Focus';
+  if (achievementPercent >= 70) return 'On Track';
+  return 'Improving';
 }

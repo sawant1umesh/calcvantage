@@ -416,11 +416,11 @@ const currencyOptions = CURRENCIES.map((c) => ({
         goalProgress.classList.remove('is-complete', 'is-fair', 'is-low');
         if (results.goalAchievementPercent === null) {
           goalProgress.classList.remove('is-fair', 'is-low', 'is-complete');
-        } else if (pct >= 100) {
+        } else if (pct >= 70) {
           goalProgress.classList.add('is-complete');
-        } else if (pct < 60) {
+        } else if (pct < 40) {
           goalProgress.classList.add('is-low');
-        } else if (pct < 80) {
+        } else {
           goalProgress.classList.add('is-fair');
         }
       }
@@ -428,12 +428,11 @@ const currencyOptions = CURRENCIES.map((c) => ({
       // Readiness banner
       if (readinessBanner && readinessLabel && readinessNote) {
         const readinessClassMap: Record<string, string> = {
-          'Excellent': 'readiness-excellent',
-          'Good': 'readiness-good',
-          'Fair': 'readiness-fair',
-          'Needs Improvement': 'readiness-needs-improvement',
+          'On Track': 'readiness-on-track',
+          'Improving': 'readiness-improving',
+          'Needs Focus': 'readiness-needs-focus',
         };
-        readinessBanner.className = `readiness-banner ${readinessClassMap[results.readiness] || 'readiness-needs-improvement'}`;
+        readinessBanner.className = `readiness-banner ${readinessClassMap[results.readiness] || 'readiness-needs-focus'}`;
         readinessLabel.textContent = results.readiness;
         readinessNote.textContent = results.readinessNote;
       }

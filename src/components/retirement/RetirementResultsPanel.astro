@@ -24,6 +24,13 @@ const initialResults = retirementService.calculate({
 const symbol = '$';
 const locale = country.locale;
 const months = initialResults.monthsUntilRetirement;
+
+const readinessClassMap: Record<string, string> = {
+  'On Track': 'readiness-on-track',
+  'Improving': 'readiness-improving',
+  'Needs Focus': 'readiness-needs-focus',
+};
+const currentReadinessClass = readinessClassMap[initialResults.readiness] || 'readiness-needs-focus';
 ---
 
 <div class="results-panel-container sticky-results-panel">
@@ -42,8 +49,8 @@ const months = initialResults.monthsUntilRetirement;
     </p>
 
     <!-- Readiness Status -->
-    <div class="readiness-banner is-needs-improvement" id="ret-readiness-banner">
-      <span class="readiness-label" id="ret-readiness-label">Needs Improvement</span>
+    <div class={`readiness-banner ${currentReadinessClass}`} id="ret-readiness-banner">
+      <span class="readiness-label" id="ret-readiness-label">{initialResults.readiness}</span>
       <span class="text-caption readiness-note" id="ret-readiness-note">
         {initialResults.readinessNote}
       </span>
@@ -75,7 +82,7 @@ const months = initialResults.monthsUntilRetirement;
         label="Estimated Monthly Income"
         value={formatCurrency(initialResults.estimatedMonthlyIncome, country.currencyCode, locale).replace('$', '').trim()}
         currencySymbol={symbol}
-        subtext="Based on a {defaults.safeWithdrawalRate}% safe withdrawal rate"
+        subtext={`Based on a ${defaults.safeWithdrawalRate}% safe withdrawal rate`}
         class="ret-income-card"
       />
       <ResultCard
@@ -194,18 +201,18 @@ const months = initialResults.monthsUntilRetirement;
     border: 1px solid;
   }
 
+  .readiness-on-track,
   .readiness-excellent {
     background-color: #ecfdf5;
     border-color: #a7f3d0;
   }
-  .readiness-good {
-    background-color: var(--color-accent-soft);
-    border-color: #b3d7ff;
-  }
+  .readiness-improving,
+  .readiness-good,
   .readiness-fair {
     background-color: var(--color-warning-soft, #ffefcf);
     border-color: #f5d78e;
   }
+  .readiness-needs-focus,
   .readiness-needs-improvement {
     background-color: var(--color-error-soft, #fbe9e9);
     border-color: #f5c2c2;
@@ -219,9 +226,12 @@ const months = initialResults.monthsUntilRetirement;
     color: var(--color-on-primary);
     white-space: nowrap;
   }
+  .readiness-on-track .readiness-label,
   .readiness-excellent .readiness-label { background-color: #10b981; }
-  .readiness-good .readiness-label { background-color: var(--color-accent); }
+  .readiness-improving .readiness-label,
+  .readiness-good .readiness-label,
   .readiness-fair .readiness-label { background-color: var(--color-warning); }
+  .readiness-needs-focus .readiness-label,
   .readiness-needs-improvement .readiness-label { background-color: var(--color-error); }
 
   .readiness-note {

@@ -37,7 +37,7 @@ export class RetirementService implements IRetirementService {
         investmentGrowth: 0,
         estimatedMonthlyIncome: 0,
         goalAchievementPercent: null,
-        readiness: 'Needs Improvement',
+        readiness: 'Needs Focus',
         readinessNote: 'Enter valid parameters to assess retirement readiness.',
         inflationAdjustedMonthlyGoal: 0,
         warnings: validation.warnings,

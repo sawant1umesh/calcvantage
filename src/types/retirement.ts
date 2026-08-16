@@ -4,7 +4,7 @@ import type { CountryCode } from './country';
  * Retirement Calculator Types
  * Phase 1B: Full savings projection contracts with readiness assessment.
  */
-export type RetirementReadiness = 'Excellent' | 'Good' | 'Fair' | 'Needs Improvement';
+export type RetirementReadiness = 'On Track' | 'Improving' | 'Needs Focus';
 
 export interface RetirementInputs {
   country: CountryCode;
