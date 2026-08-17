@@ -5,17 +5,20 @@ import MortgageCalculatorPanel from '../components/mortgage/MortgageCalculatorPa
 import MortgageResultsPanel from '../components/mortgage/MortgageResultsPanel.astro';
 import MortgageChart from '../components/charts/MortgageChart.astro';
 import AmortizationTable from '../components/mortgage/AmortizationTable.astro';
+import MortgageEducationalContent from '../components/mortgage/MortgageEducationalContent.astro';
 
 interface Props {
   title?: string;
   subtitle?: string;
   heading?: 'h1' | 'h2';
+  showGuide?: boolean;
 }
 
 const {
   title = 'Mortgage Calculator',
   subtitle = 'Calculate your estimated monthly mortgage payment, principal and interest breakdown, and payoff timelines for properties in the US, Canada, and Australia.',
   heading = 'h1',
+  showGuide = heading === 'h1',
 } = Astro.props;
 ---
 
@@ -42,6 +45,8 @@ const {
       <MortgageChart />
       <AmortizationTable />
     </div>
+
+    {showGuide && <MortgageEducationalContent />}
   </Section>
 </PageContainer>
 

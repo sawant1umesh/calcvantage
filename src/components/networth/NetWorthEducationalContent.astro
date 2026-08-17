@@ -1,0 +1,631 @@
+---
+/**
+ * NetWorthEducationalContent.astro
+ * Educational guide explaining net worth calculations, asset & liability categorization,
+ * valuation principles, balance sheet limitations, and tracking best practices.
+ */
+---
+
+<div class="nec-wrapper" id="how-net-worth-calculations-work">
+  <!-- ─── Section Header ─── -->
+  <header class="nec-header">
+    <span class="nec-eyebrow font-mono">Educational Guide</span>
+    <h2 class="nec-main-title">How Net Worth Calculations Work</h2>
+    <p class="nec-lead">
+      Your net worth is a fundamental personal finance metric that summarizes your financial position
+      at a single point in time by comparing everything you own against everything you owe.
+    </p>
+  </header>
+
+  <!-- ─── 1. Basic Net Worth Formula ─── -->
+  <section class="nec-section">
+    <h3 class="nec-section-title">1. The Net Worth Formula</h3>
+    <div class="nec-prose">
+      <p>
+        Calculating net worth follows a simple, universal accounting equation:
+      </p>
+
+      <div class="nec-formula-card">
+        <span class="nec-formula-badge font-mono">Balance Sheet Equation</span>
+        <div class="nec-formula-math font-mono">
+          Net Worth = Total Assets &minus; Total Liabilities
+        </div>
+        <p class="nec-formula-caption">
+          <strong>Assets</strong> are items of positive financial value that you own. <strong>Liabilities</strong> are financial debts and obligations that you owe to others.
+        </p>
+      </div>
+
+      <p>
+        Net worth provides a clear snapshot of your accumulated wealth at the moment of calculation.
+        A positive net worth means your assets exceed your debts, while a negative net worth occurs when
+        total liabilities exceed total assets (common early in careers or after taking on student or mortgage debt).
+      </p>
+    </div>
+  </section>
+
+  <!-- ─── 2. Understanding Assets ─── -->
+  <section class="nec-section">
+    <h3 class="nec-section-title">2. Assets: What You Own</h3>
+    <div class="nec-prose">
+      <p>
+        Assets represent resources with measurable monetary value. When estimating current net worth,
+        assets should generally be entered using their <strong>estimated current market value</strong> (what
+        they could sell for today) rather than their original purchase price.
+      </p>
+      <p>
+        The CalcVantage Net Worth Calculator groups assets into seven core categories:
+      </p>
+      <ul class="nec-list">
+        <li>
+          <strong>Cash &amp; Savings:</strong> Liquid funds in checking accounts, high-yield savings accounts, money market funds, and physical cash.
+        </li>
+        <li>
+          <strong>Investments:</strong> Taxable brokerage accounts, equities, bonds, mutual funds, exchange-traded funds (ETFs), and cryptocurrencies.
+        </li>
+        <li>
+          <strong>Retirement Accounts:</strong> Dedicated retirement savings vehicles such as 401(k)s, Traditional or Roth IRAs, Canadian RRSPs/TFSAs, and Australian Superannuation.
+        </li>
+        <li>
+          <strong>Real Estate:</strong> The estimated fair market value of primary residences, vacation homes, and investment or rental properties.
+        </li>
+        <li>
+          <strong>Vehicles:</strong> The estimated resale value of cars, motorcycles, boats, and recreational vehicles.
+        </li>
+        <li>
+          <strong>Business Assets:</strong> Equity value, capital equipment, inventory, or ownership stakes in privately held businesses.
+        </li>
+        <li>
+          <strong>Other Assets:</strong> Tangible valuables such as collectibles, fine art, jewelry, tools, and other personal property of significant resale value.
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ─── 3. Understanding Liabilities ─── -->
+  <section class="nec-section">
+    <h3 class="nec-section-title">3. Liabilities: What You Owe</h3>
+    <div class="nec-prose">
+      <p>
+        Liabilities encompass all outstanding debts and contractual obligations owed to banks, lenders,
+        or institutions. Every dollar of debt directly reduces your net worth.
+      </p>
+      <p>
+        The calculator tracks six distinct liability categories:
+      </p>
+      <ul class="nec-list">
+        <li>
+          <strong>Mortgage Debt:</strong> The remaining principal balance owed on home loans and investment property mortgages.
+        </li>
+        <li>
+          <strong>Personal Loans:</strong> Unsecured bank loans, peer-to-peer loans, and personal lines of credit.
+        </li>
+        <li>
+          <strong>Auto Loans:</strong> Outstanding balances on vehicle financing, leases, and auto debt.
+        </li>
+        <li>
+          <strong>Credit Card Debt:</strong> Revolving balances carried on consumer credit cards and store cards.
+        </li>
+        <li>
+          <strong>Student Loans:</strong> Government and private education loans and tuition debt.
+        </li>
+        <li>
+          <strong>Other Liabilities:</strong> Back taxes owed, medical bills, legal judgments, and other personal financial obligations.
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ─── 4. Categorization Logic & Leveraged Assets ─── -->
+  <section class="nec-section">
+    <h3 class="nec-section-title">4. Categorizing Leveraged Assets</h3>
+    <div class="nec-prose">
+      <p>
+        A common point of confusion when building a personal balance sheet is how to record financed items,
+        such as a mortgaged home or a financed car.
+      </p>
+      <p>
+        To maintain accounting accuracy, the asset and the debt are separated into their respective categories:
+      </p>
+      <div class="nec-example-card">
+        <div class="nec-example-header">
+          <span class="nec-example-tag font-mono">Example: Property with a Mortgage</span>
+        </div>
+        <div class="nec-concept-grid">
+          <div class="nec-concept-col">
+            <span class="nec-concept-type text-asset font-mono">Asset Side</span>
+            <span class="nec-concept-name">Real Estate</span>
+            <span class="nec-concept-val font-mono">$500,000</span>
+            <p class="nec-concept-desc">Full current market value of the home.</p>
+          </div>
+          <div class="nec-concept-divider font-mono">&minus;</div>
+          <div class="nec-concept-col">
+            <span class="nec-concept-type text-liability font-mono">Liability Side</span>
+            <span class="nec-concept-name">Mortgage Loan</span>
+            <span class="nec-concept-val font-mono">$350,000</span>
+            <p class="nec-concept-desc">Remaining debt owed to the lender.</p>
+          </div>
+          <div class="nec-concept-divider font-mono">=</div>
+          <div class="nec-concept-col highlight">
+            <span class="nec-concept-type font-mono">Net Contribution</span>
+            <span class="nec-concept-name">Home Equity</span>
+            <span class="nec-concept-val font-mono text-net">$150,000</span>
+            <p class="nec-concept-desc">Your true equity contributing to net worth.</p>
+          </div>
+        </div>
+      </div>
+      <p class="nec-caption">
+        Entering both the total asset value and the total outstanding liability ensures that your balance sheet reflects both gross asset allocation and debt obligations accurately.
+      </p>
+    </div>
+  </section>
+
+  <!-- ─── 5. Illustrative Net Worth Example ─── -->
+  <section class="nec-section">
+    <h3 class="nec-section-title">5. An Illustrative Net Worth Calculation</h3>
+    <div class="nec-prose">
+      <p>
+        Consider a simple, hypothetical balance sheet breakdown:
+      </p>
+
+      <div class="nec-example-card">
+        <div class="nec-example-header">
+          <span class="nec-example-tag font-mono">Illustrative Example</span>
+          <span class="nec-example-note font-mono">Sample personal balance sheet</span>
+        </div>
+        <div class="nec-timeline-table-wrap">
+          <table class="nec-timeline-table">
+            <thead>
+              <tr>
+                <th>Category</th>
+                <th>Classification</th>
+                <th>Amount</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Cash, Investments, &amp; Retirement</td>
+                <td class="font-mono text-asset">Asset</td>
+                <td class="font-mono">$100,000</td>
+              </tr>
+              <tr>
+                <td>Real Estate (Market Value)</td>
+                <td class="font-mono text-asset">Asset</td>
+                <td class="font-mono">$375,000</td>
+              </tr>
+              <tr>
+                <td>Vehicles &amp; Other Personal Property</td>
+                <td class="font-mono text-asset">Asset</td>
+                <td class="font-mono">$25,000</td>
+              </tr>
+              <tr class="row-total">
+                <td><strong>Total Assets</strong></td>
+                <td class="font-mono text-asset"><strong>Total</strong></td>
+                <td class="font-mono text-asset"><strong>$500,000</strong></td>
+              </tr>
+              <tr>
+                <td>Mortgage Balance</td>
+                <td class="font-mono text-liability">Liability</td>
+                <td class="font-mono">$170,000</td>
+              </tr>
+              <tr>
+                <td>Auto Loan &amp; Student Debt</td>
+                <td class="font-mono text-liability">Liability</td>
+                <td class="font-mono">$30,000</td>
+              </tr>
+              <tr class="row-total">
+                <td><strong>Total Liabilities</strong></td>
+                <td class="font-mono text-liability"><strong>Total</strong></td>
+                <td class="font-mono text-liability"><strong>$200,000</strong></td>
+              </tr>
+              <tr class="row-networth">
+                <td><strong>Calculated Net Worth</strong></td>
+                <td class="font-mono"><strong>Result</strong></td>
+                <td class="font-mono text-net"><strong>$300,000</strong></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <p class="nec-caption">
+        This illustrative balance sheet demonstrates how $500,000 in total assets minus $200,000 in total liabilities yields a net worth of $300,000.
+      </p>
+    </div>
+  </section>
+
+  <!-- ─── 6. What Net Worth Does & Does Not Tell You ─── -->
+  <section class="nec-section">
+    <h3 class="nec-section-title">6. What Net Worth Does &amp; Does Not Measure</h3>
+    <div class="nec-prose">
+      <p>
+        While net worth is one of the most comprehensive single measures of personal wealth, it is important
+        to recognize its practical limitations:
+      </p>
+      <ul class="nec-list">
+        <li>
+          <strong>It does not measure income or cash flow:</strong> A person with high net worth tied up in real estate can still experience tight monthly cash flow if their liquid income is low.
+        </li>
+        <li>
+          <strong>It does not reflect liquidity:</strong> Net worth treats illiquid physical assets (like vehicles or property) identically to cash, even though selling physical assets takes time and incurs transaction fees.
+        </li>
+        <li>
+          <strong>It does not measure emergency readiness:</strong> Having $200,000 in retirement accounts does not replace having an accessible liquid emergency fund in cash.
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ─── 7. Updating & Tracking Over Time ─── -->
+  <section class="nec-section">
+    <h3 class="nec-section-title">7. Tracking Changes Over Time</h3>
+    <div class="nec-prose">
+      <p>
+        Net worth is dynamic and changes continuously as financial actions occur:
+      </p>
+      <ul class="nec-list">
+        <li><strong>Debt Reduction:</strong> Every principal payment made toward a mortgage, student loan, or credit card directly reduces liabilities and increases net worth.</li>
+        <li><strong>Asset Growth &amp; Savings:</strong> Adding new money to savings, retirement accounts, or investment portfolios increases total assets.</li>
+        <li><strong>Market Fluctuations:</strong> Market movements in stock portfolios and home value changes will cause net worth to fluctuate independently of your savings rate.</li>
+      </ul>
+      <p>
+        Updating your figures periodically (such as quarterly or semi-annually) allows you to track your long-term wealth trajectory and verify that debt is trending down while assets trend upward.
+      </p>
+    </div>
+  </section>
+
+  <!-- ─── 8. Standardized Disclaimer ─── -->
+  <div class="nec-disclaimer" role="note">
+    <span class="nec-disclaimer-title font-mono">Disclaimer &amp; Terms of Use</span>
+    <p>
+      CalcVantage calculators provide estimates for educational and informational purposes only.
+      Results depend entirely on the accuracy and completeness of the figures entered by the user.
+      Calculations do not constitute formal accounting, tax, legal, or financial advice.
+      For formal estate planning, tax preparation, or wealth management, consult with a certified public
+      accountant (CPA) or licensed financial planner.
+      For full terms, please review our <a href="/disclaimer">Disclaimer</a> and <a href="/terms">Terms of Service</a>.
+    </p>
+  </div>
+</div>
+
+<style>
+  /* ── Wrapper ── */
+  .nec-wrapper {
+    padding: 3rem 0 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2.5rem;
+    border-top: 1px solid var(--color-hairline);
+    margin-top: 3rem;
+  }
+
+  /* ── Header ── */
+  .nec-header {
+    display: flex;
+    flex-direction: column;
+    gap: 0.625rem;
+    max-width: 48rem;
+  }
+
+  .nec-eyebrow {
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--color-mute);
+  }
+
+  .nec-main-title {
+    font-size: clamp(1.5rem, 3.5vw, 2.25rem);
+    font-weight: 700;
+    letter-spacing: -0.025em;
+    line-height: 1.2;
+    color: var(--color-ink);
+    margin: 0;
+  }
+
+  .nec-lead {
+    font-size: 1.0625rem;
+    line-height: 1.65;
+    color: var(--color-body);
+    margin: 0;
+  }
+
+  /* ── Sections & Prose ── */
+  .nec-section {
+    display: flex;
+    flex-direction: column;
+    gap: 0.875rem;
+  }
+
+  .nec-section-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    letter-spacing: -0.015em;
+    color: var(--color-ink);
+    margin: 0;
+  }
+
+  .nec-prose {
+    display: flex;
+    flex-direction: column;
+    gap: 0.875rem;
+    max-width: 54rem;
+  }
+
+  .nec-prose p {
+    font-size: 0.9375rem;
+    line-height: 1.7;
+    color: var(--color-body);
+    margin: 0;
+  }
+
+  .nec-caption {
+    font-size: 0.8125rem;
+    color: var(--color-mute);
+    line-height: 1.5;
+    margin-top: -0.25rem;
+  }
+
+  /* ── Lists ── */
+  .nec-list {
+    list-style: none;
+    padding: 0;
+    margin: 0.25rem 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.625rem;
+  }
+
+  .nec-list li {
+    font-size: 0.9375rem;
+    line-height: 1.65;
+    color: var(--color-body);
+    padding-left: 1rem;
+    border-left: 2px solid var(--color-hairline-strong);
+  }
+
+  .nec-list li strong {
+    color: var(--color-ink);
+  }
+
+  /* ── Formula Cards ── */
+  .nec-formula-card {
+    padding: 1.25rem 1.5rem;
+    background-color: var(--color-canvas);
+    border: 1px solid var(--color-hairline);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin: 0.5rem 0;
+  }
+
+  .nec-formula-badge {
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--color-mute);
+  }
+
+  .nec-formula-math {
+    font-size: 1.125rem;
+    font-weight: 700;
+    color: var(--color-ink);
+    padding: 0.5rem 0;
+    overflow-x: auto;
+  }
+
+  .nec-formula-caption {
+    font-size: 0.8125rem;
+    color: var(--color-mute);
+    line-height: 1.5;
+    margin: 0;
+  }
+
+  /* ── Example Cards & Tables ── */
+  .nec-example-card {
+    background-color: var(--color-canvas);
+    border: 1px solid var(--color-hairline);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+    overflow: hidden;
+    margin: 0.5rem 0;
+  }
+
+  .nec-example-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.875rem 1.25rem;
+    background-color: var(--color-canvas-soft);
+    border-bottom: 1px solid var(--color-hairline);
+  }
+
+  .nec-example-tag {
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--color-accent);
+  }
+
+  .nec-example-note {
+    font-size: 0.75rem;
+    color: var(--color-mute);
+  }
+
+  /* ── Concept Grid (Home Equity) ── */
+  .nec-concept-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    padding: 1.25rem;
+    align-items: center;
+  }
+
+  @media (min-width: 640px) {
+    .nec-concept-grid {
+      grid-template-columns: 1fr auto 1fr auto 1.2fr;
+    }
+  }
+
+  .nec-concept-col {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    padding: 0.75rem;
+    background-color: var(--color-canvas-soft-2);
+    border-radius: var(--radius-md);
+  }
+
+  .nec-concept-col.highlight {
+    background-color: var(--color-accent-soft);
+  }
+
+  .nec-concept-type {
+    font-size: 0.6875rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+
+  .nec-concept-name {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--color-ink);
+  }
+
+  .nec-concept-val {
+    font-size: 1.125rem;
+    font-weight: 700;
+  }
+
+  .nec-concept-desc {
+    font-size: 0.75rem;
+    color: var(--color-body);
+    margin: 0;
+    line-height: 1.4;
+  }
+
+  .nec-concept-divider {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--color-mute);
+    text-align: center;
+  }
+
+  /* ── Table Styling ── */
+  .nec-timeline-table-wrap {
+    overflow-x: auto;
+  }
+
+  .nec-timeline-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.875rem;
+    text-align: left;
+  }
+
+  .nec-timeline-table th {
+    padding: 0.75rem 1.25rem;
+    background-color: var(--color-canvas-soft-2);
+    font-weight: 600;
+    color: var(--color-ink);
+    border-bottom: 1px solid var(--color-hairline);
+    white-space: nowrap;
+  }
+
+  .nec-timeline-table td {
+    padding: 0.75rem 1.25rem;
+    border-bottom: 1px solid var(--color-hairline);
+    color: var(--color-body);
+    white-space: nowrap;
+  }
+
+  .nec-timeline-table tbody tr.row-total td {
+    background-color: var(--color-canvas-soft);
+    border-top: 1px solid var(--color-hairline-strong);
+    color: var(--color-ink);
+  }
+
+  .nec-timeline-table tbody tr.row-networth td {
+    background-color: var(--color-accent-soft);
+    border-top: 2px solid var(--color-accent);
+    color: var(--color-ink);
+    font-weight: 700;
+  }
+
+  .text-asset {
+    color: var(--color-success);
+  }
+
+  .text-liability {
+    color: #e11d48;
+  }
+
+  .text-net {
+    color: var(--color-accent-deep);
+  }
+
+  /* ── Disclaimer ── */
+  .nec-disclaimer {
+    padding: 1.25rem 1.5rem;
+    background-color: var(--color-canvas-soft);
+    border: 1px solid var(--color-hairline);
+    border-left: 3px solid var(--color-warning);
+    border-radius: var(--radius-md);
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    max-width: 54rem;
+  }
+
+  .nec-disclaimer-title {
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--color-ink);
+  }
+
+  .nec-disclaimer p {
+    font-size: 0.8125rem;
+    line-height: 1.65;
+    color: var(--color-body);
+    margin: 0;
+  }
+
+  .nec-disclaimer a {
+    color: var(--color-accent);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+  .nec-disclaimer a:hover {
+    color: var(--color-accent-deep);
+  }
+
+  /* ── Mobile responsiveness ── */
+  @media (max-width: 640px) {
+    .nec-wrapper {
+      padding: 2rem 0 1.5rem;
+      gap: 2rem;
+      margin-top: 2rem;
+    }
+
+    .nec-formula-card,
+    .nec-disclaimer {
+      padding: 1rem;
+    }
+
+    .nec-concept-grid {
+      padding: 1rem;
+    }
+
+    .nec-timeline-table th,
+    .nec-timeline-table td {
+      padding: 0.625rem 0.875rem;
+    }
+  }
+</style>

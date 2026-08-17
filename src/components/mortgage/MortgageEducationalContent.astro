@@ -1,0 +1,663 @@
+---
+/**
+ * MortgageEducationalContent.astro
+ * Comprehensive educational guide on how mortgage calculations, amortization,
+ * country-specific compounding (US, CA, AU), and default insurance (CMHC) work.
+ */
+---
+
+<div class="mec-wrapper" id="how-mortgage-calculations-work">
+  <!-- ─── Section Header ─── -->
+  <header class="mec-header">
+    <span class="mec-eyebrow font-mono">Educational Guide</span>
+    <h2 class="mec-main-title">How Mortgage Calculations Work</h2>
+    <p class="mec-lead">
+      Understanding the mathematics behind your mortgage payment helps you evaluate loan options,
+      see how interest accrues over time, and plan an effective repayment strategy.
+    </p>
+  </header>
+
+  <!-- ─── 1. The Standard Amortization Formula ─── -->
+  <section class="mec-section">
+    <h3 class="mec-section-title">1. The Mortgage Payment Calculation</h3>
+    <div class="mec-prose">
+      <p>
+        A standard fixed-rate mortgage is an amortizing loan. This means your regular payment remains
+        fixed throughout the loan term, but the internal split between <strong>principal</strong> (paying
+        down what you borrowed) and <strong>interest</strong> (the cost of borrowing) changes with every
+        single payment.
+      </p>
+      <p>
+        The standard periodic mortgage payment is determined by five core variables:
+      </p>
+      <ul class="mec-list">
+        <li>
+          <strong>Principal Loan Amount (<span class="font-mono">P</span>):</strong> The total amount borrowed after subtracting your down payment from the property purchase price.
+        </li>
+        <li>
+          <strong>Periodic Interest Rate (<span class="font-mono">r</span>):</strong> The annual interest rate divided by the number of payment periods per year (adjusted for applicable compounding rules).
+        </li>
+        <li>
+          <strong>Amortization Period:</strong> The total length of time (typically 15, 25, or 30 years) required to pay off the mortgage completely.
+        </li>
+        <li>
+          <strong>Number of Payments (<span class="font-mono">n</span>):</strong> The total number of scheduled payments across the full amortization period (e.g., 30 years &times; 12 months = 360 payments).
+        </li>
+        <li>
+          <strong>Payment Frequency:</strong> How often payments are made (monthly, bi-weekly, or weekly).
+        </li>
+      </ul>
+
+      <div class="mec-formula-card">
+        <span class="mec-formula-badge font-mono">Standard Amortization Formula</span>
+        <div class="mec-formula-math font-mono">
+          M = P &times; [ r(1 + r)<sup>n</sup> ] / [ (1 + r)<sup>n</sup> - 1 ]
+        </div>
+        <p class="mec-formula-caption">
+          Where <strong>M</strong> is the periodic payment, <strong>P</strong> is the principal loan amount,
+          <strong>r</strong> is the periodic interest rate, and <strong>n</strong> is the total number of payments.
+        </p>
+      </div>
+
+      <p>
+        <strong>The Principal vs. Interest Shift:</strong> Early in the loan term, the outstanding principal
+        balance is at its highest, meaning the interest portion accounts for the majority of each payment.
+        As you pay down principal, subsequent interest charges decrease, allowing an increasing share of every
+        future payment to go directly toward reducing the remaining loan balance.
+      </p>
+    </div>
+  </section>
+
+  <!-- ─── 2. Practical Amortization Example ─── -->
+  <section class="mec-section">
+    <h3 class="mec-section-title">2. Amortization in Practice: An Illustrative Example</h3>
+    <div class="mec-prose">
+      <p>
+        To see how amortization works over time, consider a representative loan scenario:
+      </p>
+      
+      <div class="mec-example-card">
+        <div class="mec-example-header">
+          <span class="mec-example-tag font-mono">Illustrative Example</span>
+          <span class="mec-example-note font-mono">Not a lender quote</span>
+        </div>
+        <div class="mec-example-grid">
+          <div class="mec-example-param">
+            <span class="mec-param-label">Loan Principal (P)</span>
+            <span class="mec-param-value font-mono">$400,000</span>
+          </div>
+          <div class="mec-example-param">
+            <span class="mec-param-label">Annual Interest Rate</span>
+            <span class="mec-param-value font-mono">6.00%</span>
+          </div>
+          <div class="mec-example-param">
+            <span class="mec-param-label">Amortization Period</span>
+            <span class="mec-param-value font-mono">30 Years (360 payments)</span>
+          </div>
+          <div class="mec-example-param">
+            <span class="mec-param-label">Monthly Payment (P&amp;I)</span>
+            <span class="mec-param-value font-mono highlight">$2,398.20</span>
+          </div>
+        </div>
+
+        <div class="mec-timeline-table-wrap">
+          <table class="mec-timeline-table">
+            <thead>
+              <tr>
+                <th>Timeline</th>
+                <th>Monthly Payment</th>
+                <th>Interest Portion</th>
+                <th>Principal Portion</th>
+                <th>Remaining Balance</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="font-mono">Payment 1 (Month 1)</td>
+                <td class="font-mono">$2,398.20</td>
+                <td class="font-mono text-interest">$2,000.00 (83.4%)</td>
+                <td class="font-mono text-principal">$398.20 (16.6%)</td>
+                <td class="font-mono">$399,601.80</td>
+              </tr>
+              <tr>
+                <td class="font-mono">Payment 180 (Year 15)</td>
+                <td class="font-mono">$2,398.20</td>
+                <td class="font-mono text-interest">$1,475.48 (61.5%)</td>
+                <td class="font-mono text-principal">$922.72 (38.5%)</td>
+                <td class="font-mono">$294,173.28</td>
+              </tr>
+              <tr>
+                <td class="font-mono">Payment 300 (Year 25)</td>
+                <td class="font-mono">$2,398.20</td>
+                <td class="font-mono text-interest">$680.12 (28.4%)</td>
+                <td class="font-mono text-principal">$1,718.08 (71.6%)</td>
+                <td class="font-mono">$134,305.92</td>
+              </tr>
+              <tr>
+                <td class="font-mono">Payment 360 (Month 360)</td>
+                <td class="font-mono">$2,398.20</td>
+                <td class="font-mono text-interest">$11.93 (0.5%)</td>
+                <td class="font-mono text-principal">$2,386.27 (99.5%)</td>
+                <td class="font-mono">$0.00</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <p class="mec-caption">
+        Notice how the total payment ($2,398.20) remains constant, but the composition changes dramatically from mostly interest in Year 1 to almost entirely principal in Year 30.
+      </p>
+    </div>
+  </section>
+
+  <!-- ─── 3. Canadian Mortgage Considerations ─── -->
+  <section class="mec-section">
+    <h3 class="mec-section-title">3. Canadian Mortgage Compounding Rules</h3>
+    <div class="mec-prose">
+      <p>
+        One critical distinction when calculating a Canadian mortgage is how interest compounding is applied.
+        In the United States and Australia, mortgage interest is typically compounded monthly. In Canada, however,
+        under the federal <em>Interest Act</em>, interest on many Canadian fixed-rate mortgages is required to be compounded
+        <strong>semi-annually (twice per year) not in advance</strong>.
+      </p>
+      <p>
+        To calculate monthly payments for a Canadian fixed-rate mortgage, the nominal annual rate must first be converted
+        into an effective monthly rate using the semi-annual compounding factor:
+      </p>
+
+      <div class="mec-formula-card">
+        <span class="mec-formula-badge font-mono">Canadian Semi-Annual to Monthly Conversion</span>
+        <div class="mec-formula-math font-mono">
+          r<sub>monthly</sub> = ( 1 + Annual Rate / 2 )<sup>(2 / 12)</sup> - 1 = ( 1 + Annual Rate / 2 )<sup>(1 / 6)</sup> - 1
+        </div>
+      </div>
+
+      <p>
+        Because compounding occurs twice a year instead of twelve times, the effective monthly interest rate on a Canadian
+        fixed-rate mortgage is slightly lower than on a US mortgage with the same nominal annual interest rate. CalcVantage
+        automatically applies this semi-annual compounding conversion when Canada is selected.
+      </p>
+    </div>
+  </section>
+
+  <!-- ─── 4. CMHC / Mortgage Default Insurance ─── -->
+  <section class="mec-section">
+    <h3 class="mec-section-title">4. Mortgage Default Insurance (CMHC)</h3>
+    <div class="mec-prose">
+      <p>
+        In Canada, homebuyers who purchase a residential property with a down payment of less than 20%
+        (between 5% and 19.99% of the purchase price) are generally required to obtain <strong>mortgage default insurance</strong>.
+        This coverage is provided by the Canada Mortgage and Housing Corporation (CMHC) or private insurers such as Sagen and Canada Guaranty.
+      </p>
+      <ul class="mec-list">
+        <li>
+          <strong>Purpose:</strong> Mortgage default insurance protects the lender against financial loss if the borrower defaults on their loan payments. It allows lenders to offer competitive mortgage rates to buyers with smaller down payments.
+        </li>
+        <li>
+          <strong>Distinct from Property Insurance:</strong> Mortgage default insurance is not homeowner insurance. It does not cover damage to your physical home, structure, or personal belongings.
+        </li>
+        <li>
+          <strong>Premium Structure:</strong> The insurance premium is calculated as a percentage of the total loan amount. It scales based on the loan-to-value (LTV) ratio — smaller down payments (such as 5% to 9.99%) incur higher premium rates than larger down payments (such as 15% to 19.99%).
+        </li>
+        <li>
+          <strong>Payment Method:</strong> The premium is typically added directly to the mortgage principal balance and amortized over the life of the loan, though it can also be paid upfront as a closing cost.
+        </li>
+        <li>
+          <strong>Conventional Mortgages (20%+ Down):</strong> If you provide a down payment of 20% or more, the purchase is considered a conventional mortgage and default insurance is generally not required.
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ─── 5. US, Canada, and Australia Context ─── -->
+  <section class="mec-section">
+    <h3 class="mec-section-title">5. Mortgage Conventions Across US, Canada, &amp; Australia</h3>
+    <div class="mec-prose">
+      <p>
+        CalcVantage tailors mortgage calculations to the distinct financial systems and regulatory frameworks
+        of the United States, Canada, and Australia:
+      </p>
+
+      <div class="mec-country-grid">
+        <div class="mec-country-card">
+          <div class="mec-country-header">
+            <span class="mec-country-flag">🇺🇸</span>
+            <h4 class="mec-country-name">United States</h4>
+          </div>
+          <ul class="mec-country-list">
+            <li><strong>Interest Compounding:</strong> Standard monthly compounding.</li>
+            <li><strong>Common Loan Terms:</strong> 15-year and 30-year fixed-rate mortgages where the rate is locked for the full term.</li>
+            <li><strong>Taxes &amp; Insurance:</strong> Property taxes and homeowners insurance are commonly escrowed into the monthly payment.</li>
+            <li><strong>Default Insurance:</strong> Private Mortgage Insurance (PMI) typically applies when down payment is under 20%.</li>
+          </ul>
+        </div>
+
+        <div class="mec-country-card">
+          <div class="mec-country-header">
+            <span class="mec-country-flag">🇨🇦</span>
+            <h4 class="mec-country-name">Canada</h4>
+          </div>
+          <ul class="mec-country-list">
+            <li><strong>Interest Compounding:</strong> Semi-annual compounding for fixed-rate mortgages by law.</li>
+            <li><strong>Term vs. Amortization:</strong> 25- or 30-year amortization periods with shorter term contracts (often 3 to 5 years) requiring periodic renewal.</li>
+            <li><strong>Default Insurance:</strong> CMHC / default insurance required for down payments between 5% and 19.99%.</li>
+            <li><strong>Land Transfer Tax:</strong> Provincial and municipal land transfer taxes apply at purchase.</li>
+          </ul>
+        </div>
+
+        <div class="mec-country-card">
+          <div class="mec-country-header">
+            <span class="mec-country-flag">🇦🇺</span>
+            <h4 class="mec-country-name">Australia</h4>
+          </div>
+          <ul class="mec-country-list">
+            <li><strong>Interest Compounding:</strong> Interest calculated daily and charged monthly.</li>
+            <li><strong>Common Products:</strong> Variable rate loans with offset accounts and short-term fixed periods (1 to 5 years).</li>
+            <li><strong>Payment Frequencies:</strong> High flexibility with monthly, fortnightly, or weekly repayments.</li>
+            <li><strong>State Stamp Duty:</strong> State-level transfer duty and Lenders Mortgage Insurance (LMI) for high LTV purchases.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── 6. Results Are Estimates ─── -->
+  <section class="mec-section">
+    <h3 class="mec-section-title">6. Why Real-World Lender Quotes Differ</h3>
+    <div class="mec-prose">
+      <p>
+        The calculations generated by this mortgage calculator provide estimates based on standard mathematical
+        formulas, current regulatory models, and the inputs you supply. In real-world borrowing, final loan quotes
+        and closing figures may vary due to several factors:
+      </p>
+      <ul class="mec-list">
+        <li><strong>Lender Underwriting &amp; Credit Profiling:</strong> Individual credit scores, debt-to-income (DTI) ratios, and loan programs influence the exact rate and terms offered.</li>
+        <li><strong>Closing Costs &amp; Fees:</strong> Origination fees, appraisal costs, title insurance, legal fees, and settlement charges vary widely by lender and jurisdiction.</li>
+        <li><strong>Property Tax &amp; Escrow Adjustments:</strong> Local municipal tax reassessments, special levies, and HOA / body corporate fees can adjust your total monthly housing obligation.</li>
+        <li><strong>Rounding &amp; Day-Count Conventions:</strong> Minor discrepancies can occur depending on exact calendar day counts, leap years, and lender-specific rounding rules.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ─── 7. Standardized Disclaimer ─── -->
+  <div class="mec-disclaimer" role="note">
+    <span class="mec-disclaimer-title font-mono">Disclaimer &amp; Terms of Use</span>
+    <p>
+      CalcVantage calculators provide estimates for educational and informational purposes only.
+      Results may differ from actual financial outcomes and should not be considered financial advice.
+      Before making any significant financial or property commitment, confirm all calculations, interest rates,
+      taxes, and terms with a licensed mortgage broker, lender, or qualified financial professional.
+      For full details, please review our <a href="/disclaimer">Disclaimer</a> and <a href="/terms">Terms of Service</a>.
+    </p>
+  </div>
+</div>
+
+<style>
+  /* ── Wrapper ── */
+  .mec-wrapper {
+    padding: 3rem 0 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2.5rem;
+    border-top: 1px solid var(--color-hairline);
+    margin-top: 3rem;
+  }
+
+  /* ── Header ── */
+  .mec-header {
+    display: flex;
+    flex-direction: column;
+    gap: 0.625rem;
+    max-width: 48rem;
+  }
+
+  .mec-eyebrow {
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--color-mute);
+  }
+
+  .mec-main-title {
+    font-size: clamp(1.5rem, 3.5vw, 2.25rem);
+    font-weight: 700;
+    letter-spacing: -0.025em;
+    line-height: 1.2;
+    color: var(--color-ink);
+    margin: 0;
+  }
+
+  .mec-lead {
+    font-size: 1.0625rem;
+    line-height: 1.65;
+    color: var(--color-body);
+    margin: 0;
+  }
+
+  /* ── Sections & Prose ── */
+  .mec-section {
+    display: flex;
+    flex-direction: column;
+    gap: 0.875rem;
+  }
+
+  .mec-section-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    letter-spacing: -0.015em;
+    color: var(--color-ink);
+    margin: 0;
+  }
+
+  .mec-prose {
+    display: flex;
+    flex-direction: column;
+    gap: 0.875rem;
+    max-width: 54rem;
+  }
+
+  .mec-prose p {
+    font-size: 0.9375rem;
+    line-height: 1.7;
+    color: var(--color-body);
+    margin: 0;
+  }
+
+  .mec-caption {
+    font-size: 0.8125rem;
+    color: var(--color-mute);
+    line-height: 1.5;
+    margin-top: -0.25rem;
+  }
+
+  /* ── Lists ── */
+  .mec-list {
+    list-style: none;
+    padding: 0;
+    margin: 0.25rem 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.625rem;
+  }
+
+  .mec-list li {
+    font-size: 0.9375rem;
+    line-height: 1.65;
+    color: var(--color-body);
+    padding-left: 1rem;
+    border-left: 2px solid var(--color-hairline-strong);
+  }
+
+  .mec-list li strong {
+    color: var(--color-ink);
+  }
+
+  /* ── Formula Cards ── */
+  .mec-formula-card {
+    padding: 1.25rem 1.5rem;
+    background-color: var(--color-canvas);
+    border: 1px solid var(--color-hairline);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin: 0.5rem 0;
+  }
+
+  .mec-formula-badge {
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--color-mute);
+  }
+
+  .mec-formula-math {
+    font-size: 1.0625rem;
+    font-weight: 600;
+    color: var(--color-ink);
+    padding: 0.5rem 0;
+    overflow-x: auto;
+  }
+
+  .mec-formula-caption {
+    font-size: 0.8125rem;
+    color: var(--color-mute);
+    line-height: 1.5;
+    margin: 0;
+  }
+
+  /* ── Example Card & Table ── */
+  .mec-example-card {
+    background-color: var(--color-canvas);
+    border: 1px solid var(--color-hairline);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+    overflow: hidden;
+    margin: 0.5rem 0;
+  }
+
+  .mec-example-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.875rem 1.25rem;
+    background-color: var(--color-canvas-soft);
+    border-bottom: 1px solid var(--color-hairline);
+  }
+
+  .mec-example-tag {
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--color-accent);
+  }
+
+  .mec-example-note {
+    font-size: 0.75rem;
+    color: var(--color-mute);
+  }
+
+  .mec-example-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+    padding: 1.25rem;
+    border-bottom: 1px solid var(--color-hairline);
+  }
+
+  @media (min-width: 640px) {
+    .mec-example-grid {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+
+  .mec-example-param {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .mec-param-label {
+    font-size: 0.75rem;
+    color: var(--color-mute);
+  }
+
+  .mec-param-value {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--color-ink);
+  }
+
+  .mec-param-value.highlight {
+    color: var(--color-accent);
+  }
+
+  .mec-timeline-table-wrap {
+    overflow-x: auto;
+  }
+
+  .mec-timeline-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.875rem;
+    text-align: left;
+  }
+
+  .mec-timeline-table th {
+    padding: 0.75rem 1.25rem;
+    background-color: var(--color-canvas-soft-2);
+    font-weight: 600;
+    color: var(--color-ink);
+    border-bottom: 1px solid var(--color-hairline);
+    white-space: nowrap;
+  }
+
+  .mec-timeline-table td {
+    padding: 0.75rem 1.25rem;
+    border-bottom: 1px solid var(--color-hairline);
+    color: var(--color-body);
+    white-space: nowrap;
+  }
+
+  .mec-timeline-table tbody tr:last-child td {
+    border-bottom: none;
+  }
+
+  .text-interest {
+    color: #e11d48;
+  }
+
+  .text-principal {
+    color: var(--color-success);
+  }
+
+  /* ── Country Comparison Grid ── */
+  .mec-country-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    margin: 0.5rem 0;
+  }
+
+  @media (min-width: 768px) {
+    .mec-country-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  .mec-country-card {
+    padding: 1.25rem;
+    background-color: var(--color-canvas);
+    border: 1px solid var(--color-hairline);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .mec-country-header {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--color-hairline);
+  }
+
+  .mec-country-flag {
+    font-size: 1.25rem;
+    line-height: 1;
+  }
+
+  .mec-country-name {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--color-ink);
+    margin: 0;
+  }
+
+  .mec-country-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .mec-country-list li {
+    font-size: 0.8125rem;
+    line-height: 1.55;
+    color: var(--color-body);
+  }
+
+  .mec-country-list li strong {
+    color: var(--color-ink);
+  }
+
+  /* ── Disclaimer ── */
+  .mec-disclaimer {
+    padding: 1.25rem 1.5rem;
+    background-color: var(--color-canvas-soft);
+    border: 1px solid var(--color-hairline);
+    border-left: 3px solid var(--color-warning);
+    border-radius: var(--radius-md);
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    max-width: 54rem;
+  }
+
+  .mec-disclaimer-title {
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--color-ink);
+  }
+
+  .mec-disclaimer p {
+    font-size: 0.8125rem;
+    line-height: 1.65;
+    color: var(--color-body);
+    margin: 0;
+  }
+
+  .mec-disclaimer a {
+    color: var(--color-accent);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+  .mec-disclaimer a:hover {
+    color: var(--color-accent-deep);
+  }
+
+  /* ── Mobile responsiveness ── */
+  @media (max-width: 640px) {
+    .mec-wrapper {
+      padding: 2rem 0 1.5rem;
+      gap: 2rem;
+      margin-top: 2rem;
+    }
+
+    .mec-formula-card,
+    .mec-country-card,
+    .mec-disclaimer {
+      padding: 1rem;
+    }
+
+    .mec-example-grid {
+      padding: 1rem;
+    }
+
+    .mec-timeline-table th,
+    .mec-timeline-table td {
+      padding: 0.625rem 0.875rem;
+    }
+  }
+</style>
