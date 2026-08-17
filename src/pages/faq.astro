@@ -11,7 +11,7 @@ const faqEntities = FAQ_CATEGORIES.flatMap((category) =>
 		name: item.question,
 		acceptedAnswer: {
 			'@type': 'Answer',
-			answerText: item.answer.replace(/<[^>]*>/g, ''),
+			text: item.answer.replace(/<[^>]*>/g, ''),
 		},
 	}))
 );
