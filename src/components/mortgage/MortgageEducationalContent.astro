@@ -30,23 +30,44 @@
       <p>
         The standard periodic mortgage payment is determined by five core variables:
       </p>
-      <ul class="mec-list">
-        <li>
-          <strong>Principal Loan Amount (<span class="font-mono">P</span>):</strong> The total amount borrowed after subtracting your down payment from the property purchase price.
-        </li>
-        <li>
-          <strong>Periodic Interest Rate (<span class="font-mono">r</span>):</strong> The annual interest rate divided by the number of payment periods per year (adjusted for applicable compounding rules).
-        </li>
-        <li>
-          <strong>Amortization Period:</strong> The total length of time (typically 15, 25, or 30 years) required to pay off the mortgage completely.
-        </li>
-        <li>
-          <strong>Number of Payments (<span class="font-mono">n</span>):</strong> The total number of scheduled payments across the full amortization period (e.g., 30 years &times; 12 months = 360 payments).
-        </li>
-        <li>
-          <strong>Payment Frequency:</strong> How often payments are made (monthly, bi-weekly, or weekly).
-        </li>
-      </ul>
+
+      <div class="mec-table-card">
+        <div class="mec-table-header">
+          <h4 class="mec-table-title font-mono">Key Factors in a Mortgage Calculation</h4>
+        </div>
+        <div class="mec-table-wrap">
+          <table class="mec-data-table">
+            <thead>
+              <tr>
+                <th>Factor</th>
+                <th>What it affects</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Loan amount</strong></td>
+                <td>Starting principal and the total amount borrowed</td>
+              </tr>
+              <tr>
+                <td><strong>Interest rate</strong></td>
+                <td>Interest cost over the life of the loan and periodic payment size</td>
+              </tr>
+              <tr>
+                <td><strong>Amortization period</strong></td>
+                <td>How long the loan is scheduled to be repaid</td>
+              </tr>
+              <tr>
+                <td><strong>Payment frequency</strong></td>
+                <td>How often payments are made (monthly, bi-weekly, weekly)</td>
+              </tr>
+              <tr>
+                <td><strong>Down payment</strong></td>
+                <td>How much is paid upfront and how much needs to be borrowed</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
 
       <div class="mec-formula-card">
         <span class="mec-formula-badge font-mono">Standard Amortization Formula</span>
@@ -63,7 +84,7 @@
         <strong>The Principal vs. Interest Shift:</strong> Early in the loan term, the outstanding principal
         balance is at its highest, meaning the interest portion accounts for the majority of each payment.
         As you pay down principal, subsequent interest charges decrease, allowing an increasing share of every
-        future payment to go directly toward reducing the remaining loan balance.
+        future payment to go directly toward reducing the remaining loan balance. For a deeper breakdown of how property taxes, homeowners insurance, and interest interact, explore our guide to <a href="/blog/understanding-mortgage-payments">understanding mortgage payments</a>.
       </p>
     </div>
   </section>
@@ -391,6 +412,62 @@
 
   .mec-list li strong {
     color: var(--color-ink);
+  }
+
+  /* ── Table Cards & Data Tables ── */
+  .mec-table-card {
+    background-color: var(--color-canvas);
+    border: 1px solid var(--color-hairline);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+    overflow: hidden;
+    margin: 0.5rem 0;
+  }
+
+  .mec-table-header {
+    padding: 0.875rem 1.25rem;
+    background-color: var(--color-canvas-soft);
+    border-bottom: 1px solid var(--color-hairline);
+  }
+
+  .mec-table-title {
+    font-size: 0.8125rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--color-ink);
+    margin: 0;
+  }
+
+  .mec-table-wrap {
+    overflow-x: auto;
+  }
+
+  .mec-data-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.875rem;
+    text-align: left;
+  }
+
+  .mec-data-table th {
+    padding: 0.75rem 1.25rem;
+    background-color: var(--color-canvas-soft-2);
+    font-weight: 600;
+    color: var(--color-ink);
+    border-bottom: 1px solid var(--color-hairline);
+    white-space: nowrap;
+  }
+
+  .mec-data-table td {
+    padding: 0.75rem 1.25rem;
+    border-bottom: 1px solid var(--color-hairline);
+    color: var(--color-body);
+    line-height: 1.5;
+  }
+
+  .mec-data-table tbody tr:last-child td {
+    border-bottom: none;
   }
 
   /* ── Formula Cards ── */

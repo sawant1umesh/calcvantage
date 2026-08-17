@@ -27,23 +27,45 @@
         value of your retirement portfolio at your target retirement age depends on five fundamental
         factors:
       </p>
-      <ul class="rec-list">
-        <li>
-          <strong>Current Savings:</strong> The initial balance in your retirement and investment accounts that begins compounding immediately.
-        </li>
-        <li>
-          <strong>Monthly Contributions:</strong> The ongoing funds you add to your portfolio each month.
-        </li>
-        <li>
-          <strong>Time Horizon:</strong> The number of years between your current age and your planned retirement age.
-        </li>
-        <li>
-          <strong>Assumed Investment Return:</strong> The expected average annual growth rate of your investment portfolio.
-        </li>
-        <li>
-          <strong>Inflation Rate:</strong> The rate at which the cost of living increases over time, eroding future purchasing power.
-        </li>
-      </ul>
+
+      <div class="rec-table-card">
+        <div class="rec-table-header">
+          <h4 class="rec-table-title font-mono">Key Factors in a Retirement Projection</h4>
+        </div>
+        <div class="rec-table-wrap">
+          <table class="rec-data-table">
+            <thead>
+              <tr>
+                <th>Factor</th>
+                <th>Effect on the projection</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Starting savings</strong></td>
+                <td>Provides the initial amount available for potential growth</td>
+              </tr>
+              <tr>
+                <td><strong>Contributions</strong></td>
+                <td>Add to the projected retirement balance</td>
+              </tr>
+              <tr>
+                <td><strong>Investment return assumption</strong></td>
+                <td>Influences compound growth over time</td>
+              </tr>
+              <tr>
+                <td><strong>Inflation assumption</strong></td>
+                <td>Helps estimate future purchasing power</td>
+              </tr>
+              <tr>
+                <td><strong>Years until retirement</strong></td>
+                <td>Determines how long savings and contributions can potentially grow</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
       <p>
         The earlier you begin and the larger your starting balance, the more time your money has to benefit
         from long-term compounding.
@@ -99,6 +121,9 @@
           <strong>Incremental Increases:</strong> Even small increases in your monthly savings amount (such as an extra $50 or $100 per month) can add tens of thousands of dollars to your final portfolio value over a 20- to 30-year horizon.
         </li>
       </ul>
+      <p>
+        For a practical framework on setting personal savings targets and timelines, read our guide on <a href="/blog/retirement-savings-guide">how much to save for retirement</a>.
+      </p>
     </div>
   </section>
 
@@ -380,6 +405,62 @@
 
   .rec-list li strong {
     color: var(--color-ink);
+  }
+
+  /* ── Table Cards & Data Tables ── */
+  .rec-table-card {
+    background-color: var(--color-canvas);
+    border: 1px solid var(--color-hairline);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+    overflow: hidden;
+    margin: 0.5rem 0;
+  }
+
+  .rec-table-header {
+    padding: 0.875rem 1.25rem;
+    background-color: var(--color-canvas-soft);
+    border-bottom: 1px solid var(--color-hairline);
+  }
+
+  .rec-table-title {
+    font-size: 0.8125rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--color-ink);
+    margin: 0;
+  }
+
+  .rec-table-wrap {
+    overflow-x: auto;
+  }
+
+  .rec-data-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.875rem;
+    text-align: left;
+  }
+
+  .rec-data-table th {
+    padding: 0.75rem 1.25rem;
+    background-color: var(--color-canvas-soft-2);
+    font-weight: 600;
+    color: var(--color-ink);
+    border-bottom: 1px solid var(--color-hairline);
+    white-space: nowrap;
+  }
+
+  .rec-data-table td {
+    padding: 0.75rem 1.25rem;
+    border-bottom: 1px solid var(--color-hairline);
+    color: var(--color-body);
+    line-height: 1.5;
+  }
+
+  .rec-data-table tbody tr:last-child td {
+    border-bottom: none;
   }
 
   /* ── Concept & Formula Cards ── */

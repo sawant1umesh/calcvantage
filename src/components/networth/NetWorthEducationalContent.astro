@@ -39,6 +39,7 @@
         Net worth provides a clear snapshot of your accumulated wealth at the moment of calculation.
         A positive net worth means your assets exceed your debts, while a negative net worth occurs when
         total liabilities exceed total assets (common early in careers or after taking on student or mortgage debt).
+        For a detailed walkthrough on personal balance sheet tracking, explore our guide to <a href="/blog/net-worth-basics">net worth basics</a>.
       </p>
     </div>
   </section>
@@ -112,6 +113,79 @@
           <strong>Other Liabilities:</strong> Back taxes owed, medical bills, legal judgments, and other personal financial obligations.
         </li>
       </ul>
+
+      <div class="nec-table-card">
+        <div class="nec-table-header">
+          <h4 class="nec-table-title font-mono">Understanding Assets and Liabilities</h4>
+        </div>
+        <div class="nec-table-wrap">
+          <table class="nec-data-table">
+            <thead>
+              <tr>
+                <th>Classification</th>
+                <th>Category</th>
+                <th>Examples / What It Includes</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td rowspan="7" class="nec-type-cell text-asset"><strong>Assets</strong><br /><span class="nec-type-sub">(What you own)</span></td>
+                <td><strong>Cash &amp; Savings</strong></td>
+                <td>Checking, high-yield savings, money market funds, cash</td>
+              </tr>
+              <tr>
+                <td><strong>Investments</strong></td>
+                <td>Taxable brokerage accounts, stocks, bonds, ETFs, crypto</td>
+              </tr>
+              <tr>
+                <td><strong>Retirement Accounts</strong></td>
+                <td>401(k), IRA, Roth IRA, RRSP, TFSA, Superannuation</td>
+              </tr>
+              <tr>
+                <td><strong>Real Estate</strong></td>
+                <td>Primary residence, vacation property, rental real estate</td>
+              </tr>
+              <tr>
+                <td><strong>Vehicles</strong></td>
+                <td>Estimated fair market value of cars, motorcycles, boats</td>
+              </tr>
+              <tr>
+                <td><strong>Business Assets</strong></td>
+                <td>Business equity, machinery, inventory, ownership stakes</td>
+              </tr>
+              <tr>
+                <td><strong>Other Assets</strong></td>
+                <td>Valuables, collectibles, jewelry, tools, personal property</td>
+              </tr>
+              <tr class="table-divider-row">
+                <td rowspan="6" class="nec-type-cell text-liability"><strong>Liabilities</strong><br /><span class="nec-type-sub">(What you owe)</span></td>
+                <td><strong>Mortgage</strong></td>
+                <td>Remaining principal on home and investment property loans</td>
+              </tr>
+              <tr>
+                <td><strong>Personal Loans</strong></td>
+                <td>Unsecured personal loans, lines of credit</td>
+              </tr>
+              <tr>
+                <td><strong>Auto Loans</strong></td>
+                <td>Outstanding vehicle financing and auto lease balances</td>
+              </tr>
+              <tr>
+                <td><strong>Credit Card Debt</strong></td>
+                <td>Revolving balances carried on consumer credit cards</td>
+              </tr>
+              <tr>
+                <td><strong>Student Loans</strong></td>
+                <td>Education loans, tuition balances, student debt</td>
+              </tr>
+              <tr>
+                <td><strong>Other Liabilities</strong></td>
+                <td>Taxes owed, medical debt, informal obligations</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -385,6 +459,80 @@
 
   .nec-list li strong {
     color: var(--color-ink);
+  }
+
+  /* ── Table Cards & Data Tables ── */
+  .nec-table-card {
+    background-color: var(--color-canvas);
+    border: 1px solid var(--color-hairline);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+    overflow: hidden;
+    margin: 0.75rem 0;
+  }
+
+  .nec-table-header {
+    padding: 0.875rem 1.25rem;
+    background-color: var(--color-canvas-soft);
+    border-bottom: 1px solid var(--color-hairline);
+  }
+
+  .nec-table-title {
+    font-size: 0.8125rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--color-ink);
+    margin: 0;
+  }
+
+  .nec-table-wrap {
+    overflow-x: auto;
+  }
+
+  .nec-data-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.875rem;
+    text-align: left;
+  }
+
+  .nec-data-table th {
+    padding: 0.75rem 1.25rem;
+    background-color: var(--color-canvas-soft-2);
+    font-weight: 600;
+    color: var(--color-ink);
+    border-bottom: 1px solid var(--color-hairline);
+    white-space: nowrap;
+  }
+
+  .nec-data-table td {
+    padding: 0.75rem 1.25rem;
+    border-bottom: 1px solid var(--color-hairline);
+    color: var(--color-body);
+    line-height: 1.5;
+  }
+
+  .nec-data-table tbody tr:last-child td {
+    border-bottom: none;
+  }
+
+  .nec-data-table tbody tr.table-divider-row td {
+    border-top: 2px solid var(--color-hairline-strong);
+  }
+
+  .nec-type-cell {
+    background-color: var(--color-canvas-soft);
+    vertical-align: top;
+    font-size: 0.875rem;
+    border-right: 1px solid var(--color-hairline);
+    white-space: nowrap;
+  }
+
+  .nec-type-sub {
+    font-size: 0.75rem;
+    color: var(--color-mute);
+    font-weight: normal;
   }
 
   /* ── Formula Cards ── */
