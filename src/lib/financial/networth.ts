@@ -221,7 +221,7 @@ export function generateInsights(
   const { totalAssets, totalLiabilities, netWorth } = totals;
 
   if (totalAssets <= 0 && totalLiabilities <= 0) {
-    return ['Enter asset and liability values to see personalized insights.'];
+    return ['Enter asset and liability values to see financial insights.'];
   }
 
   const fmt = (v: number) => `$${Math.round(v).toLocaleString('en-US')}`;
@@ -232,46 +232,46 @@ export function generateInsights(
 
   if (netWorth < 0) {
     insights.push(
-      `Your liabilities (${fmt(totalLiabilities)}) exceed your assets (${fmt(totalAssets)}). Focus on paying down high-interest debt first.`
+      `Your liabilities (${fmt(totalLiabilities)}) exceed your assets (${fmt(totalAssets)}).`
     );
   }
 
-  if (investmentShare >= 0.4) {
+  if (investmentShare > 0) {
     insights.push(
-      `Investments and retirement accounts make up ${pct(investmentShare)} of your assets — strong growth potential.`
+      `Investments and retirement accounts represent ${pct(investmentShare)} of your total assets.`
     );
-  } else if (investmentShare >= 0.2) {
-    insights.push(`Your allocation to investments and retirement is within a healthy range (${pct(investmentShare)}).`);
   }
 
-  if (debtRatio >= 0.5) {
+  if (debtRatio > 0) {
     insights.push(
-      `Your liabilities equal ${pct(debtRatio)} of your assets. Consider accelerating debt repayment.`
+      `Liabilities represent ${pct(debtRatio)} of your total assets.`
     );
-  } else if (debtRatio > 0 && debtRatio < 0.2) {
-    insights.push('Low debt relative to assets — your balance sheet is in solid shape.');
   }
 
   if (inputs.creditCards > 0) {
     insights.push(
-      `You carry ${fmt(inputs.creditCards)} in credit card debt, which typically carries high interest. Pay it down first.`
+      `Credit card debt represents ${fmt(inputs.creditCards)} of your total liabilities.`
     );
   }
 
-  if (cashShare >= 0.15) {
-    insights.push('You keep a healthy cash buffer for emergencies.');
+  if (cashShare > 0) {
+    insights.push(
+      `Cash and savings represent ${pct(cashShare)} of your total assets.`
+    );
   }
 
   const allocation = calculateAssetAllocation(inputs);
   const activeCount = allocation.filter((item) => item.percent >= 5).length;
   if (activeCount >= 4) {
-    insights.push(`Your assets are diversified across ${activeCount} meaningful categories.`);
+    insights.push(
+      `Assets are spread across ${activeCount} categories with at least 5% share each.`
+    );
   }
 
   const top = allocation.reduce((max, item) => (item.percent > max.percent ? item : max));
   if (top && top.percent > CONCENTRATION_INSIGHT_LIMIT * 100) {
     insights.push(
-      `A large share (${pct(top.percent / 100)}) of your assets sits in ${top.label.toLowerCase()}. Consider diversifying.`
+      `${top.label} represents ${pct(top.percent / 100)} of your total assets.`
     );
   }
 

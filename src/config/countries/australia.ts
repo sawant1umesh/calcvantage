@@ -7,5 +7,5 @@ export const AUSTRALIA_CONFIG: CountryConfig = {
   currencyCode: 'AUD',
   locale: 'en-AU',
   compoundingType: 'monthly',
-  compoundingNote: 'Compounded monthly for standard Australian mortgages',
+  compoundingNote: 'Interest commonly calculated daily and charged monthly for standard Australian mortgages',
 };

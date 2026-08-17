@@ -223,7 +223,7 @@ const auStateOptions = AU_STATES.map((s) => ({
         <span class="text-body-sm-strong">Canadian High-Ratio Mortgage (CMHC)</span>
       </div>
       <p class="text-caption">
-        Down payments under 20% in Canada automatically calculate CMHC Insurance as a separate one-time upfront cost. Minimum down payment is statutory 5%.
+        Down payments under 20% in Canada automatically calculate CMHC Insurance. The premium is typically added to the mortgage amount when financed. For homes priced at $500,000 or less, the minimum down payment is generally 5%. For homes priced above $500,000 and below $1.5 million, the minimum is 5% on the first $500,000 plus 10% on the portion above $500,000.
       </p>
     </div>
 
@@ -892,7 +892,7 @@ const auStateOptions = AU_STATES.map((s) => ({
       let downError: string | undefined;
       if (downAmount < 0) downError = 'Down payment cannot be negative.';
       else if (downAmount > homeValue && homeValue > 0) downError = 'Down payment cannot exceed home value.';
-      else if (countryCode === 'CA' && downPercent < 5 && homeValue > 0) downError = 'Minimum down payment in Canada is 5%.';
+      else if (countryCode === 'CA' && downPercent < 5 && homeValue > 0) downError = 'Minimum down payment in Canada is 5% for homes priced at $500,000 or less. A higher down payment may be required for higher-priced homes.';
       toggleFieldError(downPaymentAmountInput, downError);
 
       toggleFieldError(interestRateInput, interestRate < 0 ? 'Interest rate cannot be negative.' : interestRate > 30 ? 'Interest rate cannot exceed 30%.' : undefined);

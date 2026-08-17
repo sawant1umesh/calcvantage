@@ -7,5 +7,5 @@ export const CANADA_CONFIG: CountryConfig = {
   currencyCode: 'CAD',
   locale: 'en-CA',
   compoundingType: 'semi-annual',
-  compoundingNote: 'Compounded semi-annually by law for fixed-rate Canadian mortgages',
+  compoundingNote: 'Semi-annual compounding convention for fixed-rate Canadian mortgages, per Interest Act disclosure requirements',
 };

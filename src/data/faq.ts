@@ -65,19 +65,19 @@ export const FAQ_CATEGORIES: FaqCategory[] = [
         id: 'canada-mortgage-differences',
         question: 'Why do Canadian mortgage results look different?',
         answer:
-          'In Canada, interest on most fixed-rate mortgages is compounded semi-annually by law, even when the rate is quoted annually. That subtle difference makes a real impact on the effective rate and the payment. The calculator applies semi-annual compounding for Canada and also models Canadian down-payment rules and CMHC mortgage insurance when your down payment is below 20%.',
+          'In Canada, for applicable fixed-rate mortgages, the federal Interest Act sets disclosure requirements for stating interest calculated yearly or half-yearly, not in advance. Canadian mortgage calculations commonly use a semi-annual compounding convention, even when the rate is quoted annually. That subtle difference makes a real impact on the effective rate and the payment. The calculator applies semi-annual compounding for Canada and also models Canadian down-payment rules and CMHC mortgage insurance when your down payment is below 20%.',
       },
       {
         id: 'australia-mortgage-differences',
         question: 'How are Australian mortgages handled?',
         answer:
-          'Australian home loans are typically compounded monthly, and the calculator applies that convention for AU. It also estimates stamp duty based on the property price and the Australian state you select, and reflects AUD throughout. Australian-specific rules are applied so the result matches how lenders in Australia actually structure payments.',
+          'Australian home-loan interest is commonly calculated daily on the outstanding balance and charged monthly, and the calculator applies that convention for AU. It also estimates stamp duty based on the property price and the Australian state you select, and reflects AUD throughout. Australian-specific rules are applied so the result matches how lenders in Australia actually structure payments.',
       },
       {
         id: 'what-is-cmhc',
         question: 'What is CMHC insurance?',
         answer:
-          'CMHC is Canada\u2019s mortgage default insurance, required when your down payment is between 5% and 19.99% of the home price. The premium is a percentage of the loan amount that depends on your down payment tier — roughly 4% at a 5% down payment, stepping down as your down payment grows, and dropping to 0% once you put 20% or more down. The calculator works out the applicable premium and shows it as a one-time cost.',
+          'CMHC is Canada\u2019s mortgage default insurance, required when your down payment is between 5% and 19.99% of the home price. The premium is a percentage of the loan amount that depends on your down payment tier — roughly 4% at a 5% down payment, stepping down as your down payment grows, and dropping to 0% once you put 20% or more down. The calculator works out the applicable premium and displays it as a one-time cost that may be added to the mortgage amount when financed.',
       },
       {
         id: 'what-is-stamp-duty',
