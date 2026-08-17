@@ -1,6 +1,7 @@
 ---
 import PageContainer from '../components/layout/PageContainer.astro';
 import HomeHero from '../components/home/HomeHero.astro';
+import HomeSupportContent from '../components/home/HomeSupportContent.astro';
 import MortgageLayout from './MortgageLayout.astro';
 ---
 
@@ -11,3 +12,7 @@ import MortgageLayout from './MortgageLayout.astro';
 <div id="mortgage-tool">
   <MortgageLayout heading="h2" />
 </div>
+
+<PageContainer maxWidth="xl">
+  <HomeSupportContent />
+</PageContainer>

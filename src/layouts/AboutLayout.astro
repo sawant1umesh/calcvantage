@@ -29,8 +29,8 @@ const calculators = [
 
 const trustPoints = [
   {
-    title: 'Accurate formulas',
-    copy: 'Every calculator is built on standard financial formulas and validated against known results before it ships.',
+    title: 'Standard financial formulas',
+    copy: 'Every calculator is built on widely used financial formulas appropriate to its purpose — such as standard amortization for mortgages or compound growth for retirement projections.',
   },
   {
     title: 'Country-specific calculations',
@@ -182,7 +182,44 @@ const principles = [
     </div>
   </section>
 
-  <!-- 6. Our Principles -->
+  <!-- 6. Calculation Methodology -->
+  <section class="about-block" id="methodology">
+    <header class="about-block-header">
+      <span class="about-eyebrow font-mono">Calculation methodology</span>
+      <h2 class="about-block-title">How the calculations work.</h2>
+      <p class="about-block-copy">
+        Each CalcVantage calculator takes the values you enter and applies standard financial
+        formulas to produce an estimate. Here is what that means in practice:
+      </p>
+    </header>
+    <ul class="methodology-list">
+      <li class="methodology-item">
+        <span class="methodology-label">Inputs drive the result.</span>
+        The numbers you see are only as good as the numbers you put in. Changing your loan
+        amount, savings rate, or asset values will change the output accordingly.
+      </li>
+      <li class="methodology-item">
+        <span class="methodology-label">Assumptions are made explicit.</span>
+        Where the calculator relies on an assumption — an interest rate, an expected
+        investment return, an inflation rate, or a tax rule — it shows that assumption so
+        you can adjust it or question it.
+      </li>
+      <li class="methodology-item">
+        <span class="methodology-label">Results are estimates, not quotes.</span>
+        Actual mortgage payments, retirement balances, or net worth figures will differ
+        depending on factors a calculator cannot see: lender fees, exact tax treatment,
+        changing market conditions, and your personal circumstances.
+      </li>
+      <li class="methodology-item">
+        <span class="methodology-label">Review before relying.</span>
+        Use the results as a starting point for your thinking. Before making a significant
+        financial decision, verify the key figures with a lender, financial institution,
+        or qualified professional.
+      </li>
+    </ul>
+  </section>
+
+  <!-- 7. Our Principles -->
   <section class="about-block">
     <header class="about-block-header">
       <span class="about-eyebrow font-mono">Our principles</span>
@@ -202,7 +239,7 @@ const principles = [
     </div>
   </section>
 
-  <!-- 7. Disclaimer -->
+  <!-- 8. Disclaimer -->
   <section class="about-block">
     <div class="disclaimer-panel">
       <span class="about-eyebrow font-mono">Important note</span>
@@ -214,6 +251,11 @@ const principles = [
         particular outcome. Figures may differ from what a lender, insurance provider, or tax
         authority calculates. Before making any significant financial decision, confirm the details
         with a qualified professional.
+      </p>
+      <p class="disclaimer-copy">
+        For the full terms of use, see the <a href="/disclaimer">Disclaimer</a>. If you believe
+        a calculator result is incorrect or out of date, please use the
+        <a href="/contact">Contact Us</a> page to let us know.
       </p>
     </div>
   </section>
@@ -495,6 +537,32 @@ const principles = [
     color: var(--color-body);
   }
 
+  /* ─── Methodology list ─── */
+  .methodology-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-top: 0.5rem;
+  }
+
+  .methodology-item {
+    font-size: 0.9375rem;
+    line-height: 1.7;
+    color: var(--color-body);
+    padding-left: 1rem;
+    border-left: 2px solid var(--color-hairline-strong);
+  }
+
+  .methodology-label {
+    font-weight: 600;
+    color: var(--color-ink);
+    display: block;
+    margin-bottom: 0.125rem;
+  }
+
   /* ─── Disclaimer ─── */
   .disclaimer-panel {
     padding: 1.75rem;
@@ -519,6 +587,16 @@ const principles = [
     font-size: 0.9375rem;
     line-height: 1.7;
     color: var(--color-body);
+  }
+
+  .disclaimer-copy a {
+    color: var(--color-accent);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+  .disclaimer-copy a:hover {
+    color: var(--color-accent-deep);
   }
 
   /* ─── Call-to-Action Band ─── */
