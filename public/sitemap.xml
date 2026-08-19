@@ -41,6 +41,11 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://www.calcvantage.com/methodology</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://www.calcvantage.com/privacy-policy</loc>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>

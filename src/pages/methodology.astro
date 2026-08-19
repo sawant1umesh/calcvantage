@@ -1,0 +1,134 @@
+---
+import Layout from '../layouts/Layout.astro';
+import LegalLayout from '../layouts/LegalLayout.astro';
+
+const toc = [
+  { id: 'how-we-calculate', label: 'How We Calculate Results' },
+  { id: 'assumptions', label: 'Assumptions' },
+  { id: 'country-specific', label: 'Country-Specific Considerations' },
+  { id: 'data-sources', label: 'Data and Reference Sources' },
+  { id: 'accuracy', label: 'Accuracy and Limitations' },
+  { id: 'review-updates', label: 'Review and Updates' },
+  { id: 'disclaimer', label: 'Educational Disclaimer' },
+];
+---
+
+<Layout
+  title="Financial Calculator Methodology | CalcVantage"
+  description="Learn how CalcVantage financial calculators work, including calculation methods, assumptions, country-specific considerations, data sources, and limitations."
+  canonical="https://www.calcvantage.com/methodology"
+>
+  <LegalLayout
+    eyebrow="Methodology"
+    title="CalcVantage Calculation Methodology"
+    lead="An overview of the methods, assumptions, and considerations behind every CalcVantage calculator."
+    lastUpdated="August 2026"
+    toc={toc}
+  >
+    <section class="doc-section" id="how-we-calculate">
+      <h2 class="doc-section-title">How We Calculate Results</h2>
+      <p class="doc-section-copy">
+        CalcVantage uses standard mathematical and financial formulas appropriate to each
+        calculator. The mortgage calculator applies the standard amortization formula to
+        determine monthly payments, interest allocation, and remaining balance over time. The
+        retirement calculator projects future savings growth using compound interest and
+        contribution models. The net worth calculator computes the difference between total
+        assets and total liabilities.
+      </p>
+      <p class="doc-section-copy">
+        Each calculator is designed to be transparent. Inputs are clearly labelled, results
+        include explanatory context, and the assumptions behind every number are made visible
+        rather than hidden.
+      </p>
+    </section>
+
+    <section class="doc-section" id="assumptions">
+      <h2 class="doc-section-title">Assumptions</h2>
+      <p class="doc-section-copy">
+        Calculators may rely on assumptions that affect the results you see. These can include
+        interest rates, payment frequency, inflation rates, expected investment returns,
+        withdrawal rates, tax treatment, or other user-provided inputs depending on the
+        calculator.
+      </p>
+      <p class="doc-section-copy">
+        Where a calculator uses an assumption, the default value is shown and can typically be
+        adjusted by the user. Assumptions are clearly indicated so you can understand what
+        factors influence each result and make changes that reflect your own situation.
+      </p>
+    </section>
+
+    <section class="doc-section" id="country-specific">
+      <h2 class="doc-section-title">Country-Specific Considerations</h2>
+      <p class="doc-section-copy">
+        Some calculators support different rules or conventions for the United States, Canada,
+        and Australia. These may include compounding frequency differences, mortgage insurance
+        requirements, stamp duty calculations, or other country-specific conventions that
+        affect how results are computed.
+      </p>
+      <p class="doc-section-copy">
+        When you select a country in a calculator, the relevant rules and conventions are
+        applied automatically. The calculator will indicate which country-specific factors are
+        being used so you can verify the assumptions match your expectations.
+      </p>
+    </section>
+
+    <section class="doc-section" id="data-sources">
+      <h2 class="doc-section-title">Data and Reference Sources</h2>
+      <p class="doc-section-copy">
+        Where external rules or standards are relevant, CalcVantage may reference authoritative
+        public sources and official government information. These references help ensure that
+        calculations align with established financial conventions and regulatory frameworks.
+      </p>
+      <p class="doc-section-copy">
+        CalcVantage does not fabricate data sources. If a calculator references a rule or
+        standard, it is based on publicly available information relevant to the calculation
+        being performed.
+      </p>
+    </section>
+
+    <section class="doc-section" id="accuracy">
+      <h2 class="doc-section-title">Accuracy and Limitations</h2>
+      <p class="doc-section-copy">
+        All results are estimates based on user inputs and the assumptions described on this
+        page. They should not be considered guaranteed financial outcomes. Actual results may
+        differ based on factors not captured by any calculator, including but not limited to
+        market fluctuations, fee structures, regulatory changes, and individual circumstances.
+      </p>
+      <p class="doc-section-copy">
+        CalcVantage calculators are designed to help you explore scenarios and build
+        understanding. They are not a substitute for professional financial analysis or
+        personalized advice from a qualified advisor.
+      </p>
+    </section>
+
+    <section class="doc-section" id="review-updates">
+      <h2 class="doc-section-title">Review and Updates</h2>
+      <p class="doc-section-copy">
+        Calculation methodologies and relevant assumptions are periodically reviewed and
+        updated when necessary. Updates may reflect changes in financial conventions, improved
+        calculation methods, or feedback from users.
+      </p>
+      <p class="doc-section-copy">
+        When significant changes are made, the last-updated date on this page is revised so
+        you can see when the methodology was most recently reviewed.
+      </p>
+    </section>
+
+    <section class="doc-section" id="disclaimer">
+      <h2 class="doc-section-title">Educational Disclaimer</h2>
+      <p class="doc-section-copy">
+        CalcVantage provides educational calculation tools and does not provide personalized
+        financial, investment, tax, legal, mortgage, or retirement advice. The information and
+        calculations provided by CalcVantage are for general informational and educational
+        purposes only.
+      </p>
+      <div class="doc-note doc-note-warning">
+        <p>
+          <strong>Not financial advice.</strong> Nothing on this site should be interpreted as
+          personalized financial advice. Consult a qualified financial professional before
+          making decisions based on the results of any calculator.
+        </p>
+      </div>
+    </section>
+  </LegalLayout>
+</Layout>

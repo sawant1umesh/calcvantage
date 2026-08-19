@@ -71,24 +71,66 @@ const calculators = [
     </div>
   </section>
 
-  <!-- ─── Section 2: How it works ─── -->
-  <section class="hsc-section" aria-labelledby="hsc-how-heading">
+  <!-- ─── Section 2: Why CalcVantage ─── -->
+  <section class="hsc-section" aria-labelledby="hsc-why-heading">
     <header class="hsc-header">
-      <span class="hsc-eyebrow font-mono">Methodology</span>
-      <h2 class="hsc-title" id="hsc-how-heading">How CalcVantage Calculators Work</h2>
+      <span class="hsc-eyebrow font-mono">Why CalcVantage</span>
+      <h2 class="hsc-title" id="hsc-why-heading">Free Financial Calculators for US, Canada &amp; Australia</h2>
     </header>
     <div class="hsc-prose">
       <p>
-        Each calculator uses the values you enter — loan amount, savings balance, asset totals,
-        and so on — together with standard financial formulas to produce an estimate. The mortgage
-        calculator, for example, applies the standard amortization formula and adjusts for
-        Canadian semi-annual compounding or Australian stamp duty where relevant.
+        CalcVantage provides free financial calculators designed to help you estimate mortgage
+        payments, plan for retirement, and understand your net worth. Our calculators are built
+        with clear assumptions and country-specific considerations to help you understand how
+        each result is calculated.
+      </p>
+    </div>
+    <ul class="hsc-features">
+      <li class="hsc-feature">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12" /></svg>
+        <span>Free to use</span>
+      </li>
+      <li class="hsc-feature">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12" /></svg>
+        <span>No account required</span>
+      </li>
+      <li class="hsc-feature">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12" /></svg>
+        <span>Privacy-focused calculations</span>
+      </li>
+      <li class="hsc-feature">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12" /></svg>
+        <span>Country-specific options</span>
+      </li>
+      <li class="hsc-feature">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12" /></svg>
+        <span>Clear calculation methodology</span>
+      </li>
+      <li class="hsc-feature">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12" /></svg>
+        <span>Educational tools, not financial advice</span>
+      </li>
+    </ul>
+  </section>
+
+  <!-- ─── Section 3: How it works ─── -->
+  <section class="hsc-section" aria-labelledby="hsc-how-heading">
+    <header class="hsc-header">
+      <span class="hsc-eyebrow font-mono">How it works</span>
+      <h2 class="hsc-title" id="hsc-how-heading">How Our Calculators Work</h2>
+    </header>
+    <div class="hsc-prose">
+      <p>
+        You enter relevant financial information — loan amount, interest rate, savings balance,
+        asset totals, or other inputs depending on the calculator. Calculations are performed
+        using standard financial formulas and assumptions. Country-specific rules are considered
+        where applicable, such as Canadian semi-annual compounding or Australian stamp duty.
       </p>
       <p>
-        Results are estimates. Actual outcomes depend on factors outside any calculator's
-        control: prevailing interest rates, tax treatment, investment returns, fees, and
-        individual circumstances. Use the numbers as a starting point for your thinking, not
-        as a final figure.
+        Results are estimates for educational and planning purposes. They should not be
+        considered guaranteed financial outcomes. Before relying on a result, review the
+        <a href="/methodology/">calculation methodology and assumptions</a> that power each
+        calculator.
       </p>
     </div>
   </section>
@@ -215,6 +257,29 @@ const calculators = [
     line-height: 1.2;
     color: var(--color-ink);
     margin: 0;
+  }
+
+  /* ── Features list ── */
+  .hsc-features {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.625rem 1.5rem;
+  }
+
+  .hsc-feature {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.875rem;
+    color: var(--color-body);
+  }
+
+  .hsc-feature svg {
+    color: var(--color-success);
+    flex-shrink: 0;
   }
 
   /* ── Prose ── */
