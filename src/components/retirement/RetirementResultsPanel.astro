@@ -203,19 +203,19 @@ const currentReadinessClass = readinessClassMap[initialResults.readiness] || 're
 
   .readiness-on-track,
   .readiness-excellent {
-    background-color: #ecfdf5;
-    border-color: #a7f3d0;
+    background-color: var(--color-success-soft, #ecfdf5);
+    border-color: var(--color-success, #a7f3d0);
   }
   .readiness-improving,
   .readiness-good,
   .readiness-fair {
     background-color: var(--color-warning-soft, #ffefcf);
-    border-color: #f5d78e;
+    border-color: var(--color-warning, #f5d78e);
   }
   .readiness-needs-focus,
   .readiness-needs-improvement {
     background-color: var(--color-error-soft, #fbe9e9);
-    border-color: #f5c2c2;
+    border-color: var(--color-error, #f5c2c2);
   }
 
   .readiness-label {
