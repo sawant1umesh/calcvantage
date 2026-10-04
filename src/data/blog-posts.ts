@@ -1265,7 +1265,7 @@ const goodNetWorthByAgeFaqs = [
   },
 ];
 
-export const BLOG_POSTS: BlogPost[] = [
+const BASE_BLOG_POSTS: BlogPost[] = [
   {
     slug: 'good-net-worth-by-age',
     title: 'What Is a Good Net Worth by Age? A Practical Guide to Building Wealth',
@@ -1407,4 +1407,345 @@ export const BLOG_POSTS: BlogPost[] = [
         'Compare fixed-rate mortgages and adjustable-rate mortgages (ARMs). Learn how each works, the pros and cons, and which may be the better fit for your situation.',
     },
   },
+  {
+    slug: 'fixed-vs-variable-mortgage-rates',
+    title: "Fixed vs Variable Mortgage Rates: What's the Difference?",
+    subtitle: 'A practical guide to how fixed and variable interest rates work, how they impact monthly payments, and how to evaluate your options',
+    excerpt:
+      'Understand the key differences between fixed vs variable mortgage rates, how interest rate changes affect monthly payments and total costs, and factors to consider.',
+    category: 'mortgage',
+    readingTime: 10,
+    pubDate: '2026-09-27',
+    author: 'CalcVantage Team',
+    featured: false,
+    popular: true,
+    seo: {
+      title: 'Fixed vs Variable Mortgage Rates Explained | CalcVantage',
+      description:
+        'Learn the difference between fixed and variable mortgage rates, how rate adjustments affect monthly payments and total interest, and key factors to consider.',
+      canonical: 'https://www.calcvantage.com/blog/fixed-vs-variable-mortgage-rates',
+    },
+    faqs: [
+      {
+        question: 'What is the difference between a fixed and variable mortgage rate?',
+        answer:
+          'A fixed mortgage rate remains locked at an agreed-upon percentage for the duration of the fixed term, delivering predictable principal and interest payments. A variable mortgage rate fluctuates in response to benchmark economic interest rates and lender prime rates, meaning borrowing costs and payments can increase or decrease over time.',
+      },
+      {
+        question: 'Can a fixed mortgage rate change?',
+        answer:
+          'During the contractual fixed-rate term, your underlying mortgage interest rate cannot change. However, once the fixed term expires (such as at the end of a 3-year or 5-year term common in Canada and the UK), you must renew or refinance at prevailing market rates. Additionally, your overall monthly housing payment may change if property taxes or home insurance paid via escrow increase.',
+      },
+      {
+        question: 'Can a variable mortgage rate go down?',
+        answer:
+          'Yes. If the underlying reference rate or the lender\'s prime rate decreases, your variable interest rate will drop. Depending on your contract, this will either reduce your monthly payment amount or allocate a greater share of your existing payment toward principal reduction.',
+      },
+      {
+        question: 'Does a variable mortgage always have a lower starting rate?',
+        answer:
+          'No. While variable mortgages frequently start with lower rates than fixed mortgages in typical economic environments, this is not always true. During periods of inverted yield curves or heightened market volatility, variable rates may be priced equal to or higher than comparable fixed rates.',
+      },
+      {
+        question: 'Which mortgage rate is more predictable?',
+        answer:
+          'A fixed mortgage rate offers substantially greater predictability. Because the interest rate is locked for the agreed period, borrowers know their exact principal and interest obligation each month, simplifying long-term budgeting.',
+      },
+      {
+        question: 'How do changing interest rates affect mortgage payments?',
+        answer:
+          'On adjustable payment variable mortgages, rising interest rates increase the monthly payment, while falling rates decrease it. On fixed-payment variable mortgages, rate changes alter the ratio of interest to principal paid, lengthening or shortening the amortization period. Fixed-rate mortgages are unaffected by market rate changes during their fixed term.',
+      },
+      {
+        question: 'Can I switch from a variable to a fixed mortgage?',
+        answer:
+          'Many lenders offer "convertible" variable mortgages that allow borrowers to lock into an available fixed rate before the variable term ends without paying full early termination fees. However, conversion policies, eligible fixed terms, and rate offers vary by institution, so it is crucial to review the contractual terms in advance.',
+      },
+      {
+        question: 'Are fixed and variable mortgages available in every country?',
+        answer:
+          'Both structures exist in many countries, but their prevalence and specific features differ dramatically. In the United States, 30-year fixed mortgages dominate the residential market. In Canada, the United Kingdom, and Australia, variable rates and shorter 1- to 5-year fixed terms are far more common.',
+      },
+      {
+        question: 'Does a mortgage calculator show the exact payment from a lender?',
+        answer:
+          'No. A mortgage calculator provides an accurate mathematical estimate of principal and interest based on the numbers you enter. Actual lender payments may include additional components such as property taxes, homeowner insurance premiums, private mortgage insurance, closing fees, or contract-specific rounding rules.',
+      },
+      {
+        question: 'How can I compare fixed and variable mortgage scenarios?',
+        answer:
+          'You can compare scenarios by testing different interest rate assumptions using our Mortgage Calculator. Enter your proposed loan amount and term, observe the baseline payment, and test how potential rate increases of 1% to 2% would affect monthly cash flow.',
+      },
+    ],
+    content: `
+<p>When shopping for a home loan, one of the foundational decisions borrowers encounter is selecting between different <strong>mortgage interest rate types</strong>. The two primary financing structures available across major global lending markets are fixed-rate mortgages and variable-rate mortgages (frequently referred to as adjustable-rate mortgages, or ARMs, in the United States).</p>
+<p>Understanding the distinction between <strong>fixed vs variable mortgage rates</strong> is essential because your choice directly influences your monthly payment behavior, how your loan responds to macroeconomic interest-rate changes, your day-to-day household budgeting, and the total borrowing cost you accumulate over the life of your mortgage.</p>
+<p>The practical impact of any interest rate structure is not one-size-fits-all. It depends on several interdependent variables, including the total loan balance, the amortization schedule, loan term, initial interest rate, and the specific contractual repayment mechanisms outlined by your lender. Neither structure is universally superior; each carries distinct mechanics, advantages, and financial trade-offs designed for different borrowing circumstances.</p>
+
+<h2>What Is a Fixed Mortgage Rate?</h2>
+<p>A <strong>fixed mortgage rate</strong> is a lending structure in which the nominal interest rate is locked in and remains constant for a designated period defined in the loan agreement. Depending on the country and product, this fixed period may span anywhere from a few years (common 2-year, 3-year, or 5-year fixed terms in Canada, the United Kingdom, and Australia) to the entire lifetime of the mortgage (such as 15-year or 30-year fixed loans in the United States).</p>
+<p>Because the underlying interest rate does not fluctuate during the fixed term, your contractual principal and interest payment remains identical from month to month. This predictability provides clear visibility for long-term household budgeting, allowing homeowners to plan their finances without concern that shifts in benchmark interest rates will alter their debt service obligations.</p>
+<p>However, having a fixed interest rate does not necessarily mean your total monthly housing expenditure can never change. In many jurisdictions, mortgage servicers collect property taxes, homeowners insurance, private mortgage insurance (PMI), or local municipal fees alongside the loan payment through an escrow or impound account. If local municipal property taxes rise or insurance premiums adjust annually, your total monthly housing bill may fluctuate even while your underlying mortgage interest rate and principal repayment remain completely fixed. For a detailed breakdown of how ancillary costs affect your total monthly commitment, review our guide to <a href="/blog/understanding-mortgage-payments">understanding mortgage payments</a>.</p>
+
+<h2>What Is a Variable Mortgage Rate?</h2>
+<p>A <strong>variable mortgage rate</strong> (or adjustable rate) is a financing structure in which the interest rate can fluctuate over the course of the loan. Rather than remaining static, the rate is tied to an underlying financial benchmark or reference rate—such as a central bank policy rate, commercial bank prime rate, or indices like the Secured Overnight Financing Rate (SOFR) or Bank Bill Swap Rate (BBSW)—plus a contractual lender margin or spread.</p>
+<p>When macroeconomic conditions shift and benchmark interest rates move up or down, the interest rate on a variable mortgage adjusts accordingly. Depending on the specific mortgage contract, this rate adjustment can affect your borrowing in one of two distinct ways:</p>
+<ol>
+  <li><strong>Adjustable Payment Loans:</strong> When the interest rate changes, your required monthly payment adjusts upward or downward to keep the loan on its original amortization schedule.</li>
+  <li><strong>Fixed Payment Variable Loans:</strong> In some jurisdictions (such as certain variable-rate products in Canada), the monthly payment amount remains unchanged when rates adjust. Instead, the proportion of each payment allocated to interest increases or decreases. If rates rise substantially, less money goes toward principal, lengthening the effective payoff timeline unless the borrower hits a contractual "trigger rate."</li>
+</ol>
+<p>Variable mortgage mechanics differ significantly across countries, regulatory regimes, and individual lenders. Some loans feature periodic adjustment caps that limit how much the rate can change within a single interval or across the life of the loan, while other variable products adjust immediately whenever the prime lending rate moves.</p>
+
+<h2>Fixed vs Variable Mortgage Rates: Key Differences</h2>
+<p>When conducting a neutral <strong>mortgage rate comparison</strong>, contrasting both structures across core financial dimensions reveals how each loan model behaves over time.</p>
+<table>
+  <thead>
+    <tr>
+      <th>Feature</th>
+      <th>Fixed-Rate Mortgage</th>
+      <th>Variable-Rate Mortgage</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Interest-Rate Behavior</strong></td>
+      <td>Remains constant throughout the contractual fixed-rate term.</td>
+      <td>Fluctuates periodically based on market benchmark indices and lender prime rates.</td>
+    </tr>
+    <tr>
+      <td><strong>Payment Predictability</strong></td>
+      <td>High predictability; monthly principal and interest payments remain identical.</td>
+      <td>Lower predictability; payments or principal/interest allocations change as rates adjust.</td>
+    </tr>
+    <tr>
+      <td><strong>Exposure to Rate Changes</strong></td>
+      <td>Insulated from rising interest rates; does not participate directly in rate decreases.</td>
+      <td>Direct exposure; costs increase when rates rise and decrease when rates fall.</td>
+    </tr>
+    <tr>
+      <td><strong>Budgeting Impact</strong></td>
+      <td>Simplifies cash flow planning with stable, known payment obligations.</td>
+      <td>Requires financial flexibility and cash buffers to accommodate potential payment shifts.</td>
+    </tr>
+    <tr>
+      <td><strong>Long-Term Uncertainty</strong></td>
+      <td>Low uncertainty during the fixed period; renewals at term end face prevailing market rates.</td>
+      <td>Ongoing uncertainty regarding future payment obligations and amortization trajectories.</td>
+    </tr>
+    <tr>
+      <td><strong>Rate Adjustment Mechanism</strong></td>
+      <td>None during the fixed term; rate resets only upon refinancing or renewal.</td>
+      <td>Adjusts at defined intervals (e.g., monthly, semi-annually, or annually) based on index changes.</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2>How Mortgage Rate Changes Can Affect Your Payments</h2>
+<p>To see <strong>how mortgage rates affect payments</strong>, consider a straightforward hypothetical scenario.</p>
+<h3>Baseline Comparison</h3>
+<p>Suppose a borrower takes out a loan with the following hypothetical terms:</p>
+<ul>
+  <li><strong>Mortgage Balance:</strong> $300,000</li>
+  <li><strong>Amortization Term:</strong> 30 years (360 monthly payments)</li>
+  <li><strong>Hypothetical Fixed Rate:</strong> 6.00%</li>
+  <li><strong>Hypothetical Variable Starting Rate:</strong> 5.50%</li>
+</ul>
+<p>Using standard monthly loan amortization mathematics:</p>
+<ul>
+  <li>At <strong>6.00% fixed</strong>, the estimated monthly principal and interest payment is <strong>$1,798.65</strong>. Total payments over 30 years equal $647,514, representing $347,514 in total interest if held to maturity.</li>
+  <li>At <strong>5.50% variable</strong>, the initial estimated monthly principal and interest payment is <strong>$1,703.37</strong>.</li>
+</ul>
+<p>At the outset, the variable loan in this hypothetical example produces an initial payment that is <strong>$95.28 lower per month</strong> than the fixed option.</p>
+<h3>What Happens If the Variable Rate Shifts?</h3>
+<p>Because variable rates adjust over time, this starting payment is not guaranteed. Consider what happens if benchmark rates shift by 1.00% in either direction:</p>
+<ul>
+  <li><strong>Scenario A (Rate Increases by 1.00% to 6.50%):</strong> On an adjustable payment structure, the monthly principal and interest payment rises to approximately <strong>$1,896.20</strong>. This represents a monthly increase of <strong>$192.83</strong> above the starting payment, and <strong>$97.55 more per month</strong> than the original 6.00% fixed rate.</li>
+  <li><strong>Scenario B (Rate Decreases by 1.00% to 4.50%):</strong> If market rates decline and the variable rate drops to 4.50%, the estimated payment falls to approximately <strong>$1,520.06</strong>. This saves the borrower <strong>$183.31 per month</strong> relative to the initial variable payment and <strong>$278.59 per month</strong> compared to the 6.00% fixed rate.</li>
+</ul>
+<p><em>Note: These figures are strictly hypothetical illustrations to demonstrate mathematical sensitivity. They do not reflect current market rates or guarantee lender terms.</em></p>
+<p>Understanding this dynamic illustrates why examining both upward and downward trajectories is vital when evaluating an adjustable loan. To see how principal balances decline over time under different schedules, review our detailed guide on <a href="/blog/mortgage-amortization-explained">mortgage amortization explained</a>.</p>
+
+<h2>Advantages of Fixed Mortgage Rates</h2>
+<p>Fixed-rate mortgages remain widely utilized across international lending markets due to several structural benefits:</p>
+<ul>
+  <li><strong>Predictable Interest Rate:</strong> Borrowers know their exact interest rate throughout the contractual fixed-rate period, eliminating guesswork regarding borrowing charges.</li>
+  <li><strong>Easier Budgeting and Financial Stability:</strong> Consistent monthly payments enable straightforward long-term cash flow planning. Household budgets are shielded from macroeconomic volatility.</li>
+  <li><strong>Protection from Increasing Market Rates:</strong> If inflation accelerates and central banks raise benchmark interest rates, a fixed-rate borrower remains completely protected from rising debt service costs during their fixed term.</li>
+  <li><strong>Greater Psychological Certainty:</strong> For many households, the peace of mind that comes with knowing their housing costs cannot unexpectedly increase provides significant personal comfort.</li>
+</ul>
+
+<h2>Trade-Offs of Fixed Mortgage Rates</h2>
+<p>While stability is a meaningful feature, fixed-rate loans come with practical limitations that borrowers should weigh:</p>
+<ul>
+  <li><strong>No Direct Benefit from Falling Rates:</strong> If market interest rates decline, a fixed-rate mortgage does not automatically adjust downward. The borrower continues paying the agreed-upon rate unless they refinance or renegotiate the loan contract.</li>
+  <li><strong>Refinancing Costs and Penalties:</strong> Taking advantage of lower prevailing rates typically requires refinancing, which can involve closing costs, legal fees, appraisal charges, or substantial prepayment break penalties.</li>
+  <li><strong>Potentially Higher Starting Rates:</strong> In typical economic environments with an upward-sloping yield curve, lenders often price fixed-rate mortgages higher than introductory variable rates to compensate for bearing interest rate risk over time.</li>
+  <li><strong>Less Flexibility for Short-Term Moves:</strong> Borrowers who plan to relocate or sell their property within a few years may end up paying a premium for long-term rate stability they do not utilize.</li>
+</ul>
+
+<h2>Advantages of Variable Mortgage Rates</h2>
+<p>Variable-rate products offer distinct characteristics that appeal to borrowers under specific financial strategies:</p>
+<ul>
+  <li><strong>Potential for Lower Initial Rates:</strong> Under standard market conditions, the initial <strong>variable mortgage rate</strong> may be priced lower than a comparable fixed mortgage rate, offering immediate cash flow savings at the beginning of the loan.</li>
+  <li><strong>Direct Participation in Falling Rates:</strong> When central banks reduce benchmark lending rates, variable borrowers generally see their interest charges decrease automatically, either lowering their monthly payment or accelerating principal paydown without requiring a formal refinance.</li>
+  <li><strong>Often Lower Early Repayment Penalties:</strong> In several lending jurisdictions, breaking a variable-rate contract often incurs a penalty limited to three months of interest, which is frequently much lower than the break fees associated with fixed-rate contracts.</li>
+  <li><strong>Potential for Lower Cumulative Interest Costs:</strong> If interest rates remain stable or decrease over the borrowing timeframe, variable loans have historically delivered lower cumulative interest costs in certain economic cycles, though this outcome cannot be guaranteed in advance.</li>
+</ul>
+
+<h2>Trade-Offs of Variable Mortgage Rates</h2>
+<p>Along with potential cost savings, variable products introduce explicit risks:</p>
+<ul>
+  <li><strong>Exposure to Rate Increases:</strong> If macroeconomic conditions cause benchmark interest rates to climb, borrowing costs rise directly. Borrowers bear the full risk of interest-rate cycles.</li>
+  <li><strong>Less Payment Certainty:</strong> Because payments or interest charges can adjust, variable loans make long-term financial planning and strict monthly budgeting more complex.</li>
+  <li><strong>Potential for Payment Shock:</strong> In products where payments adjust upward with rates, significant rate hikes can result in sudden, substantial increases in monthly obligations that may strain household cash flow.</li>
+  <li><strong>Risk of Negative Amortization:</strong> In variable products with fixed payments, rising rates can lead to a scenario where the monthly payment is insufficient to cover accrued interest, causing the outstanding loan balance to expand rather than shrink.</li>
+  <li><strong>Need for Larger Cash Reserves:</strong> Variable borrowers must maintain sufficient liquid savings to comfortably absorb potential rate spikes without financial distress.</li>
+</ul>
+
+<h2>What Happens When Interest Rates Change?</h2>
+<p>Understanding how interest rate cycles interact with home financing helps clarify how each structure reacts across economic conditions.</p>
+<h3>When Rates Rise:</h3>
+<ul>
+  <li><strong>For Variable-Rate Borrowers:</strong> Borrowing costs increase. In an adjustable payment mortgage, the monthly payment increases to cover the higher interest cost. In a fixed-payment variable loan, a larger share of each payment goes toward interest, slowing equity accumulation and lengthening the total amortization period.</li>
+  <li><strong>For Fixed-Rate Borrowers:</strong> The contractual <strong>fixed mortgage rate</strong> remains entirely unchanged throughout the fixed period. The borrower experiences no payment increase from interest rate movements.</li>
+</ul>
+<h3>When Rates Fall:</h3>
+<ul>
+  <li><strong>For Variable-Rate Borrowers:</strong> Borrowing costs decrease. Monthly payment obligations drop on adjustable payment products, freeing up cash flow. On fixed-payment variable products, the monthly payment stays the same, but a significantly larger percentage goes directly toward reducing principal, accelerating the debt-free timeline.</li>
+  <li><strong>For Fixed-Rate Borrowers:</strong> The contractual rate remains constant. The borrower does not benefit from lower market rates unless they incur the costs and administrative steps required to refinance their mortgage.</li>
+</ul>
+<p>Regardless of whether your mortgage rate is fixed or variable, remember that the interest rate applies solely to your borrowed loan balance. Your comprehensive monthly housing cost also includes municipal property taxes, hazard and flood insurance, potential homeowners association (HOA) dues, and routine home maintenance.</p>
+
+<h2>Fixed vs Variable Mortgage: Factors to Consider</h2>
+<p>Deciding between a <strong>fixed rate vs variable rate mortgage</strong> involves balancing your personal financial profile against market realities. Rather than searching for a universal answer, review this neutral evaluation checklist:</p>
+<ul>
+  <li><strong>Expected Ownership Horizon:</strong> How long do you intend to live in the home or hold the mortgage? Borrowers with shorter horizons may evaluate variable rates differently than those purchasing a long-term family residence.</li>
+  <li><strong>Cash Flow Tolerance for Payment Increases:</strong> Does your household budget have sufficient surplus to absorb a 100, 200, or 300 basis-point increase in mortgage rates without causing severe financial strain?</li>
+  <li><strong>Income Stability:</strong> Is your income fixed, variable, commission-based, or highly stable? Consistent, predictable incomes often pair comfortably with either structure, whereas irregular earnings may benefit from fixed payment certainty or require larger emergency reserves.</li>
+  <li><strong>Size of Liquid Emergency Savings:</strong> A robust liquid emergency reserve provides a safety buffer if variable rates rise. Exploring our guide on <a href="/blog/emergency-fund-size">building an emergency fund</a> can help determine an appropriate cash cushion.</li>
+  <li><strong>Prepayment and Refinancing Intentions:</strong> Do you plan to make substantial lump-sum prepayments, sell the property, or refinance within a few years? Different contracts carry varying penalties for early payoffs.</li>
+  <li><strong>Local Market Conventions and Regulations:</strong> Mortgage structures vary internationally. Ensure you understand the legal terms standard in your jurisdiction.</li>
+  <li><strong>Overall Balance Sheet and Debt Levels:</strong> Consider your broader financial position. Assessing your overall financial snapshot using our interactive <a href="/net-worth">Net Worth Calculator</a> helps contextualize how your mortgage liabilities integrate with your long-term assets and wealth-building goals.</li>
+</ul>
+
+<h2>How a Mortgage Calculator Can Help</h2>
+<p>Because mortgage choices involve multiple moving variables, visualizing different numbers makes abstract rate differences tangible. A dedicated financial calculator allows you to estimate monthly principal and interest commitments across diverse loan balances and repayment terms, model hypothetical interest-rate shifts, and compare conservative fixed-rate scenarios directly against variable-rate estimates to test household affordability.</p>
+<p>Before committing to a loan contract, testing scenarios helps you determine your comfortable borrowing threshold. For broader context on how total monthly debt commitments interact with your income, you can also explore our educational resource on <a href="/blog/how-much-house-can-i-afford">how much house can I afford?</a></p>
+<blockquote>
+  <p><strong>Compare Your Mortgage Options:</strong><br>Want to compare mortgage scenarios? Try the <a href="/mortgage">CalcVantage Mortgage Calculator</a> to estimate payments, test rate assumptions, and see how different terms affect your borrowing costs.</p>
+</blockquote>
+
+<h2>Fixed vs Variable Mortgage Example</h2>
+<p>To further illustrate how different rate paths influence cumulative borrowing costs, examine this educational 5-year scenario.</p>
+<h3>Baseline Assumptions:</h3>
+<ul>
+  <li><strong>Loan Amount:</strong> $400,000</li>
+  <li><strong>Amortization Period:</strong> 25 years (300 monthly payments)</li>
+  <li><strong>Comparison Window:</strong> 5 years (60 monthly payments)</li>
+</ul>
+<h3>Scenario A: Hypothetical Fixed Rate at 5.50%</h3>
+<ul>
+  <li>Monthly Payment: $2,456.67</li>
+  <li>Total Payments over 5 Years: $147,400.20</li>
+  <li>Principal Paid over 5 Years: $41,925.13</li>
+  <li>Interest Paid over 5 Years: $105,475.07</li>
+  <li>Remaining Balance after 5 Years: $358,074.87</li>
+</ul>
+<h3>Scenario B: Hypothetical Variable Rate Averaging 5.00%</h3>
+<p>Suppose the borrower chooses a variable loan that starts lower and averages 5.00% across the 5-year period:</p>
+<ul>
+  <li>Monthly Payment: $2,338.36</li>
+  <li>Total Payments over 5 Years: $140,301.60</li>
+  <li>Interest Paid over 5 Years: $95,695.62 — <strong>$9,779.45 less than the fixed option</strong></li>
+  <li>Remaining Balance after 5 Years: $355,394.02</li>
+</ul>
+<h3>Scenario C: Hypothetical Variable Rate Averaging 6.00%</h3>
+<p>Now consider the reverse condition: benchmark interest rates increase, causing the variable loan to average 6.00%:</p>
+<ul>
+  <li>Monthly Payment: $2,577.21</li>
+  <li>Total Payments over 5 Years: $154,632.60</li>
+  <li>Interest Paid over 5 Years: $115,285.48 — <strong>$9,810.41 more than the fixed option</strong></li>
+  <li>Remaining Balance after 5 Years: $360,652.88</li>
+</ul>
+<p>This mathematical comparison highlights that neither option is inherently superior; rather, total borrowing performance is directly tied to the interest rate path realized over time relative to the fixed rate available at closing.</p>
+
+<h2>Final Thoughts</h2>
+<p>The debate over <strong>fixed vs variable mortgage rates</strong> centers on a fundamental trade-off between certainty and flexibility.</p>
+<p>A <strong>fixed mortgage rate</strong> offers stability, protecting your household from rate increases and providing predictable monthly principal and interest payments throughout the fixed period. A <strong>variable mortgage rate</strong> exposes your borrowing costs to broader interest rate movements, introducing the potential for savings if rates decline alongside the financial risk of higher payments if rates rise.</p>
+<p>When choosing between home loan structures, avoid relying solely on the headline interest rate. Carefully evaluate the specific loan agreement, the length of your anticipated ownership horizon, your budget's capacity to absorb payment shifts, and the early repayment penalties associated with each product. By analyzing both the mechanics and the risks objectively, you can select the mortgage structure that best supports your overall financial well-being.</p>
+<div class="blog-article-disclaimer" role="note">
+  <span class="blog-article-disclaimer-title font-mono">Educational Disclaimer</span>
+  <p>The information provided in this article is for general educational and informational purposes only and does not constitute personalized financial, investment, legal, mortgage, or tax advice. Mortgage rates, loan terms, and regulatory requirements vary by lender, jurisdiction, and individual applicant qualifications. Always consult a licensed mortgage professional or certified financial advisor before committing to a home loan.</p>
+</div>
+`,
+  },
 ];
+
+// Helper to extract FAQs from Markdown raw content
+function extractFaqsFromMarkdown(raw: string): Array<{ question: string; answer: string }> {
+  const faqSectionMatch = raw.match(/## Frequently Asked Questions([\s\S]*?)(?:---|\n## |$)/);
+  if (!faqSectionMatch) return [];
+  const faqContent = faqSectionMatch[1];
+  const items: Array<{ question: string; answer: string }> = [];
+  const regex = /### (?:\d+\.\s*)?([^\n]+)\n([\s\S]*?)(?=(?:### |\n## |$))/g;
+  let match;
+  while ((match = regex.exec(faqContent)) !== null) {
+    const question = match[1].trim();
+    const answer = match[2].trim();
+    if (question && answer) {
+      items.push({ question, answer });
+    }
+  }
+  return items;
+}
+
+// Dynamically load any Markdown blog posts from src/content/blog/*.md
+const markdownModules = import.meta.glob<any>('../content/blog/*.md', { eager: true });
+
+const loadedMarkdownPosts: BlogPost[] = await Promise.all(
+  Object.values(markdownModules).map(async (mod: any) => {
+    const fm = mod.frontmatter || {};
+    const raw = typeof mod.rawContent === 'function' ? mod.rawContent() : '';
+    let html = typeof mod.compiledContent === 'function' ? await mod.compiledContent() : '';
+    // Strip leading h1 if present to avoid duplicate H1 with page template header
+    html = html.replace(/^\s*<h1[^>]*>[\s\S]*?<\/h1>\s*/i, '');
+    const faqs = (fm.faqs && fm.faqs.length > 0) ? fm.faqs : extractFaqsFromMarkdown(raw);
+
+    return {
+      slug: fm.slug,
+      title: fm.title,
+      subtitle: fm.subtitle,
+      excerpt: fm.excerpt,
+      category: fm.category,
+      readingTime: Number(fm.readingTime) || 8,
+      pubDate: fm.pubDate,
+      author: fm.author || 'CalcVantage Team',
+      featured: Boolean(fm.featured),
+      popular: Boolean(fm.popular),
+      content: html,
+      faqs,
+      seo: fm.seo,
+    };
+  })
+);
+
+// Merge: static posts take precedence if they already have full content; otherwise markdown posts enrich/add
+const staticPostsMap = new Map<string, BlogPost>(BASE_BLOG_POSTS.map((p) => [p.slug, p]));
+
+for (const mdPost of loadedMarkdownPosts) {
+  if (!mdPost.slug) continue;
+  const existing = staticPostsMap.get(mdPost.slug);
+  if (!existing) {
+    staticPostsMap.set(mdPost.slug, mdPost);
+  } else if (!existing.content && mdPost.content) {
+    // Enrich stub post with content from markdown
+    staticPostsMap.set(mdPost.slug, {
+      ...existing,
+      ...mdPost,
+      content: mdPost.content,
+      faqs: (existing.faqs && existing.faqs.length > 0) ? existing.faqs : mdPost.faqs,
+    });
+  }
+}
+
+export const BLOG_POSTS: BlogPost[] = Array.from(staticPostsMap.values());

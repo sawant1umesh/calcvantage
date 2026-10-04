@@ -14,10 +14,16 @@ interface Props {
 
 const { posts = BLOG_POSTS } = Astro.props;
 
-const featuredPost = posts.find((post) => post.featured) ?? posts[0];
-const latestPosts = posts.filter((post) => post.slug !== featuredPost?.slug).slice(0, 5);
-const popularPosts = posts.filter((post) => post.popular).slice(0, 3);
-const hasPosts = posts.length > 0;
+const sortedPosts = [...posts].sort(
+  (a, b) => new Date(b.pubDate).getTime() - new Date(a.pubDate).getTime()
+);
+
+const featuredPost = sortedPosts.find((post) => post.featured) ?? sortedPosts[0];
+const latestPosts = sortedPosts
+  .filter((post) => post.slug !== featuredPost?.slug)
+  .slice(0, 5);
+const popularPosts = sortedPosts.filter((post) => post.popular).slice(0, 3);
+const hasPosts = sortedPosts.length > 0;
 ---
 
 <PageContainer maxWidth="xl">
@@ -47,7 +53,7 @@ const hasPosts = posts.length > 0;
     <Section title="Explore by Category" subtitle="Topics we cover across the CalcVantage library.">
       <div class="categories-grid">
         {BLOG_CATEGORIES.map((category) => {
-          const count = hasPosts ? getCategoryCount(posts, category.slug) : 0;
+          const count = hasPosts ? getCategoryCount(sortedPosts, category.slug) : 0;
           return (
             <div class="category-chip">
               <CategoryBadge category={category.slug} />
