@@ -1340,14 +1340,23 @@ const BASE_BLOG_POSTS: BlogPost[] = [
   },
   {
     slug: 'emergency-fund-size',
-    title: 'Building an Emergency Fund: How Much Is Actually Enough?',
+    title: 'Emergency Fund Calculator: How Much Money Should You Save?',
     excerpt:
-      'Three months or six? The right emergency fund size depends on your income stability, expenses, and risk tolerance. Here is how to pick a target that fits.',
+      'How much should you save in an emergency fund? Calculate your target based on 3 to 6 months of essential living expenses, with realistic USD, CAD, and AUD benchmarks.',
+    subtitle:
+      'A practical framework to calculate essential monthly expenses, choose the right target multiplier, and build financial resilience across the US, Canada, and Australia',
     category: 'saving',
-    readingTime: 6,
-    pubDate: '2026-08-16',
+    readingTime: 12,
+    pubDate: '2026-10-10',
     author: 'CalcVantage Team',
+    featured: true,
     popular: true,
+    seo: {
+      title: 'Emergency Fund Calculator: How Much Money Should You Save? | CalcVantage',
+      description:
+        'Calculate how much you should save in an emergency fund. Step-by-step guidance, essential expense benchmarks, and country-specific examples for the US, Canada, and Australia.',
+      canonical: 'https://www.calcvantage.com/blog/emergency-fund-size',
+    },
   },
   {
     slug: 'homebuyer-first-mortgage',
