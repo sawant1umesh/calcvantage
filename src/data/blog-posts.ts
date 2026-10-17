@@ -1308,14 +1308,23 @@ const BASE_BLOG_POSTS: BlogPost[] = [
   },
   {
     slug: 'understanding-mortgage-payments',
-    title: 'Understanding Mortgage Payments: What Really Goes Into Your Monthly Bill',
+    title: 'What Is Included in a Monthly Mortgage Payment?',
+    subtitle:
+      'A complete guide to principal, interest, taxes, insurance (PITI), PMI, and HOA fees for USA homebuyers',
     excerpt:
-      'A mortgage payment is more than the loan itself. Property tax, insurance, and other costs all add up. Here is how each part works and why it matters for your budget.',
+      'What is included in a monthly mortgage payment? Learn how principal, interest, property taxes, homeowners insurance, PMI, and HOA fees shape your total housing bill, with a realistic payment breakdown.',
     category: 'mortgage',
-    readingTime: 7,
-    pubDate: '2026-08-16',
+    readingTime: 12,
+    pubDate: '2026-10-17',
     author: 'CalcVantage Team',
+    featured: true,
     popular: true,
+    seo: {
+      title: 'What Is Included in a Monthly Mortgage Payment? | CalcVantage',
+      description:
+        'Learn what is included in a monthly mortgage payment: principal, interest, taxes, insurance (PITI), PMI, and HOA fees. Full breakdown with a realistic example.',
+      canonical: 'https://www.calcvantage.com/blog/understanding-mortgage-payments',
+    },
   },
   {
     slug: 'retirement-savings-guide',

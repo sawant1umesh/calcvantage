@@ -7,5 +7,6 @@ export default defineConfig({
 	trailingSlash: 'never',
 	redirects: {
 		'/blog/emergency-fund-calculator': '/blog/emergency-fund-size',
+		'/blog/what-is-included-in-a-monthly-mortgage-payment': '/blog/understanding-mortgage-payments',
 	},
 });

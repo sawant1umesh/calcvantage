@@ -271,6 +271,302 @@ if (post.faqs && post.faqs.length > 0) {
     font-style: italic;
   }
 
+  /* Responsive Diagram Cards */
+  .blog-article-content :global(.diagram-card) {
+    margin: 1.5rem 0;
+    padding: 1.25rem 1.5rem;
+    background-color: var(--color-canvas);
+    border: 1px solid var(--color-hairline);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+
+  .blog-article-content :global(.diagram-header) {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .blog-article-content :global(.diagram-badge) {
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--color-accent);
+  }
+
+  .blog-article-content :global(.diagram-title) {
+    font-size: 1.125rem;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    color: var(--color-ink);
+    margin: 0;
+  }
+
+  /* PITI Diagram */
+  .blog-article-content :global(.piti-diagram-grid) {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: stretch;
+    gap: 1rem;
+  }
+
+  .blog-article-content :global(.piti-plus-divider) {
+    font-size: 1.75rem;
+    font-weight: 300;
+    color: var(--color-mute);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .blog-article-content :global(.piti-group-card) {
+    background-color: var(--color-canvas-soft);
+    border: 1px solid var(--color-hairline);
+    border-radius: var(--radius-md);
+    padding: 1rem 1.125rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.625rem;
+    height: 100%;
+  }
+
+  .blog-article-content :global(.piti-core) {
+    border-left: 3px solid var(--color-accent);
+  }
+
+  .blog-article-content :global(.piti-escrow) {
+    border-left: 3px solid var(--color-success);
+  }
+
+  .blog-article-content :global(.piti-group-header) {
+    display: flex;
+    flex-direction: column;
+    gap: 0.125rem;
+  }
+
+  .blog-article-content :global(.piti-group-tag) {
+    font-size: 0.6875rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--color-mute);
+  }
+
+  .blog-article-content :global(.piti-group-formula) {
+    font-size: 0.9375rem;
+    font-weight: 700;
+    color: var(--color-ink);
+  }
+
+  .blog-article-content :global(.piti-group-desc) {
+    font-size: 0.8125rem;
+    line-height: 1.5;
+    color: var(--color-body);
+    margin: 0;
+  }
+
+  .blog-article-content :global(.piti-items) {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-top: auto;
+    padding-top: 0.5rem;
+    border-top: 1px solid var(--color-hairline);
+  }
+
+  .blog-article-content :global(.piti-item) {
+    display: flex;
+    flex-direction: column;
+    gap: 0.125rem;
+  }
+
+  .blog-article-content :global(.piti-item strong) {
+    font-size: 0.8125rem;
+    color: var(--color-ink);
+  }
+
+  .blog-article-content :global(.piti-item span) {
+    font-size: 0.75rem;
+    color: var(--color-body);
+    line-height: 1.4;
+  }
+
+  /* Escrow Flow Diagram */
+  .blog-article-content :global(.escrow-flow-container) {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.875rem;
+    width: 100%;
+  }
+
+  .blog-article-content :global(.flow-source) {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+  }
+
+  .blog-article-content :global(.flow-pill) {
+    padding: 0.625rem 1.25rem;
+    background-color: var(--color-canvas-soft-2);
+    border: 1px solid var(--color-hairline-strong);
+    border-radius: var(--radius-full);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 0.125rem;
+    box-shadow: var(--shadow-sm);
+  }
+
+  .blog-article-content :global(.flow-pill-label) {
+    font-size: 0.6875rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--color-mute);
+  }
+
+  .blog-article-content :global(.flow-pill strong) {
+    font-size: 0.9375rem;
+    color: var(--color-ink);
+  }
+
+  .blog-article-content :global(.flow-line-down) {
+    width: 2px;
+    height: 1.25rem;
+    background-color: var(--color-hairline-strong);
+    margin-top: 0.25rem;
+  }
+
+  .blog-article-content :global(.flow-branches) {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    width: 100%;
+  }
+
+  .blog-article-content :global(.flow-branch) {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+
+  .blog-article-content :global(.flow-card) {
+    background-color: var(--color-canvas-soft);
+    border: 1px solid var(--color-hairline);
+    border-radius: var(--radius-md);
+    padding: 1rem 1.125rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.625rem;
+    height: 100%;
+    border-top: 3px solid var(--color-accent);
+  }
+
+  .blog-article-content :global(.flow-card-escrow) {
+    border-top: 3px solid var(--color-warning);
+  }
+
+  .blog-article-content :global(.flow-card-header) {
+    display: flex;
+    flex-direction: column;
+    gap: 0.125rem;
+  }
+
+  .blog-article-content :global(.flow-card-tag) {
+    font-size: 0.6875rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--color-mute);
+  }
+
+  .blog-article-content :global(.flow-card-header strong) {
+    font-size: 0.9375rem;
+    color: var(--color-ink);
+  }
+
+  .blog-article-content :global(.flow-card-dest) {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+    font-size: 0.8125rem;
+    line-height: 1.5;
+    color: var(--color-body);
+    background-color: var(--color-canvas);
+    padding: 0.5rem 0.75rem;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--color-hairline);
+  }
+
+  .blog-article-content :global(.flow-arrow) {
+    color: var(--color-accent);
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+
+  .blog-article-content :global(.flow-subdisbursements) {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-top: 0.25rem;
+    padding-top: 0.5rem;
+    border-top: 1px dashed var(--color-hairline-strong);
+  }
+
+  .blog-article-content :global(.flow-sub-item) {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+    font-size: 0.8125rem;
+    line-height: 1.4;
+    color: var(--color-body);
+  }
+
+  .blog-article-content :global(.flow-sub-arrow) {
+    color: var(--color-warning);
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+
+  .blog-article-content :global(.flow-sub-item strong) {
+    color: var(--color-ink);
+    display: block;
+    font-size: 0.8125rem;
+  }
+
+  .blog-article-content :global(.flow-sub-item span) {
+    font-size: 0.75rem;
+    color: var(--color-mute);
+  }
+
+  @media (max-width: 640px) {
+    .blog-article-content :global(.piti-diagram-grid) {
+      grid-template-columns: 1fr;
+      gap: 0.75rem;
+    }
+
+    .blog-article-content :global(.piti-plus-divider) {
+      transform: rotate(90deg);
+      height: 1.5rem;
+    }
+
+    .blog-article-content :global(.flow-branches) {
+      grid-template-columns: 1fr;
+      gap: 0.75rem;
+    }
+
+    .blog-article-content :global(.diagram-card) {
+      padding: 1rem;
+    }
+  }
+
   /* FAQ Section */
   .blog-article-faq {
     margin-top: 3rem;
