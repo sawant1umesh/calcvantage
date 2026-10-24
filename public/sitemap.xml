@@ -31,6 +31,11 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://www.calcvantage.com/blog/how-much-house-can-i-afford-on-my-salary</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://www.calcvantage.com/contact</loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
